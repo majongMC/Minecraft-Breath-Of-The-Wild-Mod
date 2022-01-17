@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "a",
+    "b"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:tnt"
+    },
+    "b": {
+      "item": "minecraft:arrow"
+    }
+  },
+  "result": {
+    "item": "zelda:bomb_arrow",
+    "count": 1
+  }
+}

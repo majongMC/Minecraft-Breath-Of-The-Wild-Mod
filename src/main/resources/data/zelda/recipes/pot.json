@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "a a",
+    "aaa",
+    "b b"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:iron_ingot"
+    },
+     "b": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "zelda:pot",
+    "count": 1
+  }
+}

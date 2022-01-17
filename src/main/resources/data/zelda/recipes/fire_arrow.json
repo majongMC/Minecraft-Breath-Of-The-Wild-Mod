@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "a",
+    "b"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:blaze_powder"
+    },
+    "b": {
+      "item": "minecraft:arrow"
+    }
+  },
+  "result": {
+    "item": "zelda:fire_arrow",
+    "count": 1
+  }
+}
