@@ -1,0 +1,11 @@
+modLoader="javafml" #mandatory
+loaderVersion="[34,)" 
+license="MIT"
+[[mods]] 
+modId="zelda" 
+version="${file.jarVersion}" 
+displayName="Breath Of The Wild" 
+authors="Majong"
+description='''
+
+'''

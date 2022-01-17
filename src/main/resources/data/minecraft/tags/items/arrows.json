@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "zelda:ancient_arrow",
+    "zelda:ice_arrow",
+    "zelda:fire_arrow",
+    "zelda:bomb_arrow",
+    "zelda:electricity_arrow"
+  ]
+}

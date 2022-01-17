@@ -1,0 +1,102 @@
+{
+  "guardian": {
+    "subtitle": "guardian",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:guardian",
+        "stream": true
+      }
+    ]
+  },
+  "wake_up": {
+    "subtitle": "wake_up",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:wake_up",
+        "stream": true
+      }
+    ]
+  },
+  "rock_giant": {
+    "subtitle": "rock_giant",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:rock_giant",
+        "stream": true
+      }
+    ]
+  },
+  "sinox": {
+    "subtitle": "sinox",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:sinox",
+        "stream": true
+      }
+    ]
+  },
+  "dead": {
+    "subtitle": "dead",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:dead",
+        "stream": true
+      }
+    ]
+  },
+  "fight": {
+    "subtitle": "fight",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:fight",
+        "stream": true
+      }
+    ]
+  },
+  "obtain": {
+    "subtitle": "obtain",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:obtain",
+        "stream": true
+      }
+    ]
+  },
+  "cooking": {
+    "subtitle": "cooking",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:cooking",
+        "stream": true
+      }
+    ]
+  },
+  "cooking_failed": {
+    "subtitle": "cooking_failed",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:cooking_failed",
+        "stream": true
+      }
+    ]
+  },
+  "walking_guardian": {
+    "subtitle": "walking_guardian",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:walking_guardian",
+        "stream": true
+      }
+    ]
+  }
+}

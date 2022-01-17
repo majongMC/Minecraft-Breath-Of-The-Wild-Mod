@@ -1,0 +1,62 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "zelda:items/shika_stone_down",
+		"1": "zelda:items/shika_stone_side",
+		"2": "zelda:items/shika_stone_up",
+		"particle": "zelda:items/shika_stone_down"
+	},
+	"elements": [
+		{
+			"from": [3, 7, 0],
+			"to": [13, 9, 16],
+			"faces": {
+				"north": {"uv": [0, 2, 10, 4], "texture": "#1"},
+				"east": {"uv": [0, 0, 16, 2], "rotation": 180, "texture": "#1"},
+				"south": {"uv": [0, 4, 10, 6], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 2], "texture": "#1"},
+				"up": {"uv": [0, 0, 10, 16], "texture": "#2"},
+				"down": {"uv": [0, 0, 10, 16], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [61, 0, 0],
+			"translation": [0, 1.25, -1.25],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [61, 0, 0],
+			"translation": [0, 1.25, -1.25],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [73, 0, 0],
+			"translation": [0, 4.25, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"firstperson_lefthand": {
+			"rotation": [73, 0, 0],
+			"translation": [0, 4.25, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"ground": {
+			"rotation": [0, 0, 90]
+		},
+		"gui": {
+			"rotation": [44, 71, -180],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"fixed": {
+			"rotation": [90, 0, 0]
+		}
+	},
+	"groups": [
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"children": [0]
+		}
+	]
+}

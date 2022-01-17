@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aba"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:ice"
+    },
+    "b": {
+      "item": "minecraft:arrow"
+    }
+  },
+  "result": {
+    "item": "zelda:ice_arrow",
+    "count": 1
+  }
+}
