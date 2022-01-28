@@ -19,6 +19,26 @@
       }
     ]
   },
+  "horn": {
+    "subtitle": "horn",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:horn",
+        "stream": true
+      }
+    ]
+  },
+  "red_envelope": {
+    "subtitle": "red_envelope",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:red_envelope",
+        "stream": true
+      }
+    ]
+  },
   "rock_giant": {
     "subtitle": "rock_giant",
     "replace": "true",

@@ -1,11 +1,18 @@
 package com.majong.zelda.event;
 
-import com.majong.zelda.config.ZeldaConfig;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Predicate;
 
+import com.majong.zelda.config.ZeldaConfig;
+import com.majong.zelda.entity.BombEntity;
+
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -21,6 +28,7 @@ public class LinkTime {
 				event.getPlayer().addPotionEffect(new EffectInstance(Effects.SLOW_FALLING,120,8));
 				event.getPlayer().addPotionEffect(new EffectInstance(Effects.SLOWNESS,120,3));
 				event.getPlayer().setNoGravity(true);
+				slownearmonsters(event.getPlayer(),false);
 				Thread t=new Thread(new Runnable() {
 
 					@Override
@@ -50,6 +58,26 @@ public class LinkTime {
 			event.getPlayer().removePotionEffect(Effects.SLOW_FALLING);
 			event.getPlayer().removePotionEffect(Effects.SLOWNESS);
 			event.getPlayer().setNoGravity(false);
+			slownearmonsters(event.getPlayer(),true);
+		}
+	}
+	private static void slownearmonsters(PlayerEntity player,boolean remove) {
+		World world=player.world;
+		List<LivingEntity> entitylist= world.getEntitiesWithinAABB(LivingEntity.class,player.getBoundingBox().grow(24, 24, 24) ,new Predicate<Object>() {
+
+			@Override
+			public boolean test(Object t) {
+				// TODO 自动生成的方法存根
+				return t instanceof LivingEntity&&!(t instanceof PlayerEntity);
+			}});
+		Iterator<LivingEntity> it=entitylist.iterator();
+		while(it.hasNext()) {
+			LivingEntity entity=it.next();
+			if(remove) {
+				entity.removePotionEffect(Effects.SLOWNESS);
+			}else {
+				entity.addPotionEffect(new EffectInstance(Effects.SLOWNESS,100,9));
+			}
 		}
 	}
 }

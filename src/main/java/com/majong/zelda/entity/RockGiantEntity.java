@@ -35,7 +35,7 @@ public class RockGiantEntity extends MonsterEntity{
 		super(type, worldIn);
 		// TODO 自动生成的构造函数存根
 		this.goalSelector.addGoal(1, new DestroyBlockGoal(this,4));
-		this.goalSelector.addGoal(2, new DelayMeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(2, new DelayMeleeAttackGoal(this, 1.0D, true,10));
 		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 50.0F));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));

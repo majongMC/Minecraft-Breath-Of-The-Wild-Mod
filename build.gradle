@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '22w04a'
+version = '1.0'
 group = 'com.majong.zelda' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'zelda-1.16.3'
 

@@ -28,10 +28,12 @@ public class DelayMeleeAttackGoal extends Goal{
 	   private boolean canPenalize = false;
 	   private int delay=-1;
 	   private boolean reverse=true;
-	   public DelayMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory) {
+	   private int delaytime=0;
+	   public DelayMeleeAttackGoal(CreatureEntity creature, double speedIn, boolean useLongMemory,int delaytime) {
 	      this.attacker = creature;
 	      this.speedTowardsTarget = speedIn;
 	      this.longMemory = useLongMemory;
+	      this.delaytime=delaytime;
 	      this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	   }
 
@@ -156,7 +158,7 @@ public class DelayMeleeAttackGoal extends Goal{
 	      if (distToEnemySqr <= d0 && this.field_234037_i_ <= 0) {
 	         this.func_234039_g_();
 	         this.attacker.swingArm(Hand.MAIN_HAND);
-	         delay=10;
+	         delay=delaytime;
 	         if(Math.random()>0.5)
 	        	reverse=true;
 	         else
@@ -172,7 +174,7 @@ public class DelayMeleeAttackGoal extends Goal{
 	      }
 	      if(delay==0&&distToEnemySqr <= d0)
 	    	 this.attacker.attackEntityAsMob(enemy);
-	      if(this.attacker instanceof RockGiantEntity&&delay>=-10&&delay<0) {
+	      if(this.attacker instanceof RockGiantEntity&&delay>=-delaytime&&delay<0) {
 	    	  RockGiantEntity entity=(RockGiantEntity) this.attacker;
 	    	  if(reverse)
 	    		  entity.getDataManager().set(RockGiantEntity.HANDSWING, 10+delay);

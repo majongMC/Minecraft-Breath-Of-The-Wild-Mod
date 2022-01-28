@@ -5,6 +5,7 @@ import com.majong.zelda.Utils;
 import com.majong.zelda.api.overlays.ZeldaBloodBarApi;
 import com.majong.zelda.entity.GuardianEntity;
 import com.majong.zelda.entity.MollyBrinEntity;
+import com.majong.zelda.entity.PokBrinEntity;
 import com.majong.zelda.entity.WalkingGuardianEntity;
 import com.majong.zelda.network.BloodBarPack;
 import com.majong.zelda.network.Networking;
@@ -42,7 +43,7 @@ public class PlayerSpottedEvent {
 					}
 				}
 			}
-			if(event.getEntity() instanceof MollyBrinEntity) {
+			if(event.getEntity() instanceof MollyBrinEntity||event.getEntity() instanceof PokBrinEntity) {
 				if(event.getEntity().world.getGameTime()%20==8) {
 						Networking.SOUND.send(
 			                    PacketDistributor.PLAYER.with(

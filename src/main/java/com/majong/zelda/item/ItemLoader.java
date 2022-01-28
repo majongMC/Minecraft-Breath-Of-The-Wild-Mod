@@ -24,4 +24,6 @@ public class ItemLoader {
 	public static final RegistryObject<Item> FOOD = ITEMS.register("food", ZeldaFood::new);
 	public static final RegistryObject<Item> HARD_FOOD = ITEMS.register("hard_food", HardFood::new);
 	public static final RegistryObject<Item> SHIKA_STONE = ITEMS.register("shika_stone", ShikaStone::new);
+	public static final RegistryObject<Item> HORN = ITEMS.register("horn", HornItem::new);
+	public static final RegistryObject<Item> RED_ENVELOPE = ITEMS.register("red_envelope", RedEnvelope::new);
 }

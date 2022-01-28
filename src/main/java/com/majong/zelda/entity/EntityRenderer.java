@@ -1,7 +1,6 @@
 package com.majong.zelda.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.client.renderer.entity.TippedArrowRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -45,6 +44,9 @@ public class EntityRenderer {
 	});
 		RenderingRegistry.registerEntityRenderingHandler(EntityLoader.ROCK_GIANT.get(), (EntityRendererManager manager) -> {
             return new RockGiantRenderer(manager);
+	});
+		RenderingRegistry.registerEntityRenderingHandler(EntityLoader.POK_BRIN.get(), (EntityRendererManager manager) -> {
+            return new PokBrinRenderer(manager);
 	});
 }
 }

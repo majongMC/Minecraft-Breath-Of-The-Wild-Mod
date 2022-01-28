@@ -9,6 +9,7 @@ import com.majong.zelda.Utils;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.GuardianEntity;
 import com.majong.zelda.entity.MollyBrinEntity;
+import com.majong.zelda.entity.PokBrinEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 
@@ -46,7 +47,7 @@ public class EntityDead {
                     ),
                     new SoundPack(1,new BlockPos(event.getEntity().getPosX(),event.getEntity().getPosY(),event.getEntity().getPosZ())));
 		}
-		if(event.getEntity() instanceof GuardianEntity||event.getEntity() instanceof MollyBrinEntity||(Utils.ICE_AND_FIRE_LOADED&&event.getEntity() instanceof EntityCyclops&&!event.getEntity().world.isRemote)) {
+		if(event.getEntity() instanceof GuardianEntity||event.getEntity() instanceof MollyBrinEntity||event.getEntity() instanceof PokBrinEntity||(Utils.ICE_AND_FIRE_LOADED&&event.getEntity() instanceof EntityCyclops&&!event.getEntity().world.isRemote)) {
 			List<PlayerEntity> playerlist= event.getEntity().world.getEntitiesWithinAABB(PlayerEntity.class,event.getEntity().getBoundingBox().grow(64, 32, 64) ,new Predicate<Object>() {
 
 				@Override

@@ -4,7 +4,9 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.GuardianEntity;
 import com.majong.zelda.entity.MollyBrinEntity;
+import com.majong.zelda.entity.PokBrinEntity;
 import com.majong.zelda.entity.WalkingGuardianEntity;
+import com.majong.zelda.item.ItemLoader;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
@@ -37,6 +39,20 @@ public class EntitySpawn {
 				entity.setPosition(pos.getX()+0.5,pos.getY(),pos.getZ()+0.5);
 				event.getWorld().addEntity(entity);
 			}
+			if(Math.random()<0.03*ZeldaConfig.POKBRIN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof PokBrinEntity)) {
+				PokBrinEntity entity=new PokBrinEntity(EntityLoader.POK_BRIN.get(),(World) event.getWorld());
+				BlockPos pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
+				int count=0;
+				while(!(event.getWorld().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(World) event.getWorld()))) {
+					pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
+					count++;
+					if(count>10) {
+						break;
+					}
+				}
+				entity.setPosition(pos.getX()+0.5,pos.getY(),pos.getZ()+0.5);
+				event.getWorld().addEntity(entity);
+			}
 			if(Math.random()<0.015*ZeldaConfig.WALKING_GUARDIAN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof GuardianEntity&&((World) event.getWorld()).getDimensionKey().getLocation().equals(DimensionType.OVERWORLD_ID))) {
 				GuardianEntity entity=new WalkingGuardianEntity(EntityLoader.WALKING_GUARDIAN.get(),(World) event.getWorld());
 				BlockPos pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
@@ -51,7 +67,7 @@ public class EntitySpawn {
 				entity.setPosition(pos.getX()+0.5,pos.getY(),pos.getZ()+0.5);
 				event.getWorld().addEntity(entity);
 			}
-			if(Math.random()<0.03*ZeldaConfig.WALKING_GUARDIAN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof MollyBrinEntity&&((World) event.getWorld()).getDimensionKey().getLocation().equals(DimensionType.OVERWORLD_ID))) {
+			if(Math.random()<0.03*ZeldaConfig.MOLLYBRIN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof MollyBrinEntity&&((World) event.getWorld()).getDimensionKey().getLocation().equals(DimensionType.OVERWORLD_ID))) {
 				BlockPos pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 				int count=0;
 				while(!(event.getWorld().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(World) event.getWorld()))) {
