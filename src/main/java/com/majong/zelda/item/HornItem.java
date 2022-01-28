@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import com.majong.zelda.sound.SoundLoader;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +28,16 @@ public class HornItem extends BasicItem{
 		}
 		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
-
+	@Override
+	public boolean onLeftClickEntity(ItemStack stack, PlayerEntity player, Entity entity)
+    {
+		if(!entity.world.isRemote&&entity instanceof LivingEntity) {
+			player.world.playSound(null,player.getPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
+		player.setHeldItem(Hand.MAIN_HAND, stack.split(stack.getCount()-1));
+		AwakeOthers((LivingEntity) entity,player);
+		}
+		return false;
+    }
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BOW;
