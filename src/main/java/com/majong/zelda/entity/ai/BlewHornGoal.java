@@ -18,41 +18,41 @@ public class BlewHornGoal extends Goal{
 		this.attacker=creature;
 	}
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		// TODO 自动生成的方法存根
-		if(this.attacker.world.getGameTime()-lastattacktime<60)
+		if(this.attacker.level.getGameTime()-lastattacktime<60)
 			return false;
-			LivingEntity target=this.attacker.getAttackTarget();
+			LivingEntity target=this.attacker.getTarget();
 			if(target==null||!target.isAlive())
 				return false;
-			if(!attacker.canEntityBeSeen(target)||attacker.getHealth()!=attacker.getMaxHealth())
+			if(!attacker.canSee(target)||attacker.getHealth()!=attacker.getMaxHealth())
 				return false;
 		return true;
 	}
 	@Override
-	public void startExecuting() {
-		this.targetentity=this.attacker.getAttackTarget();
+	public void start() {
+		this.targetentity=this.attacker.getTarget();
 		this.attackprocess=0;
-		this.attacker.world.playSound(null,attacker.getPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
+		this.attacker.level.playSound(null,attacker.blockPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
 	}
 	@Override
-	public boolean shouldContinueExecuting() {
-		return this.shouldExecute();
+	public boolean canContinueToUse() {
+		return this.canUse();
 	}
 	@Override
-	public void resetTask() {
-		this.startExecuting();
+	public void stop() {
+		this.start();
 	}
 	@Override
 	public void tick() {
 		if(attackprocess<50) {
 			if(attackprocess%10==1)
-				attacker.swingArm(Hand.MAIN_HAND);
+				attacker.swing(Hand.MAIN_HAND);
 			 attackprocess++;
 		}else {
 			HornItem.AwakeOthers(targetentity, attacker);
 			attackprocess=0;
-			lastattacktime=this.attacker.world.getGameTime();
+			lastattacktime=this.attacker.level.getGameTime();
 		}
 	}
 }

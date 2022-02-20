@@ -15,7 +15,7 @@ public class BloodBarPack {
 	public static final ITextComponent SINOX=new TranslationTextComponent("boss.sinox.bar");
 	public BloodBarPack(PacketBuffer buffer) {
 		DATA=buffer.readDouble();
-		NAME=buffer.readTextComponent();
+		NAME=buffer.readComponent();
     }
 	@Deprecated//请使用api中的方法
     public BloodBarPack(ITextComponent name,double percentage) {
@@ -24,7 +24,7 @@ public class BloodBarPack {
     }
     public void toBytes(PacketBuffer buf) {
     	buf.writeDouble(DATA);
-    	buf.writeTextComponent(NAME);
+    	buf.writeComponent(NAME);
     }
     @SuppressWarnings("deprecation")
 	public void handler(Supplier<NetworkEvent.Context> ctx) {

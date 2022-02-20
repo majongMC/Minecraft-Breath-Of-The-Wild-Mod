@@ -19,8 +19,8 @@ public class FoodMessageGui extends Screen{
 	private final ResourceLocation BACK=new ResourceLocation(Utils.MOD_ID, "textures/gui/background.png");
 	public FoodMessageGui(int type,int heal,int hunger) {
 		super(new TranslationTextComponent(""));
-		this.w = Minecraft.getInstance().getMainWindow().getScaledWidth();
-        this.h = Minecraft.getInstance().getMainWindow().getScaledHeight();
+		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+        this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
         this.heal=heal;
         this.hunger=hunger;
         this.type=type;
@@ -29,9 +29,9 @@ public class FoodMessageGui extends Screen{
 	@Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.minecraft.getTextureManager().bindTexture(BACK);
+		this.minecraft.getTextureManager().bind(BACK);
 		blit(matrixStack, (int)(0.3*w), (int)(0.3*h), 0, 0, (int)(0.4*w),(int)(0.4*h),16,16);
-		this.minecraft.getTextureManager().bindTexture(ICONS);
+		this.minecraft.getTextureManager().bind(ICONS);
 		int heart,halfheart;
 		heart=heal/2;
 		halfheart=heal%2;
@@ -58,9 +58,9 @@ public class FoodMessageGui extends Screen{
 			x+=10;
 		}
 		if(type==0)
-			this.minecraft.getTextureManager().bindTexture(FOOD1);
+			this.minecraft.getTextureManager().bind(FOOD1);
 		else
-			this.minecraft.getTextureManager().bindTexture(FOOD2);
+			this.minecraft.getTextureManager().bind(FOOD2);
 		int a=(int) (0.4*h);
 		blit(matrixStack, (int)(0.3*w), (int)(0.3*h), 0, 0, a, a, a, a);
 		if(type==0)

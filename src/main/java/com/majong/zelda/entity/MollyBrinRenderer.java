@@ -14,7 +14,7 @@ public class MollyBrinRenderer extends SkeletonRenderer{
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
-	public ResourceLocation getEntityTexture(AbstractSkeletonEntity entity) {
+	public ResourceLocation getTextureLocation(AbstractSkeletonEntity entity) {
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/molly_brin.png");
 	}
 }

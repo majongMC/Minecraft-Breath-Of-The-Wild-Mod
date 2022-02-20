@@ -6,6 +6,6 @@ import net.minecraft.item.Item;
 
 public class BasicItem extends Item{
 	public BasicItem() {
-	super(new Properties().group(Utils.ZELDA_CREATIVE_TAB));
+	super(new Properties().tab(Utils.ZELDA_CREATIVE_TAB));
 	}
 }

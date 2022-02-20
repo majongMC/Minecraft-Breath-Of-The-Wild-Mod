@@ -17,7 +17,7 @@ public class GuardianRenderer extends MobRenderer<GuardianEntity, GuardianModel>
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
-	public ResourceLocation getEntityTexture(GuardianEntity entity) {
+	public ResourceLocation getTextureLocation(GuardianEntity entity) {
 		// TODO 自动生成的方法存根
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/guardian.png");
 	}

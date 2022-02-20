@@ -11,14 +11,14 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class ZeldaPlayerDataPack {
 	private final CompoundNBT nbt;
     public ZeldaPlayerDataPack(PacketBuffer buffer) {
-    	this.nbt=buffer.readCompoundTag();
+    	this.nbt=buffer.readNbt();
     }
 
     public ZeldaPlayerDataPack(CompoundNBT nbt) {
     	this.nbt=nbt;
     }
     public void toBytes(PacketBuffer buf) {
-    	buf.writeCompoundTag(nbt);
+    	buf.writeNbt(nbt);
     }
 
     public void handler(Supplier<NetworkEvent.Context> ctx) {

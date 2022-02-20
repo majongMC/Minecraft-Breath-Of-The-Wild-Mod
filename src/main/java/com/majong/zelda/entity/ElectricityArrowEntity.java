@@ -28,15 +28,15 @@ public class ElectricityArrowEntity extends ArrowEntity{
 		super(worldIn,shooter);
 	}
 	@Override
-	public void arrowHit(LivingEntity living) {
-		super.arrowHit(living);
-		AttributeDamage.electricitydamage(living, this.func_234616_v_());
+	public void doPostHurtEffects(LivingEntity living) {
+		super.doPostHurtEffects(living);
+		AttributeDamage.electricitydamage(living, this.getOwner());
 	}
 	
 	@Override
 	public void tick() {
-		if(!this.world.isRemote) {
-			List<PlayerEntity> playerlist= world.getEntitiesWithinAABB(PlayerEntity.class,this.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
+		if(!this.level.isClientSide) {
+			List<PlayerEntity> playerlist=level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
@@ -53,7 +53,7 @@ public class ElectricityArrowEntity extends ArrowEntity{
 	                    PacketDistributor.PLAYER.with(
 	                            () -> (ServerPlayerEntity) player
 	                    ),
-	                    new ParticlePack(1,this.getPosX(),this.getPosY(),this.getPosZ(),0,0,0));
+	                    new ParticlePack(1,this.getX(),this.getY(),this.getZ(),0,0,0));
     		}
 		}
 		super.tick();

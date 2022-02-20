@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public class ConductiveItem {
 	public static final Collection<Item> CONDUCTIVE_ITEM=new ArrayList<>();
 	public static boolean HeldConductiveItem(PlayerEntity player) {
-		return isConductive(player.getHeldItemMainhand().getItem())||isConductive(player.getHeldItemOffhand().getItem())||isArmorConductive(player);
+		return isConductive(player.getMainHandItem().getItem())||isConductive(player.getOffhandItem().getItem())||isArmorConductive(player);
 	}
 	public static boolean isConductive(Item item) {
 		Iterator<Item> it=CONDUCTIVE_ITEM.iterator();
@@ -23,7 +23,7 @@ public class ConductiveItem {
 		return false;
 	}
 	private static boolean isArmorConductive(PlayerEntity player) {
-		Iterator<ItemStack> it=player.getArmorInventoryList().iterator();
+		Iterator<ItemStack> it=player.getArmorSlots().iterator();
 		while(it.hasNext()) {
 			if(isConductive(it.next().getItem())) 
 				return true;

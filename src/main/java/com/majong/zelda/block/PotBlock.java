@@ -26,7 +26,7 @@ import net.minecraftforge.common.ToolType;
 public class PotBlock extends Block{
 
 	public PotBlock() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(2.5F).harvestLevel(0).harvestTool(ToolType.PICKAXE));
+		super(Properties.of(Material.STONE).strength(2.5F).harvestLevel(0).harvestTool(ToolType.PICKAXE));
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
@@ -37,18 +37,17 @@ public class PotBlock extends Block{
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new PotTileEntity();
-		
 	}
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if(!worldIn.isRemote&&worldIn.getTileEntity(pos) instanceof PotTileEntity) {
-			PotTileEntity tile=(PotTileEntity) worldIn.getTileEntity(pos);
-			if(!player.getHeldItemMainhand().isEmpty()) {
-				player.setHeldItem(Hand.MAIN_HAND, tile.tryacceptitem(player.getHeldItemMainhand()));
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if(!worldIn.isClientSide&&worldIn.getBlockEntity(pos) instanceof PotTileEntity) {
+			PotTileEntity tile=(PotTileEntity) worldIn.getBlockEntity(pos);
+			if(!player.getMainHandItem().isEmpty()) {
+				player.setItemInHand(Hand.MAIN_HAND, tile.tryacceptitem(player.getMainHandItem()));
 			}
 			else{
-				if(player.isSneaking()) {
-					player.setHeldItem(Hand.MAIN_HAND, tile.tryextractitem());
+				if(player.isShiftKeyDown()) {
+					player.setItemInHand(Hand.MAIN_HAND, tile.tryextractitem());
 				}
 				else
 					tile.start(player);
@@ -57,17 +56,17 @@ public class PotBlock extends Block{
 		return ActionResultType.SUCCESS;
 	}
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		if(!worldIn.isRemote) {
-			PotTileEntity tile=(PotTileEntity) worldIn.getTileEntity(pos);
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		if(!worldIn.isClientSide) {
+			PotTileEntity tile=(PotTileEntity) worldIn.getBlockEntity(pos);
 			for(int i=0;i<5;i++) {
 				if(!tile.getStack(i).isEmpty()) {
 					Entity itemdrops=new ItemEntity(worldIn,pos.getX(),pos.getY(),pos.getZ(),tile.getStack(i));
-					worldIn.addEntity(itemdrops);
+					worldIn.addFreshEntity(itemdrops);
 				}
 			}
 		}
-		super.onBlockHarvested(worldIn, pos, state, player);
+		super.playerWillDestroy(worldIn, pos, state, player);
 	}
 	@Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {

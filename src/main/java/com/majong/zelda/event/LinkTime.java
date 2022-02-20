@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.majong.zelda.config.ZeldaConfig;
-import com.majong.zelda.entity.BombEntity;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,11 +21,11 @@ import net.minecraftforge.fml.common.Mod;
 public class LinkTime {
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
-		if(!event.getWorld().isRemote) {
-			if(!event.getPlayer().isOnGround()&&!event.getPlayer().isElytraFlying()) {
-				event.getPlayer().setMotion(Vector3d.ZERO);
-				event.getPlayer().addPotionEffect(new EffectInstance(Effects.SLOW_FALLING,120,8));
-				event.getPlayer().addPotionEffect(new EffectInstance(Effects.SLOWNESS,120,3));
+		if(!event.getWorld().isClientSide) {
+			if(!event.getPlayer().isOnGround()&&!event.getPlayer().isFallFlying()) {
+				event.getPlayer().setDeltaMovement(Vector3d.ZERO);
+				event.getPlayer().addEffect(new EffectInstance(Effects.SLOW_FALLING,120,8));
+				event.getPlayer().addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,120,3));
 				event.getPlayer().setNoGravity(true);
 				slownearmonsters(event.getPlayer(),false);
 				Thread t=new Thread(new Runnable() {
@@ -37,7 +36,7 @@ public class LinkTime {
 						PlayerEntity player=event.getPlayer();
 						for(int i=0;i<ZeldaConfig.LINKTIME.get();i++) {
 						try {Thread.sleep(50);} catch (InterruptedException e) {break;}
-						if(player==null||!player.hasNoGravity())
+						if(player==null||!player.isNoGravity())
 							break;
 						}
 						if(!(player==null))
@@ -46,24 +45,24 @@ public class LinkTime {
 				t.start();
 			}
 			else {
-				event.getPlayer().removePotionEffect(Effects.SLOW_FALLING);
-				event.getPlayer().removePotionEffect(Effects.SLOWNESS);
+				event.getPlayer().removeEffect(Effects.SLOW_FALLING);
+				event.getPlayer().removeEffect(Effects.MOVEMENT_SLOWDOWN);
 				event.getPlayer().setNoGravity(false);
 			}
 		}
 	}
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerLooseArrow(ArrowLooseEvent event) {
-		if(!event.getWorld().isRemote) {
-			event.getPlayer().removePotionEffect(Effects.SLOW_FALLING);
-			event.getPlayer().removePotionEffect(Effects.SLOWNESS);
+		if(!event.getWorld().isClientSide) {
+			event.getPlayer().removeEffect(Effects.SLOW_FALLING);
+			event.getPlayer().removeEffect(Effects.MOVEMENT_SLOWDOWN);
 			event.getPlayer().setNoGravity(false);
 			slownearmonsters(event.getPlayer(),true);
 		}
 	}
 	private static void slownearmonsters(PlayerEntity player,boolean remove) {
-		World world=player.world;
-		List<LivingEntity> entitylist= world.getEntitiesWithinAABB(LivingEntity.class,player.getBoundingBox().grow(24, 24, 24) ,new Predicate<Object>() {
+		World world=player.level;
+		List<LivingEntity> entitylist= world.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,new Predicate<Object>() {
 
 			@Override
 			public boolean test(Object t) {
@@ -74,9 +73,9 @@ public class LinkTime {
 		while(it.hasNext()) {
 			LivingEntity entity=it.next();
 			if(remove) {
-				entity.removePotionEffect(Effects.SLOWNESS);
+				entity.removeEffect(Effects.MOVEMENT_SLOWDOWN);
 			}else {
-				entity.addPotionEffect(new EffectInstance(Effects.SLOWNESS,100,9));
+				entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,100,9));
 			}
 		}
 	}

@@ -20,31 +20,31 @@ import net.minecraft.world.World;
 
 public class HornItem extends BasicItem{
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		player.setActiveHand(hand);
-		if(!world.isRemote) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		player.startUsingItem(hand);
+		if(!world.isClientSide) {
 			AwakeOthers(player,player);
-			world.playSound(null,player.getPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
+			world.playSound(null,player.blockPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
 		}
-		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getItemInHand(hand));
 	}
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, PlayerEntity player, Entity entity)
     {
-		if(!entity.world.isRemote&&entity instanceof LivingEntity) {
-			player.world.playSound(null,player.getPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
-		player.setHeldItem(Hand.MAIN_HAND, stack.split(stack.getCount()-1));
+		if(!entity.level.isClientSide&&entity instanceof LivingEntity) {
+			player.level.playSound(null,player.blockPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
+		player.setItemInHand(Hand.MAIN_HAND, stack.split(stack.getCount()-1));
 		AwakeOthers((LivingEntity) entity,player);
 		}
 		return false;
     }
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
+	public UseAction getUseAnimation(ItemStack stack) {
 		return UseAction.BOW;
 	}
 	public static void AwakeOthers(LivingEntity target,LivingEntity user) {
-		World world=user.world;
-		List<LivingEntity> targrtlist= world.getEntitiesWithinAABB(LivingEntity.class,user.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
+		World world=user.level;
+		List<LivingEntity> targrtlist= world.getEntitiesOfClass(LivingEntity.class,user.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 			@Override
 			public boolean test(Object t) {
@@ -54,7 +54,7 @@ public class HornItem extends BasicItem{
 		Iterator<LivingEntity> it=targrtlist.iterator();
 		while(it.hasNext()) {
 			LivingEntity entity=(LivingEntity) it.next();
-			entity.setRevengeTarget(target);
+			entity.setLastHurtByMob(target);
 		}
 	}
 }

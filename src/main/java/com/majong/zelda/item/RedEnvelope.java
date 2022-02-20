@@ -12,13 +12,13 @@ import net.minecraft.world.World;
 
 public class RedEnvelope extends BasicItem{
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if(!worldIn.isRemote) {
-			playerIn.addItemStackToInventory(new ItemStack(Items.GOLD_NUGGET,(int)(Math.random()*16)));
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if(!worldIn.isClientSide) {
+			playerIn.addItem(new ItemStack(Items.GOLD_NUGGET,(int)(Math.random()*16)));
 		}
 		else {
-			worldIn.playSound(playerIn, playerIn.getPosition(), SoundLoader.RED_ENVELOPE.get(), SoundCategory.AMBIENT, 10f, 1f);
+			worldIn.playSound(playerIn, playerIn.blockPosition(), SoundLoader.RED_ENVELOPE.get(), SoundCategory.AMBIENT, 10f, 1f);
 		}
-		return ActionResult.resultPass(playerIn.getHeldItem(handIn).split(playerIn.getHeldItem(handIn).getCount()-1));
+		return ActionResult.pass(playerIn.getItemInHand(handIn).split(playerIn.getItemInHand(handIn).getCount()-1));
 	}
 }

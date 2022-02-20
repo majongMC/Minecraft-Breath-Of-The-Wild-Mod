@@ -27,46 +27,46 @@ public class GuardianAi extends Goal{
 		this.attacker = creature;
 	}
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		// TODO 自动生成的方法存根
 		if(isshooting)
 			return true;
-		if(this.attacker.world.getGameTime()-lastattacktime<60)
+		if(this.attacker.level.getGameTime()-lastattacktime<60)
 		return false;
-		LivingEntity target=this.attacker.getAttackTarget();
+		LivingEntity target=this.attacker.getTarget();
 		if(target==null||!target.isAlive())
 			return false;
-		if(!attacker.canEntityBeSeen(target))
+		if(!attacker.canSee(target))
 			return false;
 		return true;
 	}
 	@Override
-	public void startExecuting() {
-		LivingEntity target=this.attacker.getAttackTarget();
+	public void start() {
+		LivingEntity target=this.attacker.getTarget();
 		this.targetentity=target;
 		if(target!=null) {
-			this.targetlocation[0]=target.getPosX();
-			this.targetlocation[1]=target.getPosY();
-			this.targetlocation[2]=target.getPosZ();
+			this.targetlocation[0]=target.getX();
+			this.targetlocation[1]=target.getY();
+			this.targetlocation[2]=target.getZ();
 		}
 		this.attackprocess=0;
 	}
 	@Override
-	public boolean shouldContinueExecuting() {
-		return this.shouldExecute();
+	public boolean canContinueToUse() {
+		return this.canUse();
 	}
 	@Override
-	public void resetTask() {
-		this.startExecuting();
+	public void stop() {
+		this.start();
 	}
 	@Override
 	 public void tick() {
 		 if(attackprocess<95) {
 			 attackprocess++;
-			 this.targetlocation[0]=targetentity.getPosX();
-			 this.targetlocation[1]=targetentity.getPosY();
-			 this.targetlocation[2]=targetentity.getPosZ();
-			 List<PlayerEntity> playerlist= this.attacker.world.getEntitiesWithinAABB(PlayerEntity.class,this.attacker.getBoundingBox().grow(48,48,48) ,new Predicate<Object>() {
+			 this.targetlocation[0]=targetentity.getX();
+			 this.targetlocation[1]=targetentity.getY();
+			 this.targetlocation[2]=targetentity.getZ();
+			 List<PlayerEntity> playerlist= this.attacker.level.getEntitiesOfClass(PlayerEntity.class,this.attacker.getBoundingBox().inflate(48,48,48) ,new Predicate<Object>() {
 
 					@Override
 					public boolean test(Object t) {
@@ -83,7 +83,7 @@ public class GuardianAi extends Goal{
 		                    PacketDistributor.PLAYER.with(
 		                            () -> (ServerPlayerEntity) player
 		                    ),
-		                    new ParticlePack(0,this.attacker.getPosX(),this.attacker.getPosY()+1.5,this.attacker.getPosZ(),this.targetlocation[0],this.targetlocation[1]+1,this.targetlocation[2]));
+		                    new ParticlePack(0,this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ(),this.targetlocation[0],this.targetlocation[1]+1,this.targetlocation[2]));
 	    		}
 		 }
 		 else if(attackprocess>=95&&attackprocess<100) {
@@ -93,25 +93,25 @@ public class GuardianAi extends Goal{
 		                    PacketDistributor.PLAYER.with(
 		                            () -> (ServerPlayerEntity) targetentity
 		                    ),
-		                    new ParticlePack(6,this.attacker.getPosX(),this.attacker.getPosY()+1.5,this.attacker.getPosZ(),0,0,0));
+		                    new ParticlePack(6,this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ(),0,0,0));
 		 }
 		 else {
 			 double rx,ry,rz,yaw,pitch;
-			 rx=targetlocation[0]-this.attacker.getPosX();
-			 ry=targetlocation[1]-this.attacker.getPosY();
-			 rz=targetlocation[2]-this.attacker.getPosZ();
+			 rx=targetlocation[0]-this.attacker.getX();
+			 ry=targetlocation[1]-this.attacker.getY();
+			 rz=targetlocation[2]-this.attacker.getZ();
 			 if(rx<0)
 				 yaw=Math.atan(rz/rx)*180/Math.PI;
 			 else
 				 yaw=(Math.atan(rz/rx)*180/Math.PI+180);
 			 pitch=Math.atan(ry/Math.sqrt(rz*rz+rx*rx))*180/Math.PI;
-			 LaserEntity laser=new LaserEntity(EntityLoader.LASER.get(),this.attacker.world);
+			 LaserEntity laser=new LaserEntity(EntityLoader.LASER.get(),this.attacker.level);
 			 laser.setspeed((float)yaw, (float)pitch);
 			 laser.setowner(attacker);
-			 laser.setPosition(this.attacker.getPosX(),this.attacker.getPosY()+1.5,this.attacker.getPosZ());
-			 this.attacker.world.addEntity(laser);
+			 laser.setPos(this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ());
+			 this.attacker.level.addFreshEntity(laser);
 			 attackprocess=0;
-			 lastattacktime=this.attacker.world.getGameTime();
+			 lastattacktime=this.attacker.level.getGameTime();
 		 }
 	 }
 }

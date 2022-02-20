@@ -7,7 +7,6 @@ import java.util.UUID;
 import com.majong.zelda.Utils;
 import com.majong.zelda.api.util.AttributeDamageApi;
 import com.majong.zelda.config.ZeldaConfig;
-import com.majong.zelda.entity.GuardianEntity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -34,66 +33,66 @@ public class AttributeDamage {
 		{
     		Class<? extends LivingEntity> restrainted=it.next();
     		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get())
-    			living.attackEntityFrom(new EntityDamageSource("arrow",attacker),32767);
+    			living.hurt(new EntityDamageSource("arrow",attacker),32767);
 		}
 	}
     public static void icedamage(LivingEntity living,Entity attacker) {
     	Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.ICE_RESTRAINTED.iterator();
-    	living.addPotionEffect(new EffectInstance(Effects.SLOWNESS,200,9));
+    	living.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,200,9));
     	while(it.hasNext())
 		{
     		Class<? extends LivingEntity> restrainted=it.next();
     		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get())
-    			living.attackEntityFrom(new EntityDamageSource("arrow",attacker),32767);
+    			living.hurt(new EntityDamageSource("arrow",attacker),32767);
 		}
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
-    	if(!living.world.isRemote&&Math.random()<ZeldaConfig.ELECTRICITY.get()) {
+    	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()) {
     		if(living instanceof PlayerEntity) {
     			PlayerEntity player=(PlayerEntity) living;
-    			player.dropItem(player.getHeldItemMainhand(), true, true);
-    			player.dropItem(player.getHeldItemOffhand(), true, true);
-    			if(!player.getHeldItemMainhand().isEmpty())
-    				player.sendMessage(new TranslationTextComponent(player.getHeldItemMainhand().getItem().getName().getString()+"µôÂä"), UUID.randomUUID());
-    			if(!player.getHeldItemOffhand().isEmpty())
-        			player.sendMessage(new TranslationTextComponent(player.getHeldItemOffhand().getItem().getName().getString()+"µôÂä"), UUID.randomUUID());
-    			living.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
-    			living.setHeldItem(Hand.OFF_HAND, ItemStack.EMPTY);
+    			player.drop(player.getMainHandItem(), true, true);
+    			player.drop(player.getOffhandItem(), true, true);
+    			if(!player.getMainHandItem().isEmpty())
+    				player.sendMessage(new TranslationTextComponent(player.getMainHandItem().getItem().getDescription().getString()+"µôÂä"), UUID.randomUUID());
+    			if(!player.getOffhandItem().isEmpty())
+        			player.sendMessage(new TranslationTextComponent(player.getOffhandItem().getItem().getDescription().getString()+"µôÂä"), UUID.randomUUID());
+    			living.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+    			living.setItemInHand(Hand.OFF_HAND, ItemStack.EMPTY);
     		}
     		else {
-			Entity itemdrops1=new ItemEntity(living.world,living.getPosX(),living.getPosY(),living.getPosZ(),living.getHeldItemMainhand());
-			living.world.addEntity(itemdrops1);
-			Entity itemdrops2=new ItemEntity(living.world,living.getPosX(),living.getPosY(),living.getPosZ(),living.getHeldItemOffhand());
-			living.world.addEntity(itemdrops2);
-			living.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
-			living.setHeldItem(Hand.OFF_HAND, ItemStack.EMPTY);
+			Entity itemdrops1=new ItemEntity(living.level,living.getX(),living.getY(),living.getZ(),living.getMainHandItem());
+			living.level.addFreshEntity(itemdrops1);
+			Entity itemdrops2=new ItemEntity(living.level,living.getX(),living.getY(),living.getZ(),living.getOffhandItem());
+			living.level.addFreshEntity(itemdrops2);
+			living.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+			living.setItemInHand(Hand.OFF_HAND, ItemStack.EMPTY);
     		}
 		}
 	}
     public static void ancientdamage(LivingEntity living,Entity attacker) {
-    	if(!living.world.isRemote) {
+    	if(!living.level.isClientSide) {
 			Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.ANCIENT_RESTRAINTED.iterator();
 	    	while(it.hasNext())
 			{
 	    		Class<? extends LivingEntity> restrainted=it.next();
 	    		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get()) {
-	    			living.attackEntityFrom(new EntityDamageSource("ancient",attacker),32767);
+	    			living.hurt(new EntityDamageSource("ancient",attacker),32767);
 	    			return;
 	    		}
 			}
-			if(ischaoisland(living.world,living.getPosition())&&living instanceof WitherEntity&&ZeldaConfig.KILLWITHER.get()) {
-				living.entityDropItem(new ItemStack(Items.NETHER_STAR,1));
-				living.onKillCommand();
+			if(ischaoisland(living.level,living.blockPosition())&&living instanceof WitherEntity&&ZeldaConfig.KILLWITHER.get()) {
+				living.spawnAtLocation(new ItemStack(Items.NETHER_STAR,1));
+				living.kill();
 				return;
 			}
-			if(living.isNonBoss())
-				living.attackEntityFrom(new EntityDamageSource("ancient",attacker),20);
+			if(living.canChangeDimensions())
+				living.hurt(new EntityDamageSource("ancient",attacker),20);
 			else
-				living.attackEntityFrom(new EntityDamageSource("ancient",attacker),40);
+				living.hurt(new EntityDamageSource("ancient",attacker),40);
 		}
 	}
     public static boolean ischaoisland(World world,BlockPos pos) {
-    	if(!world.getDimensionKey().getLocation().equals(DimensionType.THE_END_ID)||!Utils.DRACONIC_EVOLUTION_LOADED)
+    	if(!world.dimension().location().equals(DimensionType.END_EFFECTS)||!Utils.DRACONIC_EVOLUTION_LOADED)
     		return false;
     	int x=Math.abs(pos.getX());
     	int y=Math.abs(pos.getY());

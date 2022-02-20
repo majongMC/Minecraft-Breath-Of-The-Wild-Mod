@@ -13,7 +13,7 @@ public class BombEntity extends CreatureEntity{
 	public PlayerEntity owner;
 	public BombEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
 		super(type, worldIn);
-		this.getAttributeManager().createInstanceIfAbsent(Attributes.MAX_HEALTH);
+		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
 		// TODO 自动生成的构造函数存根
 	}
 	public void setowner(PlayerEntity player) {
@@ -21,14 +21,14 @@ public class BombEntity extends CreatureEntity{
 	}
 	public void explode(boolean windbomb) {
 		if(windbomb) {
-			this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), 3, Mode.NONE);
+			this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3, Mode.NONE);
 		}
 		else {
 			if(ZeldaConfig.BOMBDESTROY.get())
-				this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), 3, Mode.BREAK);
+				this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3, Mode.BREAK);
 			else
-				this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), 3, Mode.NONE);
+				this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3, Mode.NONE);
 		}
-		this.onKillCommand();
+		this.kill();
 	}
 }

@@ -11,7 +11,7 @@ import net.minecraft.item.ShieldItem;
 public class AncientShield extends ShieldItem{
 
 	public AncientShield() {
-		super(new Properties().group(Utils.ZELDA_CREATIVE_TAB).maxDamage(320));
+		super(new Properties().tab(Utils.ZELDA_CREATIVE_TAB).durability(320));
 		// TODO 自动生成的构造函数存根
 	}
 	@Override

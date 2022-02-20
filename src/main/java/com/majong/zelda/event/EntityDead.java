@@ -27,10 +27,10 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class EntityDead {
 	@SubscribeEvent
 	public static void onEntityDead(LivingDeathEvent event) {
-		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().world.isRemote) {
+		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
 			if(DataManager.data.get(event.getEntity()).skill[0]==1) {
 				((PlayerEntity)event.getEntity()).setHealth(((PlayerEntity)event.getEntity()).getMaxHealth());
-				((PlayerEntity) event.getEntity()).addPotionEffect(new EffectInstance(Effects.ABSORPTION,1200,2));
+				((PlayerEntity) event.getEntity()).addEffect(new EffectInstance(Effects.ABSORPTION,1200,2));
 				event.setCanceled(true);
 				DataManager.data.get(event.getEntity()).skill[0]=0;
 				DataManager.sendzeldaplayerdatapack((PlayerEntity) event.getEntity());
@@ -45,10 +45,10 @@ public class EntityDead {
                     PacketDistributor.PLAYER.with(
                             () -> (ServerPlayerEntity) event.getEntity()
                     ),
-                    new SoundPack(1,new BlockPos(event.getEntity().getPosX(),event.getEntity().getPosY(),event.getEntity().getPosZ())));
+                    new SoundPack(1,new BlockPos(event.getEntity().getX(),event.getEntity().getY(),event.getEntity().getZ())));
 		}
-		if(event.getEntity() instanceof GuardianEntity||event.getEntity() instanceof MollyBrinEntity||event.getEntity() instanceof PokBrinEntity||(Utils.ICE_AND_FIRE_LOADED&&event.getEntity() instanceof EntityCyclops&&!event.getEntity().world.isRemote)) {
-			List<PlayerEntity> playerlist= event.getEntity().world.getEntitiesWithinAABB(PlayerEntity.class,event.getEntity().getBoundingBox().grow(64, 32, 64) ,new Predicate<Object>() {
+		if(event.getEntity() instanceof GuardianEntity||event.getEntity() instanceof MollyBrinEntity||event.getEntity() instanceof PokBrinEntity||(Utils.ICE_AND_FIRE_LOADED&&event.getEntity() instanceof EntityCyclops&&!event.getEntity().level.isClientSide)) {
+			List<PlayerEntity> playerlist= event.getEntity().level.getEntitiesOfClass(PlayerEntity.class,event.getEntity().getBoundingBox().inflate(64, 32, 64) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {

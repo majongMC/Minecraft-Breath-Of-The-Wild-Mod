@@ -21,8 +21,8 @@ public class ShikaStoneGui extends Screen{
     //private final ResourceLocation ICONS=new ResourceLocation(Utils.MOD_ID, "textures/gui/shikastone.png");
 	public ShikaStoneGui() {
 		super(new TranslationTextComponent(""));
-		this.w = Minecraft.getInstance().getMainWindow().getScaledWidth();
-        this.h = Minecraft.getInstance().getMainWindow().getScaledHeight();
+		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+        this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
@@ -42,7 +42,7 @@ public class ShikaStoneGui extends Screen{
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	private void placebomb(boolean round) {
-		this.closeScreen();
+		this.onClose();
 		if(!ZeldaConfig.BOMB.get()) {
 			Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
 			return;

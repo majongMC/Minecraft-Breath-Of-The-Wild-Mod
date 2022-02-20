@@ -32,19 +32,19 @@ public class PokBrinEntity extends MonsterEntity{
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-		this.getAttributeManager().createInstanceIfAbsent(Attributes.MAX_HEALTH);
-		this.getAttributeManager().createInstanceIfAbsent(Attributes.MOVEMENT_SPEED);
-		this.getAttributeManager().createInstanceIfAbsent(Attributes.ATTACK_DAMAGE);
-		this.setHeldItem(Hand.MAIN_HAND, new ItemStack(Items.WOODEN_SWORD,1));
-		this.setHeldItem(Hand.OFF_HAND, new ItemStack(ItemLoader.HORN.get(),1));
+		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
+		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
+		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
+		this.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.WOODEN_SWORD,1));
+		this.setItemInHand(Hand.OFF_HAND, new ItemStack(ItemLoader.HORN.get(),1));
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return SoundEvents.ENTITY_PIG_HURT;
+	      return SoundEvents.PIG_HURT;
 	   }
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return SoundEvents.ENTITY_PIG_DEATH;
+	      return SoundEvents.PIG_DEATH;
 	   }
 }

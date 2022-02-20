@@ -27,24 +27,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class LaserEntity extends ThrowableEntity{
-	public static final DataParameter<Integer> YAW = EntityDataManager.createKey(LaserEntity.class, DataSerializers.VARINT);
-	public static final DataParameter<Integer> PITCH = EntityDataManager.createKey(LaserEntity.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> YAW = EntityDataManager.defineId(LaserEntity.class, DataSerializers.INT);
+	public static final DataParameter<Integer> PITCH = EntityDataManager.defineId(LaserEntity.class, DataSerializers.INT);
 	private long spawntime=0;
 	private LivingEntity owner;
 	private float range=0.5F;
 	public LaserEntity(EntityType<? extends ThrowableEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
 		this.setNoGravity(true);
-		this.setMotion(0,0,0);
-		spawntime=this.world.getGameTime();
+		this.setDeltaMovement(0,0,0);
+		spawntime=this.level.getGameTime();
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
 	public void tick() {
 		super.tick();
-		if(!this.world.isRemote) {
-		if(this.world.getGameTime()-spawntime>100) {
-			this.onKillCommand();
+		if(!this.level.isClientSide) {
+		if(this.level.getGameTime()-spawntime>100) {
+			this.kill();
 			return;
 		}
 		if(this.onGround)
@@ -52,7 +52,7 @@ public class LaserEntity extends ThrowableEntity{
 			explode();
 			return;
 		}
-		LivingEntity target=this.world.getClosestEntityWithinAABB(LivingEntity.class,new EntityPredicate().setDistance(range), null, this.getPosX(), this.getPosY(), this.getPosZ(),this.getBoundingBox().grow(range, range, range));
+		LivingEntity target=this.level.getNearestEntity(LivingEntity.class,new EntityPredicate().range(range), null, this.getX(), this.getY(), this.getZ(),this.getBoundingBox().inflate(range, range, range));
 		if(target!=null&&target!=owner) {
 			if(target instanceof PlayerEntity) {
 				trysheldreflect((PlayerEntity) target);
@@ -61,33 +61,33 @@ public class LaserEntity extends ThrowableEntity{
 				explode();
 		}
 		}
-		if(this.world.isRemote) {
-			world.addOptionalParticle(ParticleTypes.CLOUD, this.getPosX(), this.getPosY(), this.getPosZ(), 0, 0, 0);
+		if(this.level.isClientSide) {
+			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
 		}
 	}
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 		// TODO 自动生成的方法存根
-		this.dataManager.register(YAW, 0);
-		this.dataManager.register(PITCH, 0);
+		this.entityData.define(YAW, 0);
+		this.entityData.define(PITCH, 0);
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundNBT compound) {
 		// TODO 自动生成的方法存根
-		this.dataManager.set(YAW, compound.getInt("yaw"));
-		this.dataManager.set(PITCH, compound.getInt("pitch"));
+		this.entityData.set(YAW, compound.getInt("yaw"));
+		this.entityData.set(PITCH, compound.getInt("pitch"));
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundNBT compound) {
 		// TODO 自动生成的方法存根
-		compound.putInt("yaw", this.dataManager.get(YAW));
-		compound.putInt("pitch", this.dataManager.get(PITCH));
+		compound.putInt("yaw", this.entityData.get(YAW));
+		compound.putInt("pitch", this.entityData.get(PITCH));
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		// TODO 自动生成的方法存根
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
@@ -97,35 +97,35 @@ public class LaserEntity extends ThrowableEntity{
 		double mx = -(MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f) / 2D;
 		double my = MathHelper.sin(pitch / 180.0F * (float) Math.PI) * f / 2D;
 		Vector3d speed=new Vector3d(mx,my,mz);
-		this.dataManager.set(YAW, (int)yaw);
-		this.dataManager.set(PITCH, (int)pitch);
-		this.setMotion(speed);
+		this.entityData.set(YAW, (int)yaw);
+		this.entityData.set(PITCH, (int)pitch);
+		this.setDeltaMovement(speed);
 	}
 	private void explode() {
-		this.world.createExplosion(owner,this.getPosX(),this.getPosY(),this.getPosZ(),5,Mode.NONE);
-		this.onKillCommand();
+		this.level.explode(owner,this.getX(),this.getY(),this.getZ(),5,Mode.NONE);
+		this.kill();
 	}
 	private void trysheldreflect(PlayerEntity player) {
-		long respondtime=this.world.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
+		long respondtime=this.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 		if(ZeldaConfig.DISPLAYTIME.get())
 			player.sendMessage(new TranslationTextComponent("反应时间"+respondtime), UUID.randomUUID());
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
 			reflect(player);
 		}
-		else if(DataManager.data.get(player).skill[2]>0&&player.isSneaking()) {
+		else if(DataManager.data.get(player).skill[2]>0&&player.isShiftKeyDown()) {
 			reflect(player);
 			DataManager.data.get(player).skill[2]--;
 			DataManager.sendzeldaplayerdatapack(player);
 		}
-		else if(player.getHeldItemMainhand().getItem()==ItemLoader.ANCIENT_SHIELD.get()) {
-			player.getHeldItemMainhand().damageItem(16, player,(entity) -> {
-		         entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+		else if(player.getMainHandItem().getItem()==ItemLoader.ANCIENT_SHIELD.get()) {
+			player.getMainHandItem().hurtAndBreak(16, player,(entity) -> {
+		         entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 		      });
 			reflect(player);
 		}
-		else if(player.getHeldItemOffhand().getItem()==ItemLoader.ANCIENT_SHIELD.get()) {
-			player.getHeldItemOffhand().damageItem(16, player,(entity) -> {
-		         entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+		else if(player.getOffhandItem().getItem()==ItemLoader.ANCIENT_SHIELD.get()) {
+			player.getOffhandItem().hurtAndBreak(16, player,(entity) -> {
+		         entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 		      });
 			reflect(player);
 		}
@@ -134,7 +134,7 @@ public class LaserEntity extends ThrowableEntity{
 	}
 	private void reflect(PlayerEntity player) {
 		this.setowner(player);
-		this.setMotion(this.getMotion().inverse());
+		this.setDeltaMovement(this.getDeltaMovement().reverse());
 		this.range=1.5F;
 	}
 	public void setowner(LivingEntity owner) {

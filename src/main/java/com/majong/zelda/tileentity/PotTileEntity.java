@@ -65,17 +65,17 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 			for(int i=0;i<5;i++) {
 				if(this.slot[i].isEmpty())
 					break;
-				if(!this.slot[i].isFood()) {
+				if(!this.slot[i].isEdible()) {
 					//type+=2;
 					failed=true;
 					break;
 				}
 			}
 			if(failed) 
-				world.playSound(null,pos, SoundLoader.COOKING_FAILED.get(), SoundCategory.BLOCKS, 10f, 1f);
+				level.playSound(null,worldPosition, SoundLoader.COOKING_FAILED.get(), SoundCategory.BLOCKS, 10f, 1f);
 			else
-				world.playSound(null,pos, SoundLoader.COOKING.get(), SoundCategory.BLOCKS, 10f, 1f);
-			this.getWorld().notifyBlockUpdate(this.getPos(),this.getWorld().getBlockState(this.getPos()),this.getWorld().getBlockState(this.getPos()),1);
+				level.playSound(null,worldPosition, SoundLoader.COOKING.get(), SoundCategory.BLOCKS, 10f, 1f);
+			this.getLevel().sendBlockUpdated(this.getBlockPos(),this.getLevel().getBlockState(this.getBlockPos()),this.getLevel().getBlockState(this.getBlockPos()),1);
 			/*List<PlayerEntity> playerlist= world.getEntitiesWithinAABB(PlayerEntity.class,user.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
@@ -100,19 +100,19 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 	private void finish() {
 		this.process=0;
 		this.using=false;
-		this.getWorld().notifyBlockUpdate(this.getPos(),this.getWorld().getBlockState(this.getPos()),this.getWorld().getBlockState(this.getPos()),1);
+		this.getLevel().sendBlockUpdated(this.getBlockPos(),this.getLevel().getBlockState(this.getBlockPos()),this.getLevel().getBlockState(this.getBlockPos()),1);
 		if(user==null)
 			return;
 		for(int i=0;i<5;i++) {
 			if(this.slot[i].isEmpty())
 				break;
-			if(!this.slot[i].isFood()) {
+			if(!this.slot[i].isEdible()) {
 				for(int j=0;j<5;j++) {
 					this.slot[j]=ItemStack.EMPTY;
 				}
 				ItemStack food=new ItemStack(ItemLoader.HARD_FOOD.get());
-				Entity itemdrops=new ItemEntity(this.world,this.user.getPosX(),this.user.getPosY(),this.user.getPosZ(),food);
-				this.world.addEntity(itemdrops);
+				Entity itemdrops=new ItemEntity(this.level,this.user.getX(),this.user.getY(),this.user.getZ(),food);
+				this.level.addFreshEntity(itemdrops);
 				Networking.FOODMESSAGEPACK.send(
 		                PacketDistributor.PLAYER.with(
 		                        () -> (ServerPlayerEntity) user
@@ -126,8 +126,8 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 		for(int i=0;i<5;i++) {
 			if(this.slot[i].isEmpty())
 				break;
-			hunger+=this.slot[i].getItem().getFood().getHealing();
-			heal+=this.slot[i].getItem().getFood().getSaturation()*2;
+			hunger+=this.slot[i].getItem().getFoodProperties().getNutrition();
+			heal+=this.slot[i].getItem().getFoodProperties().getSaturationModifier()*2;
 			this.slot[i]=ItemStack.EMPTY;
 		}
 		CompoundNBT tag=new CompoundNBT();
@@ -135,13 +135,13 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 		tag.putInt("hunger", hunger);
 		ItemStack food=new ItemStack(ItemLoader.FOOD.get());
 		food.setTag(tag);
-		Entity itemdrops=new ItemEntity(this.world,this.user.getPosX(),this.user.getPosY(),this.user.getPosZ(),food);
-		this.world.addEntity(itemdrops);
+		Entity itemdrops=new ItemEntity(this.level,this.user.getX(),this.user.getY(),this.user.getZ(),food);
+		this.level.addFreshEntity(itemdrops);
 		Networking.SOUND.send(
                 PacketDistributor.PLAYER.with(
                         () -> (ServerPlayerEntity) user
                 ),
-                new SoundPack(6,this.getPos()));
+                new SoundPack(6,this.getBlockPos()));
 		Networking.FOODMESSAGEPACK.send(
                 PacketDistributor.PLAYER.with(
                         () -> (ServerPlayerEntity) user
@@ -149,8 +149,8 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
                 new FoodMessagePack(0,(int) heal,hunger));
 	}
 	@Override
-    public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state,nbt);
+    public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state,nbt);
 		this.slot[0].deserializeNBT(nbt.getCompound("slot0"));
 		this.slot[1].deserializeNBT(nbt.getCompound("slot1"));
 		this.slot[2].deserializeNBT(nbt.getCompound("slot2"));
@@ -159,19 +159,19 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 		this.using=nbt.getBoolean("using");
 	}
 	@Override
-    public CompoundNBT write(CompoundNBT tag) {
+    public CompoundNBT save(CompoundNBT tag) {
 		tag.put("slot0", slot[0].serializeNBT());
 		tag.put("slot1", slot[1].serializeNBT());
 		tag.put("slot2", slot[2].serializeNBT());
 		tag.put("slot3", slot[3].serializeNBT());
 		tag.put("slot4", slot[4].serializeNBT());
 		tag.putBoolean("using", using);
-		return super.write(tag);
+		return super.save(tag);
 	}
 	@Override
 	public void tick() {
 		// TODO 自动生成的方法存根
-		if(!this.world.isRemote) {
+		if(!this.level.isClientSide) {
 			if(this.using&&this.canuse()) {
 				if(this.process>=120) {
 					this.finish();
@@ -180,9 +180,9 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 					process++;
 			}
 		}
-		if(this.world.isRemote&&this.using) {
-			if(this.world.getGameTime()%5==0)
-				world.addOptionalParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,this.getPos().getX()+0.5,this.getPos().getY()+1,this.getPos().getZ()+0.5,Math.random()/50,0.07,Math.random()/50);
+		if(this.level.isClientSide&&this.using) {
+			if(this.level.getGameTime()%5==0)
+				level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,this.getBlockPos().getX()+0.5,this.getBlockPos().getY()+1,this.getBlockPos().getZ()+0.5,Math.random()/50,0.07,Math.random()/50);
 		}
 	}
 	@Nullable
@@ -190,17 +190,17 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT tag=new CompoundNBT();
 		tag.putBoolean("using", using);
-		return new SUpdateTileEntityPacket(this.getPos(),1,tag);
+		return new SUpdateTileEntityPacket(this.getBlockPos(),1,tag);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		CompoundNBT tag = pkt.getNbtCompound();
+		CompoundNBT tag = pkt.getTag();
 		this.using=tag.getBoolean("using");
 	}
 	public ItemStack getStack(int index) {
 		return this.slot[index];
 	}
 	private boolean canuse() {
-		return this.getWorld().getBlockState(this.pos.add(0, -1, 0)).getBlock()==Blocks.FIRE||this.getWorld().getBlockState(this.pos.add(0, -1, 0)).getBlock()==Blocks.CAMPFIRE||this.getWorld().getBlockState(this.pos.add(0, -1, 0)).getBlock()==Blocks.SOUL_FIRE||this.getWorld().getBlockState(this.pos.add(0, -1, 0)).getBlock()==Blocks.SOUL_CAMPFIRE;
+		return this.getLevel().getBlockState(this.worldPosition.offset(0, -1, 0)).getBlock()==Blocks.FIRE||this.getLevel().getBlockState(this.worldPosition.offset(0, -1, 0)).getBlock()==Blocks.CAMPFIRE||this.getLevel().getBlockState(this.worldPosition.offset(0, -1, 0)).getBlock()==Blocks.SOUL_FIRE||this.getLevel().getBlockState(this.worldPosition.offset(0, -1, 0)).getBlock()==Blocks.SOUL_CAMPFIRE;
 	}
 }

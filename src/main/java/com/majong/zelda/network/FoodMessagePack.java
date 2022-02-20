@@ -29,7 +29,7 @@ public class FoodMessagePack {
 
     public void handler(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-        	Minecraft.getInstance().displayGuiScreen(new FoodMessageGui(type,heal,hunger));
+        	Minecraft.getInstance().setScreen(new FoodMessageGui(type,heal,hunger));
         });
         ctx.get().setPacketHandled(true);
     }

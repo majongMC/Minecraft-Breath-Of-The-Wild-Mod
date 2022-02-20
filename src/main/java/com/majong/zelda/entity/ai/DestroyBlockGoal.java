@@ -14,20 +14,20 @@ public class DestroyBlockGoal extends Goal{
 		this.range=range;
 	}
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		// TODO 自动生成的方法存根
-		if(owner.world.getGameTime()%20!=5)
+		if(owner.level.getGameTime()%20!=5)
 			return false;
-		int X=(int) owner.getPosX();
-		int Y=(int) owner.getPosY();
-		int Z=(int) owner.getPosZ();
-		World world=owner.world;
+		int X=(int) owner.getX();
+		int Y=(int) owner.getY();
+		int Z=(int) owner.getZ();
+		World world=owner.level;
 		for(int x=X-range;x<=X+range;x++) {
 			for(int z=Z-range;z<=Z+range;z++) {
 				for(int y=Y;y<=Y+2*range;y++) {
 					BlockPos pos=new BlockPos(x,y,z);
 					BlockState state=world.getBlockState(pos);
-					if(!state.isAir()&&!state.getBlock().hasTileEntity(state)&&state.getBlockHardness(world, pos)<50&&state.getBlockHardness(world, pos)>0) {
+					if(!state.isAir()&&!state.getBlock().hasTileEntity(state)&&state.getDestroySpeed(world, pos)<50&&state.getDestroySpeed(world, pos)>0) {
 						world.destroyBlock(pos, false);
 					}
 				}

@@ -13,7 +13,7 @@ public class Utils {
 	public static final boolean DRACONIC_EVOLUTION_LOADED=ClassExist.isClassExist("com.brandon3055.draconicevolution.DraconicEvolution");
 	public static final ItemGroup ZELDA_CREATIVE_TAB = new ItemGroup("Zelda") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			// TODO 自动生成的方法存根
 			return new ItemStack(ItemLoader.SHIKA_STONE.get());
 		}

@@ -14,22 +14,24 @@ import net.minecraftforge.fml.common.Mod;
 public class ServerTick {
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		if(Minecraft.getInstance().getIntegratedServer()==null||!ZeldaConfig.WEATHER_CHANGE.get())
+		if(Minecraft.getInstance().getSingleplayerServer()==null||!ZeldaConfig.WEATHER_CHANGE.get())
 			return;
-		World world=Minecraft.getInstance().getIntegratedServer().getWorld(World.OVERWORLD);
+		World world=Minecraft.getInstance().getSingleplayerServer().getLevel(World.OVERWORLD);
+		if(world==null)
+			return;
 		long time=world.getGameTime();
 		if(time%1200==0&&Math.random()<0.05*ZeldaConfig.WEATHER_CHANGE_CHANCE.get()) {
 			if(world.isRaining()) {
-				world.getWorldInfo().setRaining(false);
-				((ServerWorldInfo) ((ServerWorld)world).getWorldInfo()).setThundering(false);
+				world.getLevelData().setRaining(false);
+				((ServerWorldInfo) ((ServerWorld)world).getLevelData()).setThundering(false);
 			}
 			else
 			{
-				world.getWorldInfo().setRaining(true);
+				world.getLevelData().setRaining(true);
 				if(Math.random()<0.5)
-					((ServerWorldInfo) ((ServerWorld)world).getWorldInfo()).setThundering(true);
+					((ServerWorldInfo) ((ServerWorld)world).getLevelData()).setThundering(true);
 				else
-					((ServerWorldInfo) ((ServerWorld)world).getWorldInfo()).setThundering(false);
+					((ServerWorldInfo) ((ServerWorld)world).getLevelData()).setThundering(false);
 			}
 		}
 	}

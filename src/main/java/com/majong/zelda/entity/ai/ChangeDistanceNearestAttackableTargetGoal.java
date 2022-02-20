@@ -11,7 +11,7 @@ public class ChangeDistanceNearestAttackableTargetGoal<T extends LivingEntity> e
 			boolean checkSight, boolean nearbyOnlyIn, double distance) {
 		super(goalOwnerIn, targetClassIn, targetChanceIn, checkSight, nearbyOnlyIn, null);
 		// TODO 自动生成的构造函数存根
-		this.targetEntitySelector = (new EntityPredicate()).setDistance(distance);
+		this.targetConditions = (new EntityPredicate()).range(distance);
 	}
 	
 

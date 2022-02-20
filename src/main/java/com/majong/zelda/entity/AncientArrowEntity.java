@@ -29,15 +29,15 @@ public class AncientArrowEntity extends ArrowEntity{
 		super(worldIn,shooter);
 	}
 	@Override
-	public void arrowHit(LivingEntity living) {
-		super.arrowHit(living);
-		AttributeDamage.ancientdamage(living, this.func_234616_v_());
+	public void doPostHurtEffects(LivingEntity living) {
+		super.doPostHurtEffects(living);
+		AttributeDamage.ancientdamage(living, this.getOwner());
 	}
 	@Override
 	public void tick() {
 		super.tick();
-		if(!this.world.isRemote) {
-			List<PlayerEntity> playerlist= world.getEntitiesWithinAABB(PlayerEntity.class,this.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
+		if(!this.level.isClientSide) {
+			List<PlayerEntity> playerlist= level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
@@ -54,7 +54,7 @@ public class AncientArrowEntity extends ArrowEntity{
 	                    PacketDistributor.PLAYER.with(
 	                            () -> (ServerPlayerEntity) player
 	                    ),
-	                    new ParticlePack(5,this.getPosX(),this.getPosY(),this.getPosZ(),0,0,0));
+	                    new ParticlePack(5,this.getX(),this.getY(),this.getZ(),0,0,0));
     		}
 		}
 	}

@@ -27,7 +27,7 @@ public class PlayerLoggedEvent {
 		if(Festival.isLunarSpringFestival(new Date())) {
 			player.sendMessage(new TranslationTextComponent("msg.zelda.lunaryear"), UUID.randomUUID());
 			if(ZeldaConfig.REDENVELOPE.get())
-				player.addItemStackToInventory(new ItemStack(ItemLoader.RED_ENVELOPE.get(),1));
+				player.addItem(new ItemStack(ItemLoader.RED_ENVELOPE.get(),1));
 		}
 	}
 	@SubscribeEvent

@@ -21,13 +21,13 @@ public class BombRenderer extends EntityRenderer<BombEntity>{
 	@Override
     public void render(BombEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-		matrixStackIn.push();
-		IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.BombModel.getRenderType(this.getEntityTexture(entityIn)));
-		this.BombModel.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		matrixStackIn.pop();
+		matrixStackIn.pushPose();
+		IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.BombModel.renderType(this.getTextureLocation(entityIn)));
+		this.BombModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		matrixStackIn.popPose();
 	}
 	@Override
-	public ResourceLocation getEntityTexture(BombEntity entity) {
+	public ResourceLocation getTextureLocation(BombEntity entity) {
 		// TODO 自动生成的方法存根
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/bomb.png");
 	}

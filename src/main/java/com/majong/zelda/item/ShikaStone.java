@@ -14,13 +14,13 @@ import net.minecraft.world.World;
 public class ShikaStone extends Item{
 
 	public ShikaStone() {
-		super(new Properties().group(Utils.ZELDA_CREATIVE_TAB).maxStackSize(1));
+		super(new Properties().tab(Utils.ZELDA_CREATIVE_TAB).stacksTo(1));
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if(worldIn.isRemote)
-			Minecraft.getInstance().displayGuiScreen(new ShikaStoneGui());
-		return ActionResult.resultPass(playerIn.getHeldItem(handIn));
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if(worldIn.isClientSide)
+			Minecraft.getInstance().setScreen(new ShikaStoneGui());
+		return ActionResult.pass(playerIn.getItemInHand(handIn));
 	}
 }

@@ -20,17 +20,17 @@ public class WalkingGuardianEntity extends GuardianEntity{
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
-		if(cause.getTrueSource() instanceof PlayerEntity) {
+	public void die(DamageSource cause) {
+		super.die(cause);
+		if(cause.getEntity() instanceof PlayerEntity) {
 		if(Math.random()<0.5)
-			this.entityDropItem(new ItemStack(ItemLoader.ANCIENT_CORE.get(),1));
+			this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_CORE.get(),1));
 		if(Math.random()<0.1)
-			this.entityDropItem(new ItemStack(ItemLoader.BIG_ANCIENT_CORE.get(),1));
-		this.entityDropItem(new ItemStack(ItemLoader.ANCIENT_GEAR.get(),(int) (Math.random()*3)));
-		this.entityDropItem(new ItemStack(ItemLoader.ANCIENT_SHAFT.get(),(int) (Math.random()*4)));
-		this.entityDropItem(new ItemStack(ItemLoader.ANCIENT_SPRING.get(),(int) (Math.random()*4)));
-		this.entityDropItem(new ItemStack(ItemLoader.ANCIENT_SCREW.get(),(int) (Math.random()*4)));
+			this.spawnAtLocation(new ItemStack(ItemLoader.BIG_ANCIENT_CORE.get(),1));
+		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_GEAR.get(),(int) (Math.random()*3)));
+		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SHAFT.get(),(int) (Math.random()*4)));
+		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SPRING.get(),(int) (Math.random()*4)));
+		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SCREW.get(),(int) (Math.random()*4)));
 		}
 	}
 }

@@ -15,26 +15,26 @@ import net.minecraftforge.fml.common.Mod;
 public class PlayerHurtEvent {
 	@SubscribeEvent
 	public static void onPlayerHurt(LivingDamageEvent event) {
-		if(event.getEntityLiving() instanceof PlayerEntity&&!event.getEntityLiving().world.isRemote) {
+		if(event.getEntityLiving() instanceof PlayerEntity&&!event.getEntityLiving().level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) event.getEntityLiving();
 			//DataManager.preventnull(player);
-			long respondtime=player.world.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
+			long respondtime=player.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 			if(respondtime<=ZeldaConfig.SHIELD.get()) {
-				LivingEntity source=(LivingEntity) event.getSource().getTrueSource();
+				LivingEntity source=(LivingEntity) event.getSource().getEntity();
 				if(source==null)
 					return;
-				source.attackEntityFrom(new EntityDamageSource("player",player), event.getAmount()*5+5);
+				source.hurt(new EntityDamageSource("player",player), event.getAmount()*5+5);
 				event.setCanceled(true);
-				float yaw=player.rotationYawHead;
+				float yaw=player.yHeadRot;
 				float f = 2F;
 				double mz = MathHelper.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 				double mx = -MathHelper.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
-				source.setMotion(source.getMotion().add(mx,0.1, mz));
+				source.setDeltaMovement(source.getDeltaMovement().add(mx,0.1, mz));
 				return;
 			}
-			if(DataManager.data.get(player).skill[2]>0&&event.getSource().getTrueSource() instanceof LivingEntity&&event.getAmount()>0&&player.isSneaking()) {
-				LivingEntity source=(LivingEntity) event.getSource().getTrueSource();
-				source.attackEntityFrom(new EntityDamageSource("hero",player), event.getAmount()*10+10);
+			if(DataManager.data.get(player).skill[2]>0&&event.getSource().getEntity() instanceof LivingEntity&&event.getAmount()>0&&player.isShiftKeyDown()) {
+				LivingEntity source=(LivingEntity) event.getSource().getEntity();
+				source.hurt(new EntityDamageSource("hero",player), event.getAmount()*10+10);
 				DataManager.data.get(player).skill[2]--;
 				DataManager.sendzeldaplayerdatapack(player);
 				event.setCanceled(true);

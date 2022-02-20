@@ -25,17 +25,17 @@ public class RenderOverlays {
 	       }
 		ZeldaOverlays zeldaoverlays=new ZeldaOverlays(event.getMatrixStack());
 		zeldaoverlays.render(Minecraft.getInstance().player);
-		if(Minecraft.getInstance().world.getGameTime()-lastrecieve<20L) {
+		if(Minecraft.getInstance().level.getGameTime()-lastrecieve<20L) {
 			rendering=true;
 			if(last<percentage||delay<percentage) {
 				last=percentage;
 				delay=percentage;
 			}
 			if(last>percentage) {
-				lastattack=Minecraft.getInstance().world.getGameTime();
+				lastattack=Minecraft.getInstance().level.getGameTime();
 				last=percentage;
 			}
-			if(Minecraft.getInstance().world.getGameTime()-lastattack>10&&percentage<delay) {
+			if(Minecraft.getInstance().level.getGameTime()-lastattack>10&&percentage<delay) {
 				delay=delay-0.002;
 			}
 			BloodBar bar=new BloodBar(event.getMatrixStack());
@@ -46,7 +46,7 @@ public class RenderOverlays {
 	}
 	@Deprecated//请使用api中的方法
 	public static void DisplayBloodBar(double percentage,ITextComponent name) {
-		lastrecieve=Minecraft.getInstance().world.getGameTime();
+		lastrecieve=Minecraft.getInstance().level.getGameTime();
 		RenderOverlays.percentage=percentage;
 		RenderOverlays.name=name;
 	}

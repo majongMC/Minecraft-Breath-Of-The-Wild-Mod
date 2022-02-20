@@ -17,7 +17,7 @@ public class RockGiantRenderer extends MobRenderer<RockGiantEntity,RockGiantMode
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
-	public ResourceLocation getEntityTexture(RockGiantEntity entity) {
+	public ResourceLocation getTextureLocation(RockGiantEntity entity) {
 		// TODO 自动生成的方法存根
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/rockgianttexture.png");
 	}

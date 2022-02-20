@@ -20,28 +20,28 @@ import net.minecraftforge.fml.common.Mod;
 public class PlayerUsualEvent {
 	@SubscribeEvent
 	public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
-		if(event.getEntity().world.isRemote) {
-			Minecraft.getInstance().world.playSound(Minecraft.getInstance().player,Minecraft.getInstance().player.getPosition(), SoundLoader.WAKE_UP.get(), SoundCategory.AMBIENT, 10f, 1f);
+		if(event.getEntity().level.isClientSide) {
+			Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,Minecraft.getInstance().player.blockPosition(), SoundLoader.WAKE_UP.get(), SoundCategory.AMBIENT, 10f, 1f);
 		}
 	}
 	@SubscribeEvent
 	public static void onPlayerDestroyBlock(HarvestCheck event) {
-		if(!event.getEntity().world.isRemote&&event.canHarvest()) {
+		if(!event.getEntity().level.isClientSide&&event.canHarvest()) {
 			PlayerEntity player=event.getPlayer();
-			if(player.world.getDimensionKey().getLocation().equals(DimensionType.OVERWORLD_ID)&&player.getPosY()<40) {
+			if(player.level.dimension().location().equals(DimensionType.OVERWORLD_EFFECTS)&&player.getY()<40) {
 				if(Math.random()<0.0005*ZeldaConfig.ROCKGIANT.get()) {
-					RockGiantEntity entity=new RockGiantEntity(EntityLoader.ROCK_GIANT.get(),event.getEntity().world);
-					BlockPos pos=new BlockPos(player.getPosX()+randomint(), player.getPosY(), player.getPosZ()+randomint());
+					RockGiantEntity entity=new RockGiantEntity(EntityLoader.ROCK_GIANT.get(),event.getEntity().level);
+					BlockPos pos=new BlockPos(player.getX()+randomint(), player.getY(), player.getZ()+randomint());
 					int count=0;
-					while(!(player.world.getBlockState(pos).getBlock()==Blocks.AIR)) {
-						pos=new BlockPos(player.getPosX()+randomint(), player.getPosY(), player.getPosZ()+randomint());
+					while(!(player.level.getBlockState(pos).getBlock()==Blocks.AIR)) {
+						pos=new BlockPos(player.getX()+randomint(), player.getY(), player.getZ()+randomint());
 						count++;
 						if(count>30) {
 							break;
 						}
 					}
-					entity.setPosition(player.getPosX()+randomint(), player.getPosY(), player.getPosZ()+randomint());
-					event.getEntity().world.addEntity(entity);
+					entity.setPos(player.getX()+randomint(), player.getY(), player.getZ()+randomint());
+					event.getEntity().level.addFreshEntity(entity);
 				}
 			}
 		}

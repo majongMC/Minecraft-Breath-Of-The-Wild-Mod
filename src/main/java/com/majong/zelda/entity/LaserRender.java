@@ -22,15 +22,15 @@ public class LaserRender extends EntityRenderer<LaserEntity>{
 	@Override
     public void render(LaserEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-		matrixStackIn.push();
-		matrixStackIn.rotate(Vector3f.YN.rotationDegrees(entityIn.getDataManager().get(entityIn.YAW)));
-		matrixStackIn.rotate(Vector3f.ZN.rotationDegrees(entityIn.getDataManager().get(entityIn.PITCH)));
-		  IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.LaserModel.getRenderType(this.getEntityTexture(entityIn)));
-		  this.LaserModel.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		matrixStackIn.pop();
+		matrixStackIn.pushPose();
+		matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(entityIn.getEntityData().get(LaserEntity.YAW)));
+		matrixStackIn.mulPose(Vector3f.ZN.rotationDegrees(entityIn.getEntityData().get(LaserEntity.PITCH)));
+		  IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.LaserModel.renderType(this.getTextureLocation(entityIn)));
+		  this.LaserModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		matrixStackIn.popPose();
 	}
 	@Override
-	public ResourceLocation getEntityTexture(LaserEntity entity) {
+	public ResourceLocation getTextureLocation(LaserEntity entity) {
 		// TODO 自动生成的方法存根
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/laser.png");
 	}

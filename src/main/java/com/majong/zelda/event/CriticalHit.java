@@ -20,30 +20,30 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class CriticalHit {
 	@SubscribeEvent
 	public static void onArrowHit(ProjectileImpactEvent.Arrow event) {
-		if(!event.getEntity().world.isRemote&&event.getArrow().func_234616_v_() instanceof PlayerEntity) {
+		if(!event.getEntity().level.isClientSide&&event.getArrow().getOwner() instanceof PlayerEntity) {
 			AbstractArrowEntity arrow=event.getArrow();
-			PlayerEntity player=(PlayerEntity) arrow.func_234616_v_();
-			LivingEntity target=arrow.world.getClosestEntityWithinAABB(LivingEntity.class,new EntityPredicate().setDistance(10), null, arrow.getPosX(), arrow.getPosY(), arrow.getPosZ(),arrow.getBoundingBox().grow(10, 10, 10));
-			if(target!=null&&target!=arrow.func_234616_v_()) {
+			PlayerEntity player=(PlayerEntity) arrow.getOwner();
+			LivingEntity target=arrow.level.getNearestEntity(LivingEntity.class,new EntityPredicate().range(10), null, arrow.getX(), arrow.getY(), arrow.getZ(),arrow.getBoundingBox().inflate(10, 10, 10));
+			if(target!=null&&target!=arrow.getOwner()) {
 				AxisAlignedBB box=target.getBoundingBox();
-				double proportion=box.getYSize()/box.getXSize();
+				double proportion=box.getYsize()/box.getXsize();
 				if(proportion>1.5) {
-					double deltay=arrow.getPosY()-target.getPosY();
-					double relativey=deltay/box.getYSize();
+					double deltay=arrow.getY()-target.getY();
+					double relativey=deltay/box.getYsize();
 					if(relativey>0.6667) {
-						target.attackEntityFrom(new EntityDamageSource("player",player).setDamageIsAbsolute(),10);
-						target.hurtResistantTime = 0;
-						float yaw=player.rotationYawHead;
+						target.hurt(new EntityDamageSource("player",player).bypassMagic(),10);
+						target.invulnerableTime = 0;
+						float yaw=player.yHeadRot;
 						float f = 2F;
 						double mz = MathHelper.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 						double mx = -MathHelper.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
-						target.setMotion(target.getMotion().add(mx,0.1, mz));
+						target.setDeltaMovement(target.getDeltaMovement().add(mx,0.1, mz));
 						event.setCanceled(false);
 						Networking.PARTICLE.send(
 			                    PacketDistributor.PLAYER.with(
 			                            () -> (ServerPlayerEntity) player
 			                    ),
-			                    new ParticlePack(6,arrow.getPosX(),arrow.getPosY(),arrow.getPosZ(),0,0,0));
+			                    new ParticlePack(6,arrow.getX(),arrow.getY(),arrow.getZ(),0,0,0));
 					}
 				}
 			}

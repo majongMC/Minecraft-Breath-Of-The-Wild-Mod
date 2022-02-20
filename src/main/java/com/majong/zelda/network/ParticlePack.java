@@ -45,17 +45,17 @@ public class ParticlePack {
         		rx=rand*DATA[0]+(1-rand)*DATA[3];
         		ry=rand*DATA[1]+(1-rand)*DATA[4];
         		rz=rand*DATA[2]+(1-rand)*DATA[5];
-        		Minecraft.getInstance().world.addOptionalParticle(RedstoneParticleData.REDSTONE_DUST,rx,ry,rz,0,0,0);
+        		Minecraft.getInstance().level.addAlwaysVisibleParticle(RedstoneParticleData.REDSTONE,rx,ry,rz,0,0,0);
         	}
         	}
         	if(type!=0) {
         		switch(type) {
-        		case 1:Minecraft.getInstance().world.addOptionalParticle(new RedstoneParticleData(1F,1F,0F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 2:Minecraft.getInstance().world.addOptionalParticle(new RedstoneParticleData(1F,0.5F,0F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 3:Minecraft.getInstance().world.addOptionalParticle(new RedstoneParticleData(1F,1F,1F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 4:Minecraft.getInstance().world.addOptionalParticle(RedstoneParticleData.REDSTONE_DUST,DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 5:Minecraft.getInstance().world.addOptionalParticle(new RedstoneParticleData(0F,0F,1F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 6:Minecraft.getInstance().world.addOptionalParticle(ParticleTypes.FLASH,DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 1:Minecraft.getInstance().level.addAlwaysVisibleParticle(new RedstoneParticleData(1F,1F,0F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 2:Minecraft.getInstance().level.addAlwaysVisibleParticle(new RedstoneParticleData(1F,0.5F,0F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 3:Minecraft.getInstance().level.addAlwaysVisibleParticle(new RedstoneParticleData(1F,1F,1F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 4:Minecraft.getInstance().level.addAlwaysVisibleParticle(RedstoneParticleData.REDSTONE,DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 5:Minecraft.getInstance().level.addAlwaysVisibleParticle(new RedstoneParticleData(0F,0F,1F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 6:Minecraft.getInstance().level.addAlwaysVisibleParticle(ParticleTypes.FLASH,DATA[0],DATA[1],DATA[2],0,0,0);break;
         		}
         	}
         });

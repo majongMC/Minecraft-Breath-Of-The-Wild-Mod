@@ -25,7 +25,7 @@ public class PlayerTick {
 	public static final Map<PlayerEntity,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	@SubscribeEvent
 	public static void onPlayerTick(LivingUpdateEvent event) {
-		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().world.isRemote) {
+		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) event.getEntity();
 			//player.sendMessage(new TranslationTextComponent("yaw:"+player.rotationYawHead), UUID.randomUUID());
 			//DataManager.preventnull(player);
@@ -49,12 +49,12 @@ public class PlayerTick {
 				}
 			}
 		}
-			if(player.world.isThundering()) {
+			if(player.level.isThundering()) {
 				if(ConductiveItem.HeldConductiveItem(player)&&isOutdoors(player)) {
 					if(THUNDER_COUNT_TIME.get(player)==0) {
-						LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,player.world);
-		    			lightning.setPosition(player.getPosX(), player.getPosY()+1, player.getPosZ());
-		    			player.world.addEntity(lightning);
+						LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,player.level);
+		    			lightning.setPos(player.getX(), player.getY()+1, player.getZ());
+		    			player.level.addFreshEntity(lightning);
 		    			THUNDER_COUNT_TIME.put(player,100);
 					}
 					else {
@@ -62,7 +62,7 @@ public class PlayerTick {
 			                    PacketDistributor.PLAYER.with(
 			                            () -> (ServerPlayerEntity) player
 			                    ),
-			                    new ParticlePack(1,player.getPosX()-0.5+Math.random(),player.getPosY()+0.5+Math.random(),player.getPosZ()-0.5+Math.random(),0,0,0));
+			                    new ParticlePack(1,player.getX()-0.5+Math.random(),player.getY()+0.5+Math.random(),player.getZ()-0.5+Math.random(),0,0,0));
 						THUNDER_COUNT_TIME.put(player,THUNDER_COUNT_TIME.get(player)-1);
 					}
 				}
@@ -70,15 +70,15 @@ public class PlayerTick {
 					THUNDER_COUNT_TIME.put(player,100);
 			}
 	}
-		if(event.getEntity() instanceof PlayerEntity&&event.getEntity().world.isRemote) {
+		if(event.getEntity() instanceof PlayerEntity&&event.getEntity().level.isClientSide) {
 			if(PlayerSpottedEvent.SoundRemainTime>0)
 				PlayerSpottedEvent.SoundRemainTime--;
 		}
 }
 	private static boolean isOutdoors(PlayerEntity player) {
-		BlockPos pos=player.getPosition();
+		BlockPos pos=player.blockPosition();
 		for(int i=pos.getY()+1;i<256;i++) {
-			if(!player.world.getBlockState(new BlockPos(pos.getX(),i,pos.getZ())).isAir())
+			if(!player.level.getBlockState(new BlockPos(pos.getX(),i,pos.getZ())).isAir())
 				return false;
 		}
 		return true;

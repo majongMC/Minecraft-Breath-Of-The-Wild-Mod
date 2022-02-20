@@ -31,18 +31,18 @@ public class BombArrowEntity extends ArrowEntity{
 		super(worldIn,shooter);
 	}
 	@Override
-	public void arrowHit(LivingEntity living) {
-		super.arrowHit(living);
+	public void doPostHurtEffects(LivingEntity living) {
+		super.doPostHurtEffects(living);
 		if(ZeldaConfig.BOMB_ARROW_DESTROY.get())
-			this.world.createExplosion(this.func_234616_v_(), this.getPosX(), this.getPosY(), this.getPosZ(), 4, Mode.BREAK);
+			this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 4, Mode.BREAK);
 		else
-			this.world.createExplosion(this.func_234616_v_(), this.getPosX(), this.getPosY(), this.getPosZ(), 4, Mode.NONE);
+			this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 4, Mode.NONE);
 	}
 	@Override
 	public void tick() {
 		super.tick();
-		if(!this.world.isRemote) {
-			List<PlayerEntity> playerlist= world.getEntitiesWithinAABB(PlayerEntity.class,this.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
+		if(!this.level.isClientSide) {
+			List<PlayerEntity> playerlist= level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
@@ -59,21 +59,21 @@ public class BombArrowEntity extends ArrowEntity{
 	                    PacketDistributor.PLAYER.with(
 	                            () -> (ServerPlayerEntity) player
 	                    ),
-	                    new ParticlePack(4,this.getPosX(),this.getPosY(),this.getPosZ(),0,0,0));
+	                    new ParticlePack(4,this.getX(),this.getY(),this.getZ(),0,0,0));
     		}
 			if(this.inGround) {
 				if(ZeldaConfig.BOMB_ARROW_DESTROY.get())
-					this.world.createExplosion(this.func_234616_v_(), this.getPosX(), this.getPosY(), this.getPosZ(), 4, Mode.BREAK);
+					this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 4, Mode.BREAK);
 				else
-					this.world.createExplosion(this.func_234616_v_(), this.getPosX(), this.getPosY(), this.getPosZ(), 4, Mode.NONE);
-				this.onKillCommand();
+					this.level.explode(this.getOwner(), this.getX(), this.getY(), this.getZ(), 4, Mode.NONE);
+				this.kill();
 			}
-			if(this.world.getDimensionKey().getLocation().equals(DimensionType.THE_NETHER_ID)) {
+			if(this.level.dimension().location().equals(DimensionType.NETHER_EFFECTS)) {
 				if(ZeldaConfig.BOMB_ARROW_DESTROY.get())
-					this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), 4, Mode.BREAK);
+					this.level.explode(null, this.getX(), this.getY(), this.getZ(), 4, Mode.BREAK);
 				else
-					this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), 4, Mode.NONE);
-				this.onKillCommand();
+					this.level.explode(null, this.getX(), this.getY(), this.getZ(), 4, Mode.NONE);
+				this.kill();
 			}
 		}
 	}

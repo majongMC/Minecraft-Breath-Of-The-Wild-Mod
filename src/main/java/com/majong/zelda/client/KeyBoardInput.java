@@ -32,10 +32,10 @@ public class KeyBoardInput {
             "key.category." + Utils.MOD_ID);
 	@SubscribeEvent
     public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
-		if(SKILL_KEY.isPressed()&&Minecraft.getInstance().player != null) {
+		if(SKILL_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
 			Networking.KEYPACK.sendToServer(new KeyPack(0));
 		}
-		if(DETONATE_KEY.isPressed()&&Minecraft.getInstance().player != null) {
+		if(DETONATE_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
 			Networking.KEYPACK.sendToServer(new KeyPack(3));
 		}
 	}

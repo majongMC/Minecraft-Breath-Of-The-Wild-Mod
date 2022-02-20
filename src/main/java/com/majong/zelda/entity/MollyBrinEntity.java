@@ -19,23 +19,23 @@ public class MollyBrinEntity extends SkeletonEntity{
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
 		type=compound.getInt("type");
 	}
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putInt("type", type);
 	}
 	@Override
-	protected AbstractArrowEntity fireArrow(ItemStack arrowStack, float distanceFactor) {
+	protected AbstractArrowEntity getArrow(ItemStack arrowStack, float distanceFactor) {
 		switch(type) {
-			case 0:return super.fireArrow(new ItemStack(ItemLoader.FIRE_ARROW.get(),arrowStack.getCount()), distanceFactor);
-			case 1:return super.fireArrow(new ItemStack(ItemLoader.ELECTRICITY_ARROW.get(),arrowStack.getCount()), distanceFactor);
-			case 2:return super.fireArrow(new ItemStack(ItemLoader.ICE_ARROW.get(),arrowStack.getCount()), distanceFactor);
+			case 0:return super.getArrow(new ItemStack(ItemLoader.FIRE_ARROW.get(),arrowStack.getCount()), distanceFactor);
+			case 1:return super.getArrow(new ItemStack(ItemLoader.ELECTRICITY_ARROW.get(),arrowStack.getCount()), distanceFactor);
+			case 2:return super.getArrow(new ItemStack(ItemLoader.ICE_ARROW.get(),arrowStack.getCount()), distanceFactor);
 		}
-		return super.fireArrow(new ItemStack(ItemLoader.ELECTRICITY_ARROW.get(),arrowStack.getCount()), distanceFactor);
+		return super.getArrow(new ItemStack(ItemLoader.ELECTRICITY_ARROW.get(),arrowStack.getCount()), distanceFactor);
 	}
 	@Override
 	public void onAddedToWorld() {
@@ -43,15 +43,15 @@ public class MollyBrinEntity extends SkeletonEntity{
 		type=(int)(Math.random()*3);
 	}
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
-		if(cause.getTrueSource() instanceof PlayerEntity) {
+	public void die(DamageSource cause) {
+		super.die(cause);
+		if(cause.getEntity() instanceof PlayerEntity) {
 			switch(type) {
-			case 0:this.entityDropItem(new ItemStack(ItemLoader.ELECTRICITY_ARROW.get(),(int)(Math.random()*3)));break;
-			case 1:this.entityDropItem(new ItemStack(ItemLoader.FIRE_ARROW.get(),(int)(Math.random()*3)));break;
-			case 2:this.entityDropItem(new ItemStack(ItemLoader.ICE_ARROW.get(),(int)(Math.random()*3)));break;
+			case 0:this.spawnAtLocation(new ItemStack(ItemLoader.ELECTRICITY_ARROW.get(),(int)(Math.random()*3)));break;
+			case 1:this.spawnAtLocation(new ItemStack(ItemLoader.FIRE_ARROW.get(),(int)(Math.random()*3)));break;
+			case 2:this.spawnAtLocation(new ItemStack(ItemLoader.ICE_ARROW.get(),(int)(Math.random()*3)));break;
 			}
-			this.entityDropItem(new ItemStack(Items.BONE,(int)(Math.random()*3)));
+			this.spawnAtLocation(new ItemStack(Items.BONE,(int)(Math.random()*3)));
 		}
 	}
 }

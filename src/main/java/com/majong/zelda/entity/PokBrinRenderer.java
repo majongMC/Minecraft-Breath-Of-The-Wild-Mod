@@ -21,7 +21,7 @@ public class PokBrinRenderer extends BipedRenderer<PokBrinEntity,PokBrinModel>{
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
-	public ResourceLocation getEntityTexture(PokBrinEntity entity) {
+	public ResourceLocation getTextureLocation(PokBrinEntity entity) {
 		// TODO 自动生成的方法存根
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/pok_brin.png");
 	}

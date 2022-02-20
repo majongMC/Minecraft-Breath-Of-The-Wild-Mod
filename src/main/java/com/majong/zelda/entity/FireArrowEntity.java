@@ -32,17 +32,17 @@ public class FireArrowEntity extends ArrowEntity{
 		super(worldIn,shooter);
 	}
 	@Override
-	public void arrowHit(LivingEntity living) {
-		super.arrowHit(living);
-		AttributeDamage.firedamage(living, this.func_234616_v_());
+	public void doPostHurtEffects(LivingEntity living) {
+		super.doPostHurtEffects(living);
+		AttributeDamage.firedamage(living, this.getOwner());
 		if(ZeldaConfig.FIRE_ARROW.get())
 			placefire();
 	}
 	@Override
 	public void tick() {
 		super.tick();
-		if(!this.world.isRemote) {
-			List<PlayerEntity> playerlist= world.getEntitiesWithinAABB(PlayerEntity.class,this.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
+		if(!this.level.isClientSide) {
+			List<PlayerEntity> playerlist= level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
@@ -59,23 +59,23 @@ public class FireArrowEntity extends ArrowEntity{
 	                    PacketDistributor.PLAYER.with(
 	                            () -> (ServerPlayerEntity) player
 	                    ),
-	                    new ParticlePack(2,this.getPosX(),this.getPosY(),this.getPosZ(),0,0,0));
+	                    new ParticlePack(2,this.getX(),this.getY(),this.getZ(),0,0,0));
     		}
 		}
-		if(!this.world.isRemote&&this.inGround&&ZeldaConfig.FIRE_ARROW.get()) {
+		if(!this.level.isClientSide&&this.inGround&&ZeldaConfig.FIRE_ARROW.get()) {
 			placefire();
-			this.onKillCommand();
+			this.kill();
 		}
 	}
 	private void placefire() {
 		for(int i=-1;i<2;i++)
 			 for(int j=-1;j<2;j++)
 			 {
-				 for(int y=(int) (this.getPosY()-2);y<(int) (this.getPosY()+1);y++)
+				 for(int y=(int) (this.getY()-2);y<(int) (this.getY()+1);y++)
 				 {
-					 if(this.world.getBlockState(new BlockPos(this.getPosX()+i,y,this.getPosZ()+j)).getBlock()==Blocks.AIR||this.world.getBlockState(new BlockPos(this.getPosX()+i,y,this.getPosZ()+j)).getBlock()==Blocks.FIRE)
+					 if(this.level.getBlockState(new BlockPos(this.getX()+i,y,this.getZ()+j)).getBlock()==Blocks.AIR||this.level.getBlockState(new BlockPos(this.getX()+i,y,this.getZ()+j)).getBlock()==Blocks.FIRE)
 					 {
-						 this.world.setBlockState(new BlockPos(this.getPosX()+i,y,this.getPosZ()+j),Blocks.FIRE.getDefaultState());
+						 this.level.setBlockAndUpdate(new BlockPos(this.getX()+i,y,this.getZ()+j),Blocks.FIRE.defaultBlockState());
 						 break;
 					 }
 				 }

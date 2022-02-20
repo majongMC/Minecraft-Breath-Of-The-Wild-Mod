@@ -32,17 +32,17 @@ public class KeyPack {
 	private final int type;
     public KeyPack(PacketBuffer buffer) {
     	type=buffer.readInt();
-    	uuid=buffer.readUniqueId();
+    	uuid=buffer.readUUID();
     }
 
     public KeyPack(int type) {
     	this.type=type;
-    	this.uuid=Minecraft.getInstance().player.getUniqueID();
+    	this.uuid=Minecraft.getInstance().player.getUUID();
     }
 
     public void toBytes(PacketBuffer buf) {
     	buf.writeInt(type);
-    	buf.writeUniqueId(uuid);
+    	buf.writeUUID(uuid);
     }
 
     public void handler(Supplier<NetworkEvent.Context> ctx) {
@@ -57,16 +57,16 @@ public class KeyPack {
         ctx.get().setPacketHandled(true);
     }
     private void useskill() {
-    	PlayerEntity player=Minecraft.getInstance().getIntegratedServer().getPlayerList().getPlayerByUUID(uuid);
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	//DataManager.preventnull(player);
-    	if(player.isSneaking()&&DataManager.data.get(player).skill[1]>0) {
-    		player.addPotionEffect(new EffectInstance(Effects.LEVITATION,60,10));
+    	if(player.isShiftKeyDown()&&DataManager.data.get(player).skill[1]>0) {
+    		player.addEffect(new EffectInstance(Effects.LEVITATION,60,10));
     		DataManager.data.get(player).skill[1]--;
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     	else if(DataManager.data.get(player).skill[3]>0) {
-    		World world=Minecraft.getInstance().getIntegratedServer().getWorld(player.world.getDimensionKey());
-    		List<LivingEntity> targrtlist= world.getEntitiesWithinAABB(LivingEntity.class,player.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
+    		World world=Minecraft.getInstance().getSingleplayerServer().getLevel(player.level.dimension());
+    		List<LivingEntity> targrtlist= world.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
@@ -86,34 +86,34 @@ public class KeyPack {
     		while(it.hasNext()) {
     			LivingEntity target=(LivingEntity) it.next();
     			LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,world);
-    			lightning.setPosition(target.getPosX(), target.getPosY(), target.getPosZ());
-    			lightning.setEffectOnly(true);
-    			world.addEntity(lightning);
-    			target.attackEntityFrom(new EntityDamageSource("hero",player), 15);
-    			target.setFire(10);
+    			lightning.setPos(target.getX(), target.getY(), target.getZ());
+    			lightning.setVisualOnly(true);
+    			world.addFreshEntity(lightning);
+    			target.hurt(new EntityDamageSource("hero",player), 15);
+    			target.setSecondsOnFire(10);
     		}
     		DataManager.data.get(player).skill[3]--;
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     }
     private void placebomb(boolean round) {
-    	PlayerEntity player=Minecraft.getInstance().getIntegratedServer().getPlayerList().getPlayerByUUID(uuid);
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
 			return;
 		}
-    	BombEntity bomb=new BombEntity(EntityLoader.BOMB.get(),player.world);
-    	bomb.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
+    	BombEntity bomb=new BombEntity(EntityLoader.BOMB.get(),player.level);
+    	bomb.setPos(player.getX(), player.getY(), player.getZ());
     	bomb.setowner(player);
-    	player.world.addEntity(bomb);
+    	player.level.addFreshEntity(bomb);
     }
     private void detonate() {
-    	PlayerEntity player=Minecraft.getInstance().getIntegratedServer().getPlayerList().getPlayerByUUID(uuid);
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
 			return;
 		}
-    	List<LivingEntity> bomblist= player.world.getEntitiesWithinAABB(LivingEntity.class,player.getBoundingBox().grow(32, 32, 32) ,new Predicate<Object>() {
+    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,new Predicate<Object>() {
 
 			@Override
 			public boolean test(Object t) {
@@ -123,16 +123,16 @@ public class KeyPack {
 		Iterator<LivingEntity> it=bomblist.iterator();
 		boolean iswindbomb=iswindbomb(player);
 		if(iswindbomb) {
-			player.removePotionEffect(Effects.SLOW_FALLING);
-			player.removePotionEffect(Effects.SLOWNESS);
+			player.removeEffect(Effects.SLOW_FALLING);
+			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
-			player.attackEntityFrom(DamageSource.causeExplosionDamage(player), 2);
-			player.addPotionEffect(new EffectInstance(Effects.RESISTANCE,5,5));
-			float yaw=player.rotationYawHead;
+			player.hurt(DamageSource.explosion(player), 2);
+			player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,5,5));
+			float yaw=player.yHeadRot;
 			float f = 30F;
 			double mz = MathHelper.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			double mx = -MathHelper.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
-			player.setMotion(player.getMotion().add(mx,5, mz));
+			player.setDeltaMovement(player.getDeltaMovement().add(mx,5, mz));
 		}
 		while(it.hasNext()) {
 			BombEntity bomb=(BombEntity) it.next();
@@ -142,9 +142,9 @@ public class KeyPack {
 		}
     }
     private boolean iswindbomb(PlayerEntity player) {
-    	if(!player.hasNoGravity()||!ZeldaConfig.WINDBOMB.get())
+    	if(!player.isNoGravity()||!ZeldaConfig.WINDBOMB.get())
     		return false;
-    	List<LivingEntity> bomblist= player.world.getEntitiesWithinAABB(LivingEntity.class,player.getBoundingBox().grow(5, 5, 5) ,new Predicate<Object>() {
+    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(5, 5, 5) ,new Predicate<Object>() {
 			@Override
 			public boolean test(Object t) {
 				// TODO 自动生成的方法存根
