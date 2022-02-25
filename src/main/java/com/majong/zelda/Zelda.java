@@ -1,5 +1,7 @@
 package com.majong.zelda;
 
+import org.spongepowered.asm.mixin.MixinEnvironment;
+
 import com.majong.zelda.block.BlockLoader;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.EntityLoader;
@@ -21,5 +23,8 @@ public class Zelda {
 		TileEntityLoader.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
 		EntityLoader.ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 		SoundLoader.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+		//MixinEnvironment.getDefaultEnvironment()
+        //.addConfiguration("zelda.mixin.json");
+		//Mixins.addConfiguration("assets/zelda/mixin.json");
 	}
 }

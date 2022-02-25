@@ -23,6 +23,7 @@ public class PlayerLoggedEvent {
 		PlayerEntity player=event.getPlayer();
 		PlayerTick.THUNDER_COUNT_TIME.put(player, 100);
 		DataManager.preventnull(player);
+		DataManager.sendzeldaplayerdatapack(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(player,0L);
 		if(Festival.isLunarSpringFestival(new Date())) {
 			player.sendMessage(new TranslationTextComponent("msg.zelda.lunaryear"), UUID.randomUUID());
@@ -33,7 +34,6 @@ public class PlayerLoggedEvent {
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
 		PlayerEntity player=event.getPlayer();
-		DataManager.removedata(player);
 		PlayerTick.THUNDER_COUNT_TIME.remove(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(player);
 	}		

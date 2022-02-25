@@ -73,14 +73,14 @@ public class LaserEntity extends ThrowableEntity{
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundNBT compound) {
 		// TODO 自动生成的方法存根
 		this.entityData.set(YAW, compound.getInt("yaw"));
 		this.entityData.set(PITCH, compound.getInt("pitch"));
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundNBT compound) {
 		// TODO 自动生成的方法存根
 		compound.putInt("yaw", this.entityData.get(YAW));
 		compound.putInt("pitch", this.entityData.get(PITCH));
