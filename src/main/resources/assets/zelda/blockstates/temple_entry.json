@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "zelda:block/temple_entry" },
+    "facing=south": { "model": "zelda:block/temple_entry", "y": 180 },
+    "facing=west":  { "model": "zelda:block/temple_entry", "y": 270 },
+    "facing=east":  { "model": "zelda:block/temple_entry", "y": 90 }
+  }
+}

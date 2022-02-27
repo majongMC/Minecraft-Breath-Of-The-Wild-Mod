@@ -26,7 +26,7 @@ import net.minecraftforge.common.ToolType;
 public class PotBlock extends Block{
 
 	public PotBlock() {
-		super(Properties.of(Material.STONE).strength(2.5F).harvestLevel(0).harvestTool(ToolType.PICKAXE));
+		super(Properties.of(Material.STONE).strength(2.5F).harvestLevel(0).harvestTool(ToolType.PICKAXE).noOcclusion());
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
