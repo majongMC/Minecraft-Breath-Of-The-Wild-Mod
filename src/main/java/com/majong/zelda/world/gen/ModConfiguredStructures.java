@@ -16,6 +16,7 @@ public class ModConfiguredStructures {
      */
      //你可以添加多个
     public static StructureFeature<?, ?> CONFIGURED_ZELDA_TEMPLE = ModStructures.ZELDA_TEMPLE.get().configured(IFeatureConfig.NONE);
+    public static StructureFeature<?, ?> CONFIGURED_TEMPLES = ModStructures.TEMPLES.get().configured(IFeatureConfig.NONE);
 
     /**
      * Registers the configured structure which is what gets added to the biomes.
@@ -29,11 +30,12 @@ public class ModConfiguredStructures {
 
         //可以继续添加多个
         Registry.register(registry, new ResourceLocation(Utils.MOD_ID, "configured_zelda_temple"), CONFIGURED_ZELDA_TEMPLE);
-
+        Registry.register(registry, new ResourceLocation(Utils.MOD_ID, "configured_temples"), CONFIGURED_TEMPLES);
          /*
          * Requires AccessTransformer ( see resources/META-INF/accesstransformer.cfg )
          */
          //将上方的你的所有的建筑都加进来(put函数)
         FlatGenerationSettings.STRUCTURE_FEATURES.put(ModStructures.ZELDA_TEMPLE.get(), CONFIGURED_ZELDA_TEMPLE);
+        FlatGenerationSettings.STRUCTURE_FEATURES.put(ModStructures.TEMPLES.get(), CONFIGURED_TEMPLES);
     }
 }

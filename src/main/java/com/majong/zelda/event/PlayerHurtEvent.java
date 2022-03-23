@@ -32,7 +32,7 @@ public class PlayerHurtEvent {
 				source.setDeltaMovement(source.getDeltaMovement().add(mx,0.1, mz));
 				return;
 			}
-			if(DataManager.data.get(player).skill[2]>0&&event.getSource().getEntity() instanceof LivingEntity&&event.getAmount()>0&&player.isShiftKeyDown()) {
+			if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&event.getSource().getEntity() instanceof LivingEntity&&event.getAmount()>0&&player.isShiftKeyDown()) {
 				LivingEntity source=(LivingEntity) event.getSource().getEntity();
 				source.hurt(new EntityDamageSource("hero",player), event.getAmount()*10+10);
 				DataManager.data.get(player).skill[2]--;

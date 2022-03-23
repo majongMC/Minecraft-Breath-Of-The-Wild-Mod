@@ -3,7 +3,7 @@ package com.majong.zelda.gui;
 import java.util.UUID;
 
 import com.majong.zelda.config.ZeldaConfig;
-import com.majong.zelda.network.KeyPack;
+import com.majong.zelda.network.PackWithUUID;
 import com.majong.zelda.network.Networking;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -48,8 +48,8 @@ public class ShikaStoneGui extends Screen{
 			return;
 		}
 		if(round)
-			Networking.KEYPACK.sendToServer(new KeyPack(1));
+			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(1));
 		else
-			Networking.KEYPACK.sendToServer(new KeyPack(2));
+			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(2));
 	}
 }

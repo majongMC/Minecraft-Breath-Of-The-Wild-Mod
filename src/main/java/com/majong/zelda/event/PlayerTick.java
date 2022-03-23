@@ -13,6 +13,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
@@ -23,14 +26,23 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @Mod.EventBusSubscriber()
 public class PlayerTick {
 	public static final Map<PlayerEntity,Integer> THUNDER_COUNT_TIME=new HashMap<>();
+	public static final Map<PlayerEntity,BlockPos> LAST_STAND_POS=new HashMap<>();
 	@SubscribeEvent
 	public static void onPlayerTick(LivingUpdateEvent event) {
 		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) event.getEntity();
-			//player.sendMessage(new TranslationTextComponent("yaw:"+player.rotationYawHead), UUID.randomUUID());
-			//DataManager.preventnull(player);
+			if(DataManager.data.get(player).intemple>1) {
+				if(player.isOnGround()&&!player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isAir())
+					LAST_STAND_POS.put(player, player.blockPosition());
+				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {
+					BlockPos pos=LAST_STAND_POS.get(player);
+					player.addEffect(new EffectInstance(Effects.SLOW_FALLING,60,8));
+					player.teleportTo(pos.getX(),pos.getY(), pos.getZ());
+					player.hurt(DamageSource.OUT_OF_WORLD,2);
+				}
+			}
 			for(int i=0;i<4;i++) {
-			if(DataManager.data.get(player).unlocked[i]&&DataManager.data.get(player).skill[i]==0) {
+			if(DataManager.data.get(player).skill[i]==0) {
 				DataManager.data.get(player).cd[i]--;
 				if(DataManager.data.get(player).cd[i]%20==0&&DataManager.data.get(player).cd[i]>0)
 					DataManager.sendzeldaplayerdatapack(player);

@@ -6,6 +6,7 @@ import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.tileentity.TileEntityLoader;
+import com.majong.zelda.world.biome.BiomeInit;
 import com.majong.zelda.world.gen.ModConfiguredStructures;
 import com.majong.zelda.world.structure.ModStructures;
 
@@ -28,6 +29,8 @@ public class Zelda {
 		EntityLoader.ENTITY_TYPES.register(bus);
 		SoundLoader.SOUNDS.register(bus);
 		ModStructures.register(bus);
+		BiomeInit.BIOMES.register(bus);
+        BiomeInit.registerBiomes();
 		//MixinEnvironment.getDefaultEnvironment()
         //.addConfiguration("zelda.mixin.json");
 		//Mixins.addConfiguration("assets/zelda/mixin.json");

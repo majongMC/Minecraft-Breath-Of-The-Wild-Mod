@@ -112,7 +112,7 @@ public class LaserEntity extends ThrowableEntity{
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
 			reflect(player);
 		}
-		else if(DataManager.data.get(player).skill[2]>0&&player.isShiftKeyDown()) {
+		else if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&player.isShiftKeyDown()) {
 			reflect(player);
 			DataManager.data.get(player).skill[2]--;
 			DataManager.sendzeldaplayerdatapack(player);

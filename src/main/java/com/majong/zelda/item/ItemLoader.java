@@ -77,4 +77,5 @@ public class ItemLoader {
 	public static final RegistryObject<Item> SHIKA_STONE = ITEMS.register("shika_stone", ShikaStone::new);
 	public static final RegistryObject<Item> HORN = ITEMS.register("horn", HornItem::new);
 	public static final RegistryObject<Item> RED_ENVELOPE = ITEMS.register("red_envelope", RedEnvelope::new);
+	public static final RegistryObject<Item> SPIRIT_ORB = ITEMS.register("spirit_orb", BasicItem::new);
 }

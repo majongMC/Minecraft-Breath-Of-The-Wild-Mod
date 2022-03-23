@@ -22,12 +22,13 @@ public class LinkTime {
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
 		if(!event.getWorld().isClientSide) {
-			if(!event.getPlayer().isOnGround()&&!event.getPlayer().isFallFlying()) {
-				event.getPlayer().setDeltaMovement(Vector3d.ZERO);
-				event.getPlayer().addEffect(new EffectInstance(Effects.SLOW_FALLING,120,8));
-				event.getPlayer().addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,120,3));
-				event.getPlayer().setNoGravity(true);
-				slownearmonsters(event.getPlayer(),false);
+			PlayerEntity player=event.getPlayer();
+			if(!player.isOnGround()&&!player.isFallFlying()) {
+				player.setDeltaMovement(Vector3d.ZERO);
+				player.addEffect(new EffectInstance(Effects.SLOW_FALLING,120,8));
+				player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,120,3));
+				player.setNoGravity(true);
+				slownearmonsters(player,false);
 				Thread t=new Thread(new Runnable() {
 
 					@Override
@@ -45,19 +46,20 @@ public class LinkTime {
 				t.start();
 			}
 			else {
-				event.getPlayer().removeEffect(Effects.SLOW_FALLING);
-				event.getPlayer().removeEffect(Effects.MOVEMENT_SLOWDOWN);
-				event.getPlayer().setNoGravity(false);
+				player.removeEffect(Effects.SLOW_FALLING);
+				player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+				player.setNoGravity(false);
 			}
 		}
 	}
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerLooseArrow(ArrowLooseEvent event) {
 		if(!event.getWorld().isClientSide) {
-			event.getPlayer().removeEffect(Effects.SLOW_FALLING);
-			event.getPlayer().removeEffect(Effects.MOVEMENT_SLOWDOWN);
-			event.getPlayer().setNoGravity(false);
-			slownearmonsters(event.getPlayer(),true);
+			PlayerEntity player=event.getPlayer();
+			player.removeEffect(Effects.SLOW_FALLING);
+			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+			player.setNoGravity(false);
+			slownearmonsters(player,true);
 		}
 	}
 	private static void slownearmonsters(PlayerEntity player,boolean remove) {

@@ -9,6 +9,7 @@ public class ZeldaPlayerData {
 	public boolean[] unlocked= {true,true,true,true};
 	public int skill[]= {1,3,3,3};
 	public int cd[]= {ZeldaConfig.WATER.get(),ZeldaConfig.WIND.get(),ZeldaConfig.FIRE.get(),ZeldaConfig.THUNDER.get()};
+	public int intemple=0;
 	public ZeldaPlayerData(PlayerEntity player) {
 		this.player=player;
 	}

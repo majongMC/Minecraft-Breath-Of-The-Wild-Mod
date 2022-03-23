@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.majong.zelda.network.Networking;
-import com.majong.zelda.network.ZeldaPlayerDataPack;
+import com.majong.zelda.network.ZeldaNBTPack;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -22,6 +22,7 @@ public class DataManager {
 		nbt.putBoolean("thunderunlocked", data.get(player).unlocked[3]);
 		nbt.putIntArray("skill", data.get(player).skill);
 		nbt.putIntArray("cd", data.get(player).cd);
+		nbt.putInt("intemple", data.get(player).intemple);
 		return nbt;
 	}
 	public static void writefromnbt(CompoundNBT nbt,PlayerEntity player) {
@@ -32,13 +33,14 @@ public class DataManager {
 		data.get(player).unlocked[3]=nbt.getBoolean("thunderunlocked");
 		data.get(player).skill=nbt.getIntArray("skill");
 		data.get(player).cd=nbt.getIntArray("cd");
+		data.get(player).intemple=nbt.getInt("intemple");
 	}
 	public static void sendzeldaplayerdatapack(PlayerEntity player) {
-		Networking.ZELDAPLAYERDATA.send(
+		Networking.ZELDANBT.send(
                 PacketDistributor.PLAYER.with(
                         () -> (ServerPlayerEntity) player
                 ),
-                new ZeldaPlayerDataPack(readtonbt(player)));
+                new ZeldaNBTPack(1,readtonbt(player)));
 	}
 	public static void preventnull(PlayerEntity player) {
 		if(data.get(player)==null)
@@ -46,5 +48,11 @@ public class DataManager {
 	}
 	public static void removedata(PlayerEntity player) {
 		data.remove(player);
+	}
+	public static void AdjustAllSkills(PlayerEntity player,boolean unlocked) {
+		ZeldaPlayerData playerdata=data.get(player);
+		for(int i=0;i<4;i++) {
+			playerdata.unlocked[i]=unlocked;
+		}
 	}
 }

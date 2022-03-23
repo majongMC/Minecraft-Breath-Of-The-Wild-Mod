@@ -1,6 +1,8 @@
 package com.majong.zelda.gui;
 
 import com.majong.zelda.Utils;
+import com.majong.zelda.network.Networking;
+import com.majong.zelda.network.PackWithUUID;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -9,15 +11,16 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class FoodMessageGui extends Screen{
+public class ZeldaMessageGui extends Screen{
 	private final int w;
     private final int h;
     private int heal,hunger,type;
 	private final ResourceLocation ICONS=new ResourceLocation("minecraft", "textures/gui/icons.png");
 	private final ResourceLocation FOOD2=new ResourceLocation(Utils.MOD_ID, "textures/items/hard_food.png");
 	private final ResourceLocation FOOD1=new ResourceLocation("minecraft", "textures/item/suspicious_stew.png");
+	private final ResourceLocation SPIRIT_ORB=new ResourceLocation(Utils.MOD_ID, "textures/gui/spirit_orb.png");
 	private final ResourceLocation BACK=new ResourceLocation(Utils.MOD_ID, "textures/gui/background.png");
-	public FoodMessageGui(int type,int heal,int hunger) {
+	public ZeldaMessageGui(int type,int heal,int hunger) {
 		super(new TranslationTextComponent(""));
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
@@ -57,15 +60,23 @@ public class FoodMessageGui extends Screen{
 			blit(matrixStack, x, y, 62, 27, 9, 9, 256, 256);
 			x+=10;
 		}
-		if(type==0)
-			this.minecraft.getTextureManager().bind(FOOD1);
-		else
-			this.minecraft.getTextureManager().bind(FOOD2);
+		switch(type) {
+		case 0:this.minecraft.getTextureManager().bind(FOOD1);break;
+		case 1:this.minecraft.getTextureManager().bind(FOOD2);break;
+		case 2:this.minecraft.getTextureManager().bind(SPIRIT_ORB);break;
+		}
 		int a=(int) (0.4*h);
 		blit(matrixStack, (int)(0.3*w), (int)(0.3*h), 0, 0, a, a, a, a);
-		if(type==0)
-			drawCenteredString(matrixStack,this.font,new TranslationTextComponent("item.zelda.food"),(int)(0.55*w),(int)(0.4*h),16777215);
-		else
-			drawCenteredString(matrixStack,this.font,new TranslationTextComponent("item.zelda.hard_food"),(int)(0.55*w),(int)(0.4*h),16777215);
+		switch(type) {
+		case 0:drawCenteredString(matrixStack,this.font,new TranslationTextComponent("item.zelda.food"),(int)(0.55*w),(int)(0.4*h),16777215);break;
+		case 1:drawCenteredString(matrixStack,this.font,new TranslationTextComponent("item.zelda.hard_food"),(int)(0.55*w),(int)(0.4*h),16777215);break;
+		case 2:drawCenteredString(matrixStack,this.font,new TranslationTextComponent("item.zelda.spirit_orb"),(int)(0.55*w),(int)(0.4*h),16777215);break;
+		}
+	}
+	@Override
+	public void onClose() {
+		super.onClose();
+		if(this.type==2)
+			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(4));
 	}
 }

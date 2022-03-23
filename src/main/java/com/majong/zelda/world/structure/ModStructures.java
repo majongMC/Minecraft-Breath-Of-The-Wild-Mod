@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.majong.zelda.Utils;
+import com.majong.zelda.world.structure.structures.TemplesStructure;
 import com.majong.zelda.world.structure.structures.ZeldaTempleStructure;
 
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -26,15 +27,17 @@ public class ModStructures {
 
 //    public static final RegistryObject<Structure<NoFeatureConfig>> TANK1 = STRUCTURES.register("tank1", Tank1Structure::new);
     public static final RegistryObject<Structure<NoFeatureConfig>> ZELDA_TEMPLE =
-            STRUCTURES.register("zelda_temple", () -> (new ZeldaTempleStructure(NoFeatureConfig.CODEC)));
+           STRUCTURES.register("zelda_temple", () -> (new ZeldaTempleStructure(NoFeatureConfig.CODEC)));
+    public static final RegistryObject<Structure<NoFeatureConfig>> TEMPLES =
+            STRUCTURES.register("temples", () -> (new TemplesStructure(NoFeatureConfig.CODEC)));
 
 	/* average distance apart in chunks between spawn attempts */
     /* minimum distance apart in chunks between spawn attempts. MUST BE LESS THAN ABOVE VALUE*/
     /* this modifies the seed of the structure so no two structures always spawn over each-other.
     Make this large and unique. */
     public static void setupStructures() {
-        setupMapSpacingAndLand(ZELDA_TEMPLE.get(),new StructureSeparationSettings(50,25, 866666601), true);
-
+        setupMapSpacingAndLand(ZELDA_TEMPLE.get(),new StructureSeparationSettings(40,20, 866666601), true);
+        setupMapSpacingAndLand(TEMPLES.get(),new StructureSeparationSettings(40,20, 866666602), false);
     }
 
     public static <F extends Structure<?>> void setupMapSpacingAndLand(

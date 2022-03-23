@@ -109,6 +109,16 @@
       }
     ]
   },
+  "radar": {
+    "subtitle": "radar",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:radar",
+        "stream": true
+      }
+    ]
+  },
   "walking_guardian": {
     "subtitle": "walking_guardian",
     "replace": "true",

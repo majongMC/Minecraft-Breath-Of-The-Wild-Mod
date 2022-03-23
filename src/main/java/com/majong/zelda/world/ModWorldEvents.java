@@ -41,39 +41,41 @@ public class ModWorldEvents {
     }
 
     //加入空间生成的相关设置
-    @SubscribeEvent
-    public static void addDimensionalSpacing(final WorldEvent.Load event) {
-        if(event.getWorld() instanceof ServerWorld) {
-            ServerWorld serverWorld = (ServerWorld) event.getWorld();
-
-            //建筑生成异常就会抛出相应错误
-            try {
-                Method GETCODEC_METHOD =
-                        ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "func_230347_a_");
-                ResourceLocation cgRL = Registry.CHUNK_GENERATOR.getKey(
-                        (Codec<? extends ChunkGenerator>)GETCODEC_METHOD.invoke(serverWorld.getChunkSource().generator));
-
-                if (cgRL != null && cgRL.getNamespace().equals("terraforged")) {
-                    return;
-                }
-            } catch (Exception e) {
-                LogManager.getLogger().error("Was unable to check if " + serverWorld.getLevel()
-                        + " is using Terraforged's ChunkGenerator.");
-            }
-
-
-            // 放止建筑在超平坦世界生成
-            if (serverWorld.getChunkSource().generator instanceof FlatChunkGenerator &&
-                    serverWorld.getLevel().equals(World.OVERWORLD)) {
-                return;
-            }
-
-            // 将我们的建筑添加到建筑生成地图中
-            Map<Structure<?>, StructureSeparationSettings> tempMap =
-                    new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
-            tempMap.putIfAbsent(ModStructures.ZELDA_TEMPLE.get(),
-                    DimensionStructuresSettings.DEFAULTS.get(ModStructures.ZELDA_TEMPLE.get()));
-            serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
-        }
-    }
+	@SubscribeEvent
+	public static void addDimensionalSpacing(final WorldEvent.Load event) {
+	    if(event.getWorld() instanceof ServerWorld) {
+	        ServerWorld serverWorld = (ServerWorld) event.getWorld();
+	
+	        //建筑生成异常就会抛出相应错误
+	        try {
+	            Method GETCODEC_METHOD =
+	                    ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "func_230347_a_");
+	            ResourceLocation cgRL = Registry.CHUNK_GENERATOR.getKey(
+	                    (Codec<? extends ChunkGenerator>)GETCODEC_METHOD.invoke(serverWorld.getChunkSource().generator));
+	
+	            if (cgRL != null && cgRL.getNamespace().equals("terraforged")) {
+	                return;
+	            }
+	        } catch (Exception e) {
+	            LogManager.getLogger().error("Was unable to check if " + serverWorld.getLevel()
+	                    + " is using Terraforged's ChunkGenerator.");
+	        }
+	
+	
+	        // 放止建筑在超平坦世界生成
+	        if (serverWorld.getChunkSource().generator instanceof FlatChunkGenerator &&
+	                serverWorld.getLevel().equals(World.OVERWORLD)) {
+	            return;
+	        }
+	
+	        // 将我们的建筑添加到建筑生成地图中
+	        Map<Structure<?>, StructureSeparationSettings> tempMap =
+	                new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
+	        tempMap.putIfAbsent(ModStructures.ZELDA_TEMPLE.get(),
+	                DimensionStructuresSettings.DEFAULTS.get(ModStructures.ZELDA_TEMPLE.get()));
+	        tempMap.putIfAbsent(ModStructures.TEMPLES.get(),
+	                DimensionStructuresSettings.DEFAULTS.get(ModStructures.TEMPLES.get()));
+	        serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
+	    }
+	}
 }

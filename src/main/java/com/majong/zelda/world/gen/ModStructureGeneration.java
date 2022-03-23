@@ -2,6 +2,8 @@ package com.majong.zelda.world.gen;
 
 import java.util.Set;
 
+import com.majong.zelda.world.biome.BiomeInit;
+
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -17,7 +19,15 @@ public class ModStructureGeneration {
         //例如生成在平原：types.contains(BiomeDictionary.Type.PLAINS)
         if(!types.contains(BiomeDictionary.Type.NETHER)&&!types.contains(BiomeDictionary.Type.END)) {
             //你可以添加多个自己想要生成的建筑
-            event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_ZELDA_TEMPLE);
+        	BiomeDictionary.getTypes(BiomeInit.TRMPLE_BIOME).iterator().next();
+        	if(types.contains(BiomeDictionary.Type.COLD)&&types.contains(BiomeDictionary.Type.HOT)&&types.contains(BiomeDictionary.Type.VOID)) {
+            event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_TEMPLES);
+        	//event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_ZELDA_TEMPLE);
+        	}
+        	else {
+        		//event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_TEMPLES);
+        		event.getGeneration().getStructures().add(() -> ModConfiguredStructures.CONFIGURED_ZELDA_TEMPLE);
+        	}
         }
         //else if... 可以添加多个想要生成的地形中的建筑
     }

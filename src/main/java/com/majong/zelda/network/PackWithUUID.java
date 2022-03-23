@@ -10,6 +10,7 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
 import com.majong.zelda.entity.EntityLoader;
+import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
@@ -27,15 +28,15 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class KeyPack {
+public class PackWithUUID {
 	private final UUID uuid;
 	private final int type;
-    public KeyPack(PacketBuffer buffer) {
+    public PackWithUUID(PacketBuffer buffer) {
     	type=buffer.readInt();
     	uuid=buffer.readUUID();
     }
 
-    public KeyPack(int type) {
+    public PackWithUUID(int type) {
     	this.type=type;
     	this.uuid=Minecraft.getInstance().player.getUUID();
     }
@@ -52,19 +53,24 @@ public class KeyPack {
         	case 1:placebomb(true);break;
         	case 2:placebomb(false);break;
         	case 3:detonate();break;
+        	case 4:teleporttooverworld();break;
         	}
         });
         ctx.get().setPacketHandled(true);
     }
+    private void teleporttooverworld() {
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	TempleDimensionData.ExitTemple(player.level, player);
+    }
     private void useskill() {
     	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	//DataManager.preventnull(player);
-    	if(player.isShiftKeyDown()&&DataManager.data.get(player).skill[1]>0) {
+    	if(player.isShiftKeyDown()&&DataManager.data.get(player).unlocked[1]&&DataManager.data.get(player).skill[1]>0) {
     		player.addEffect(new EffectInstance(Effects.LEVITATION,60,10));
     		DataManager.data.get(player).skill[1]--;
     		DataManager.sendzeldaplayerdatapack(player);
     	}
-    	else if(DataManager.data.get(player).skill[3]>0) {
+    	else if(DataManager.data.get(player).unlocked[3]&&DataManager.data.get(player).skill[3]>0) {
     		World world=Minecraft.getInstance().getSingleplayerServer().getLevel(player.level.dimension());
     		List<LivingEntity> targrtlist= world.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
@@ -126,7 +132,7 @@ public class KeyPack {
 			player.removeEffect(Effects.SLOW_FALLING);
 			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
-			player.hurt(DamageSource.explosion(player), 2);
+			player.hurt(DamageSource.explosion((LivingEntity)null), 2);
 			player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,5,5));
 			float yaw=player.yHeadRot;
 			float f = 30F;

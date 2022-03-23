@@ -2,7 +2,7 @@ package com.majong.zelda.network;
 
 import java.util.function.Supplier;
 
-import com.majong.zelda.gui.FoodMessageGui;
+import com.majong.zelda.gui.ZeldaMessageGui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
@@ -29,7 +29,7 @@ public class FoodMessagePack {
 
     public void handler(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-        	Minecraft.getInstance().setScreen(new FoodMessageGui(type,heal,hunger));
+        	Minecraft.getInstance().setScreen(new ZeldaMessageGui(type,heal,hunger));
         });
         ctx.get().setPacketHandled(true);
     }
