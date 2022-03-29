@@ -1,5 +1,6 @@
 package com.majong.zelda.network;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -26,6 +28,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PackWithUUID {
@@ -72,14 +75,22 @@ public class PackWithUUID {
     	}
     	else if(DataManager.data.get(player).unlocked[3]&&DataManager.data.get(player).skill[3]>0) {
     		World world=Minecraft.getInstance().getSingleplayerServer().getLevel(player.level.dimension());
-    		List<LivingEntity> targrtlist= world.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
+    		List<Entity> partentitylist=new ArrayList<>();
+    		List<Entity> targrtlist= world.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
 					// TODO 自动生成的方法存根
+					if(t instanceof PartEntity) {
+						Entity parent=((PartEntity)t).getParent();
+						if(parent instanceof LivingEntity&&(parent.getClassification(false)==EntityClassification.MONSTER||(!(parent instanceof PlayerEntity)&&((LivingEntity) parent).getMaxHealth()>101))) {
+							partentitylist.add(parent);
+							return false;
+						}
+					}
 					if(t instanceof LivingEntity) {
 						LivingEntity entity=(LivingEntity) t;
-						if(entity.getClassification(false)==EntityClassification.MONSTER) {
+						if(entity.getClassification(false)==EntityClassification.MONSTER||(!(entity instanceof PlayerEntity)&&entity.getMaxHealth()>101)) {
 							return true;
 						}
 						else
@@ -88,15 +99,25 @@ public class PackWithUUID {
 					else
 						return false;
 				}});
-    		Iterator<LivingEntity> it=targrtlist.iterator();
+    		targrtlist.addAll(partentitylist);
+    		Iterator<Entity> it=targrtlist.iterator();
     		while(it.hasNext()) {
     			LivingEntity target=(LivingEntity) it.next();
     			LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,world);
     			lightning.setPos(target.getX(), target.getY(), target.getZ());
     			lightning.setVisualOnly(true);
     			world.addFreshEntity(lightning);
-    			target.hurt(new EntityDamageSource("hero",player), 15);
+    			if(target.getMaxHealth()<=100)
+    				target.hurt(new EntityDamageSource("hero",player).setThorns(), 15);
+    			else
+    				target.hurt(new EntityDamageSource("hero",player).setThorns(), 0.15F*target.getMaxHealth());
     			target.setSecondsOnFire(10);
+    		}
+    		for(int i=0;i<10;i++) {
+    			LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,world);
+    			lightning.setPos(player.getX()+Math.random()*20-10, player.getY()-3, player.getZ()+Math.random()*20-10);
+    			lightning.setVisualOnly(true);
+    			world.addFreshEntity(lightning);
     		}
     		DataManager.data.get(player).skill[3]--;
     		DataManager.sendzeldaplayerdatapack(player);

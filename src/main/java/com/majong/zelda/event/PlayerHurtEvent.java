@@ -20,10 +20,12 @@ public class PlayerHurtEvent {
 			//DataManager.preventnull(player);
 			long respondtime=player.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 			if(respondtime<=ZeldaConfig.SHIELD.get()) {
+				if(!(event.getSource().getEntity() instanceof LivingEntity))
+					return;
 				LivingEntity source=(LivingEntity) event.getSource().getEntity();
 				if(source==null)
 					return;
-				source.hurt(new EntityDamageSource("player",player), event.getAmount()*5+5);
+				source.hurt(new EntityDamageSource("player",player).setThorns(), event.getAmount()*5+5);
 				event.setCanceled(true);
 				float yaw=player.yHeadRot;
 				float f = 2F;
@@ -34,7 +36,7 @@ public class PlayerHurtEvent {
 			}
 			if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&event.getSource().getEntity() instanceof LivingEntity&&event.getAmount()>0&&player.isShiftKeyDown()) {
 				LivingEntity source=(LivingEntity) event.getSource().getEntity();
-				source.hurt(new EntityDamageSource("hero",player), event.getAmount()*10+10);
+				source.hurt(new EntityDamageSource("hero",player).setThorns(), event.getAmount()*10+10);
 				DataManager.data.get(player).skill[2]--;
 				DataManager.sendzeldaplayerdatapack(player);
 				event.setCanceled(true);
