@@ -3,7 +3,7 @@ package com.majong.zelda.tileentity;
 import javax.annotation.Nullable;
 
 import com.majong.zelda.item.ItemLoader;
-import com.majong.zelda.network.FoodMessagePack;
+import com.majong.zelda.network.GuiMessagePack;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.sound.SoundLoader;
@@ -117,7 +117,7 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
 		                PacketDistributor.PLAYER.with(
 		                        () -> (ServerPlayerEntity) user
 		                ),
-		                new FoodMessagePack(1,0,0));
+		                new GuiMessagePack(1,0,0));
 				return;
 			}
 		}
@@ -146,7 +146,7 @@ public class PotTileEntity extends TileEntity implements ITickableTileEntity{
                 PacketDistributor.PLAYER.with(
                         () -> (ServerPlayerEntity) user
                 ),
-                new FoodMessagePack(0,(int) heal,hunger));
+                new GuiMessagePack(0,(int) heal,hunger));
 	}
 	@Override
     public void load(BlockState state, CompoundNBT nbt) {

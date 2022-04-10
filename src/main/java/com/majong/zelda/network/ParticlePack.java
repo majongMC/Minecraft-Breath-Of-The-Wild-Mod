@@ -56,9 +56,16 @@ public class ParticlePack {
         		case 4:Minecraft.getInstance().level.addAlwaysVisibleParticle(RedstoneParticleData.REDSTONE,DATA[0],DATA[1],DATA[2],0,0,0);break;
         		case 5:Minecraft.getInstance().level.addAlwaysVisibleParticle(new RedstoneParticleData(0F,0F,1F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
         		case 6:Minecraft.getInstance().level.addAlwaysVisibleParticle(ParticleTypes.FLASH,DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 7:PerformMifaParticle();break;
         		}
         	}
         });
         ctx.get().setPacketHandled(true);
+    }
+    private void PerformMifaParticle() {
+    	for(int i=0;i<50;i++) {
+    		Minecraft.getInstance().level.addAlwaysVisibleParticle(ParticleTypes.HAPPY_VILLAGER,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);
+    		Minecraft.getInstance().level.addAlwaysVisibleParticle(ParticleTypes.NAUTILUS,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);
+    	}
     }
 }

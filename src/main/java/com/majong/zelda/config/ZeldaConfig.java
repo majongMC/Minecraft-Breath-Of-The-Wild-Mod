@@ -7,7 +7,7 @@ public class ZeldaConfig {
     public static ForgeConfigSpec.IntValue WATER,WIND,FIRE,THUNDER;
     public static ForgeConfigSpec.IntValue SHIELD,LINKTIME;
     public static ForgeConfigSpec.BooleanValue DISPLAYTIME;
-    public static ForgeConfigSpec.DoubleValue GUARDIAN,WALKING_GUARDIAN,MOLLYBRIN,ROCKGIANT,POKBRIN;
+    public static ForgeConfigSpec.DoubleValue GUARDIAN,WALKING_GUARDIAN,MOLLYBRIN,ROCKGIANT,POKBRIN,YIGATEAM;
     public static ForgeConfigSpec.BooleanValue ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
     public static ForgeConfigSpec.DoubleValue ELECTRICITY;
     public static ForgeConfigSpec.BooleanValue WEATHER_CHANGE;
@@ -32,6 +32,7 @@ public class ZeldaConfig {
         MOLLYBRIN = COMMON_BUILDER.comment("Molly Brin Spawn Chance 莫利布林生成几率").defineInRange("mollybrin", 1, 0, Double.POSITIVE_INFINITY);
         POKBRIN= COMMON_BUILDER.comment("Pok Brin Spawn Chance 波克布林生成几率").defineInRange("pokbrin", 1, 0, Double.POSITIVE_INFINITY);
         ROCKGIANT = COMMON_BUILDER.comment("Rock Giant Spawn Chance 岩石巨人生成几率").defineInRange("rockgiant", 1, 0, Double.POSITIVE_INFINITY);
+        YIGATEAM = COMMON_BUILDER.comment("Yiga Team Member Spawn Chance 依盖队成员生成几率").defineInRange("yigateam", 1, 0, Double.POSITIVE_INFINITY);
         COMMON_BUILDER.pop();
         COMMON_BUILDER.comment("Item 物品").push("item");
         ATTRIBUTE = COMMON_BUILDER.comment("Enable Attribute Restraint 允许属性克制").define("attribute", true);

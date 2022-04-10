@@ -3,6 +3,8 @@ package com.majong.zelda.event;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.RockGiantEntity;
+import com.majong.zelda.entity.YigaTeamMemberEntity;
+import com.majong.zelda.gui.OpenDialogBox;
 import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.block.Blocks;
@@ -12,6 +14,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +25,17 @@ public class PlayerUsualEvent {
 	public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
 		if(event.getEntity().level.isClientSide) {
 			Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,Minecraft.getInstance().player.blockPosition(), SoundLoader.WAKE_UP.get(), SoundCategory.AMBIENT, 10f, 1f);
+		}
+	}
+	@SubscribeEvent
+	public static void onPlayerRightClickEntity(EntityInteract event) {
+		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
+		{
+			if(event.getWorld().isClientSide) {
+				new OpenDialogBox((int) (Math.random()*2));
+			}else {
+				((YigaTeamMemberEntity)event.getTarget()).activate();
+			}
 		}
 	}
 	@SubscribeEvent

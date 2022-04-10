@@ -66,10 +66,10 @@ public class Networking {
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
         );
-        FOODMESSAGEPACK.messageBuilder(FoodMessagePack.class, nextID())
-                .encoder(FoodMessagePack::toBytes)
-                .decoder(FoodMessagePack::new)
-                .consumer(FoodMessagePack::handler)
+        FOODMESSAGEPACK.messageBuilder(GuiMessagePack.class, nextID())
+                .encoder(GuiMessagePack::toBytes)
+                .decoder(GuiMessagePack::new)
+                .consumer(GuiMessagePack::handler)
                 .add();
         BAR = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(Utils.MOD_ID, "bar_pack"),

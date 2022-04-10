@@ -48,5 +48,8 @@ public class EntityRenderer {
 		RenderingRegistry.registerEntityRenderingHandler(EntityLoader.POK_BRIN.get(), (EntityRendererManager manager) -> {
             return new PokBrinRenderer(manager);
 	});
+		RenderingRegistry.registerEntityRenderingHandler(EntityLoader.YIGA_TEAM_MEMBER.get(), (EntityRendererManager manager) -> {
+            return new YigaTeamMemberRenderer(manager);
+	});
 }
 }

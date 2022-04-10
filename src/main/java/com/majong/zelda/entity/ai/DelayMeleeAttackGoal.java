@@ -3,6 +3,7 @@ package com.majong.zelda.entity.ai;
 import java.util.EnumSet;
 
 import com.majong.zelda.entity.RockGiantEntity;
+import com.majong.zelda.entity.YigaTeamMemberEntity;
 
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
@@ -155,8 +156,12 @@ public class DelayMeleeAttackGoal extends Goal{
 	    	  else
 	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, delay-10);
 	      }
-	      if(delay==0&&p_190102_2_ <= d0)
-	    	 this.mob.doHurtTarget(p_190102_1_);
+	      if(delay==0&&p_190102_2_ <= d0) {
+	    	  if(this.mob instanceof YigaTeamMemberEntity)
+	    		  ((YigaTeamMemberEntity)this.mob).yigadamage(p_190102_1_);
+	    	  else
+	    		  this.mob.doHurtTarget(p_190102_1_);
+	      }
 	      if(this.mob instanceof RockGiantEntity&&delay>=-delaytime&&delay<0) {
 	    	  RockGiantEntity entity=(RockGiantEntity) this.mob;
 	    	  if(reverse)

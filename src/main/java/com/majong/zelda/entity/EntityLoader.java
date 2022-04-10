@@ -29,6 +29,7 @@ public class EntityLoader {
 	 public static final RegistryObject<EntityType<BombEntity>> BOMB = ENTITY_TYPES.register("bomb", () -> EntityType.Builder.of(BombEntity::new, EntityClassification.MISC).sized(0.5F, 0.5F).build("bomb"));
 	 public static final RegistryObject<EntityType<RockGiantEntity>> ROCK_GIANT = ENTITY_TYPES.register("rock_giant", () -> EntityType.Builder.of(RockGiantEntity::new, EntityClassification.MONSTER).sized(3, 3).build("rock_giant"));
 	 public static final RegistryObject<EntityType<PokBrinEntity>> POK_BRIN = ENTITY_TYPES.register("pok_brin", () -> EntityType.Builder.of(PokBrinEntity::new, EntityClassification.MONSTER).sized(0.75F, 2F).build("pok_brin"));
+	 public static final RegistryObject<EntityType<YigaTeamMemberEntity>> YIGA_TEAM_MEMBER = ENTITY_TYPES.register("yiga_team_member", () -> EntityType.Builder.of(YigaTeamMemberEntity::new, EntityClassification.MONSTER).sized(0.75F, 2F).build("yiga_team_member"));
 	 @SubscribeEvent
 	    public static void setupAttributes(FMLCommonSetupEvent event) {
 		 event.enqueueWork(() -> {
@@ -38,6 +39,7 @@ public class EntityLoader {
 			 GlobalEntityTypeAttributes.put(BOMB.get(), BombEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1D).build());
 			 GlobalEntityTypeAttributes.put(ROCK_GIANT.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).build());
 			 GlobalEntityTypeAttributes.put(POK_BRIN.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.24D).build());
+			 GlobalEntityTypeAttributes.put(YIGA_TEAM_MEMBER.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.24D).build());
 	        });
 	    }
 	 }

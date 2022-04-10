@@ -10,9 +10,12 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.GuardianEntity;
 import com.majong.zelda.entity.MollyBrinEntity;
 import com.majong.zelda.entity.PokBrinEntity;
+import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
+import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.network.SoundPack;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -29,14 +32,25 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class EntityDead {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onEntityDead(LivingDeathEvent event) {
-		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
-			PlayerEntity player=(PlayerEntity) event.getEntity();
+		Entity entity=event.getEntity();
+		if(entity instanceof PlayerEntity&&!entity.level.isClientSide) {
+			PlayerEntity player=(PlayerEntity) entity;
 			if(DataManager.data.get(player).unlocked[0]&&DataManager.data.get(player).skill[0]==1) {
 				player.setHealth(((PlayerEntity)event.getEntity()).getMaxHealth());
 				player.addEffect(new EffectInstance(Effects.ABSORPTION,1200,2));
 				event.setCanceled(true);
 				DataManager.data.get(player).skill[0]=0;
 				DataManager.sendzeldaplayerdatapack(player);
+				Networking.PARTICLE.send(
+	                    PacketDistributor.PLAYER.with(
+	                            () -> (ServerPlayerEntity) player
+	                    ),
+	                    new ParticlePack(7,player.getX()+0.5,player.getY(),player.getZ()+0.5,0,0,0));
+				Networking.SOUND.send(
+	                    PacketDistributor.PLAYER.with(
+	                            () -> (ServerPlayerEntity) player
+	                    ),
+	                    new SoundPack(10,new BlockPos(player.getX(),player.getY(),player.getZ())));
 				return;
 			}
 			Networking.SOUND.send(
@@ -53,10 +67,10 @@ public class EntityDead {
                     PacketDistributor.PLAYER.with(
                             () -> (ServerPlayerEntity) player
                     ),
-                    new SoundPack(1,new BlockPos(event.getEntity().getX(),event.getEntity().getY(),event.getEntity().getZ())));
+                    new SoundPack(1,new BlockPos(player.getX(),player.getY(),player.getZ())));
 		}
-		if(!event.getEntity().level.isClientSide&&(event.getEntity() instanceof GuardianEntity||event.getEntity() instanceof MollyBrinEntity||event.getEntity() instanceof PokBrinEntity||(Utils.ICE_AND_FIRE_LOADED&&event.getEntity() instanceof EntityCyclops))) {
-			List<PlayerEntity> playerlist= event.getEntity().level.getEntitiesOfClass(PlayerEntity.class,event.getEntity().getBoundingBox().inflate(64, 32, 64) ,new Predicate<Object>() {
+		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof PokBrinEntity||entity instanceof YigaTeamMemberEntity||(Utils.ICE_AND_FIRE_LOADED&&entity instanceof EntityCyclops))) {
+			List<PlayerEntity> playerlist= entity.level.getEntitiesOfClass(PlayerEntity.class,entity.getBoundingBox().inflate(64, 32, 64) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {

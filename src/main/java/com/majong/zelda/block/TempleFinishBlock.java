@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.item.ItemLoader;
-import com.majong.zelda.network.FoodMessagePack;
+import com.majong.zelda.network.GuiMessagePack;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.tileentity.HasTempleIDTileEntity.TempleFinishTileEntity;
 import com.majong.zelda.world.dimension.TempleDimensionData;
@@ -50,7 +50,7 @@ public class TempleFinishBlock extends TempleStartBlock{
 	                PacketDistributor.PLAYER.with(
 	                        () -> (ServerPlayerEntity) player
 	                ),
-	                new FoodMessagePack(2,0,0));
+	                new GuiMessagePack(2,0,0));
 		}
 		return ActionResultType.SUCCESS;
 	}

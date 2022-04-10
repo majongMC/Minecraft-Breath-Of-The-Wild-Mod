@@ -40,6 +40,10 @@ public class PokBrinEntity extends MonsterEntity{
 		// TODO 自动生成的构造函数存根
 	}
 	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.PIGLIN_AMBIENT;
+	}
+	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 	      return SoundEvents.PIG_HURT;
 	   }

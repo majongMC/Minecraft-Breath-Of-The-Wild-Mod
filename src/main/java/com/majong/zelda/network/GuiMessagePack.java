@@ -8,15 +8,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class FoodMessagePack {
+public class GuiMessagePack {
 	private final int heal,hunger,type;
-    public FoodMessagePack(PacketBuffer buffer) {
+    public GuiMessagePack(PacketBuffer buffer) {
     	type=buffer.readInt();
     	heal=buffer.readInt();
     	hunger=buffer.readInt();
     }
 
-    public FoodMessagePack(int type,int heal,int hunger) {
+    public GuiMessagePack(int type,int heal,int hunger) {
     	this.type=type;
     	this.heal=heal;
     	this.hunger=hunger;

@@ -21,7 +21,7 @@ public class PlayerLoggedEvent {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		PlayerEntity player=event.getPlayer();
-		PlayerTick.THUNDER_COUNT_TIME.put(player, 100);
+		EntityTick.THUNDER_COUNT_TIME.put(player, 100);
 		DataManager.preventnull(player);
 		DataManager.sendzeldaplayerdatapack(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(player,0L);
@@ -34,7 +34,7 @@ public class PlayerLoggedEvent {
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
 		PlayerEntity player=event.getPlayer();
-		PlayerTick.THUNDER_COUNT_TIME.remove(player);
+		EntityTick.THUNDER_COUNT_TIME.remove(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(player);
 	}		
 }

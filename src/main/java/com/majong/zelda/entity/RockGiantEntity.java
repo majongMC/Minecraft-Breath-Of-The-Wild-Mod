@@ -3,7 +3,7 @@ package com.majong.zelda.entity;
 import com.majong.zelda.api.overlays.ZeldaBloodBarApi;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.entity.ai.DestroyBlockGoal;
-import com.majong.zelda.event.PlayerSpottedEvent;
+import com.majong.zelda.event.EntitySpottedEvent;
 import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.client.Minecraft;
@@ -75,7 +75,7 @@ public class RockGiantEntity extends MonsterEntity{
 		this.spawnAtLocation(new ItemStack(Items.COBBLESTONE,(int) (Math.random()*64)));
 		}
 		if(this.level.isClientSide) {
-			PlayerSpottedEvent.SoundRemainTime=0;
+			EntitySpottedEvent.SoundRemainTime=0;
 			Minecraft.getInstance().getSoundManager().stop();
 		}
 	}
@@ -86,9 +86,9 @@ public class RockGiantEntity extends MonsterEntity{
 			lasty=currenty;
 			currenty=this.getEntityData().get(RockGiantEntity.HANDSWING);
 			ZeldaBloodBarApi.DisplayBloodBarClient(this.getHealth()/this.getMaxHealth(),this.getName());
-			if(PlayerSpottedEvent.SoundRemainTime==0&&!this.dead) {
+			if(EntitySpottedEvent.SoundRemainTime==0&&!this.dead) {
 				Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,this.blockPosition(), SoundLoader.ROCK_GIANT.get(), SoundCategory.AMBIENT, 10f, 1f);
-				PlayerSpottedEvent.SoundRemainTime=1200;
+				EntitySpottedEvent.SoundRemainTime=1200;
 			}
 		}
 	}

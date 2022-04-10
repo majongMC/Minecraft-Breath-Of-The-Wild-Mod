@@ -29,6 +29,16 @@
       }
     ]
   },
+  "mifa": {
+    "subtitle": "mifa",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:mifa",
+        "stream": true
+      }
+    ]
+  },
   "red_envelope": {
     "subtitle": "red_envelope",
     "replace": "true",
@@ -75,6 +85,16 @@
     "sounds": [
       {
         "name": "zelda:fight",
+        "stream": true
+      }
+    ]
+  },
+  "fight_original": {
+    "subtitle": "fight_original",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:fight_original",
         "stream": true
       }
     ]

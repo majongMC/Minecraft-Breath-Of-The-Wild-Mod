@@ -1,16 +1,23 @@
 package com.majong.zelda.event;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
+import com.majong.zelda.entity.EntityLoader;
+import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.util.ConductiveItem;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -24,11 +31,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 @Mod.EventBusSubscriber()
-public class PlayerTick {
+public class EntityTick {
 	public static final Map<PlayerEntity,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	public static final Map<PlayerEntity,BlockPos> LAST_STAND_POS=new HashMap<>();
 	@SubscribeEvent
-	public static void onPlayerTick(LivingUpdateEvent event) {
+	public static void onEntityTick(LivingUpdateEvent event) {
 		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) event.getEntity();
 			if(DataManager.data.get(player).intemple>1) {
@@ -82,9 +89,25 @@ public class PlayerTick {
 					THUNDER_COUNT_TIME.put(player,100);
 			}
 	}
+		if(Math.random()<ZeldaConfig.YIGATEAM.get()*0.00002&&event.getEntity() instanceof VillagerEntity&&!event.getEntity().level.isClientSide) {
+			List<LivingEntity> list=event.getEntity().level.getEntitiesOfClass(YigaTeamMemberEntity.class,event.getEntity().getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
+
+				@Override
+				public boolean test(Object t) {
+					// TODO 自动生成的方法存根
+					return true;
+				}});
+			if(list.size()>5)
+				return;
+			Entity villager=event.getEntity();
+			BlockPos pos=villager.blockPosition();
+			YigaTeamMemberEntity entity=new YigaTeamMemberEntity(EntityLoader.YIGA_TEAM_MEMBER.get(),event.getEntity().level);
+			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
+			villager.level.addFreshEntity(entity);
+		}
 		if(event.getEntity() instanceof PlayerEntity&&event.getEntity().level.isClientSide) {
-			if(PlayerSpottedEvent.SoundRemainTime>0)
-				PlayerSpottedEvent.SoundRemainTime--;
+			if(EntitySpottedEvent.SoundRemainTime>0)
+				EntitySpottedEvent.SoundRemainTime--;
 		}
 }
 	private static boolean isOutdoors(PlayerEntity player) {
@@ -103,7 +126,7 @@ public class PlayerTick {
 		//DataManager.removedata(event.getOriginal());
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(event.getPlayer(),0L);
 		//PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(event.getOriginal());
-		PlayerTick.THUNDER_COUNT_TIME.put(event.getPlayer(), 100);
+		EntityTick.THUNDER_COUNT_TIME.put(event.getPlayer(), 100);
 		//PlayerTick.THUNDER_COUNT_TIME.remove(event.getOriginal());
 	}
 }
