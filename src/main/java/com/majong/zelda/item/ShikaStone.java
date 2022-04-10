@@ -28,13 +28,15 @@ public class ShikaStone extends Item{
 	}
 	@Override
     public void inventoryTick(ItemStack itemStack, World world, Entity entity, int itemSlot, boolean isSelected) {
-		if(world.dimension().location().toString().equals("minecraft:overworld")&&isSelected&&world.isClientSide&&entity instanceof PlayerEntity) {
+		if(isSelected&&world.isClientSide&&entity instanceof PlayerEntity) {
 			float yaw=((PlayerEntity)entity).yHeadRot;
+			float pitch=((PlayerEntity)entity).xRot;
+			//entity.sendMessage(new TranslationTextComponent("pitch"+pitch), UUID.randomUUID());
 			while(yaw<0)
 				yaw+=360;
 			while(yaw>360)
 				yaw-=360;
-			CompoundNBT nbt = itemStack.getOrCreateTagElement("temple_location");
+			CompoundNBT nbt = itemStack.getOrCreateTagElement("target_location");
 			double rx,rz,targetyaw;
 			if(!nbt.contains("posX"))
 				return;
@@ -44,7 +46,8 @@ public class ShikaStone extends Item{
 				targetyaw=Math.atan(rz/rx)*180/Math.PI+90;
 			 else
 				targetyaw=(Math.atan(rz/rx)*180/Math.PI+180+90);
-			delta=Math.abs(yaw-targetyaw);
+			if(nbt.getInt("posY")==-1)
+				delta=Math.abs(yaw-targetyaw);
 			if(delta<90||delta>270) {
 				if(delta<5||delta>355) {
 					if(soundremaintime<=0) {
@@ -71,10 +74,11 @@ public class ShikaStone extends Item{
     public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if(!worldIn.isClientSide()){
             ItemStack itemStack = playerIn.getItemInHand(handIn);
-            CompoundNBT nbt = itemStack.getOrCreateTagElement("temple_location");
+            CompoundNBT nbt = itemStack.getOrCreateTagElement("target_location");
                 BlockPos blockpos = ((ServerWorld) worldIn).findNearestMapFeature(ModStructures.ZELDA_TEMPLE.get(), playerIn.blockPosition(), 100, false);
                 if(blockpos!=null){
                     nbt.putInt("posX", blockpos.getX());
+                    nbt.putInt("posY", -1);
                     nbt.putInt("posZ", blockpos.getZ());
             }
         }

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
+import com.majong.zelda.data.ZeldaPlayerData;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.util.Festival;
 
@@ -21,6 +22,15 @@ public class PlayerLoggedEvent {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		PlayerEntity player=event.getPlayer();
+		ZeldaPlayerData playerdata=DataManager.data.get(player);
+		for(int i=0;i<4;i++) {
+			switch(i) {
+			case 0:if(playerdata.cd[i]>ZeldaConfig.WATER.get())playerdata.cd[i]=ZeldaConfig.WATER.get();break;
+			case 1:if(playerdata.cd[i]>ZeldaConfig.WIND.get())playerdata.cd[i]=ZeldaConfig.WIND.get();break;
+			case 2:if(playerdata.cd[i]>ZeldaConfig.FIRE.get())playerdata.cd[i]=ZeldaConfig.FIRE.get();break;
+			case 3:if(playerdata.cd[i]>ZeldaConfig.THUNDER.get())playerdata.cd[i]=ZeldaConfig.THUNDER.get();break;
+			}
+		}
 		EntityTick.THUNDER_COUNT_TIME.put(player, 100);
 		DataManager.preventnull(player);
 		DataManager.sendzeldaplayerdatapack(player);

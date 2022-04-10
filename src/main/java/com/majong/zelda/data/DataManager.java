@@ -16,24 +16,26 @@ public class DataManager {
 	public static CompoundNBT readtonbt(PlayerEntity player) {
 		preventnull(player);
 		CompoundNBT nbt=new CompoundNBT();
-		nbt.putBoolean("waterunlocked", data.get(player).unlocked[0]);
-		nbt.putBoolean("windunlocked", data.get(player).unlocked[1]);
-		nbt.putBoolean("fireunlocked", data.get(player).unlocked[2]);
-		nbt.putBoolean("thunderunlocked", data.get(player).unlocked[3]);
-		nbt.putIntArray("skill", data.get(player).skill);
-		nbt.putIntArray("cd", data.get(player).cd);
-		nbt.putInt("intemple", data.get(player).intemple);
+		ZeldaPlayerData playerdata=data.get(player);
+		nbt.putBoolean("waterunlocked", playerdata.unlocked[0]);
+		nbt.putBoolean("windunlocked", playerdata.unlocked[1]);
+		nbt.putBoolean("fireunlocked", playerdata.unlocked[2]);
+		nbt.putBoolean("thunderunlocked", playerdata.unlocked[3]);
+		nbt.putIntArray("skill", playerdata.skill);
+		nbt.putIntArray("cd", playerdata.cd);
+		nbt.putInt("intemple", playerdata.intemple);
 		return nbt;
 	}
 	public static void writefromnbt(CompoundNBT nbt,PlayerEntity player) {
 		preventnull(player);
-		data.get(player).unlocked[0]=nbt.getBoolean("waterunlocked");
-		data.get(player).unlocked[1]=nbt.getBoolean("windunlocked");
-		data.get(player).unlocked[2]=nbt.getBoolean("fireunlocked");
-		data.get(player).unlocked[3]=nbt.getBoolean("thunderunlocked");
-		data.get(player).skill=nbt.getIntArray("skill");
-		data.get(player).cd=nbt.getIntArray("cd");
-		data.get(player).intemple=nbt.getInt("intemple");
+		ZeldaPlayerData playerdata=data.get(player);
+		playerdata.unlocked[0]=nbt.getBoolean("waterunlocked");
+		playerdata.unlocked[1]=nbt.getBoolean("windunlocked");
+		playerdata.unlocked[2]=nbt.getBoolean("fireunlocked");
+		playerdata.unlocked[3]=nbt.getBoolean("thunderunlocked");
+		playerdata.skill=nbt.getIntArray("skill");
+		playerdata.cd=nbt.getIntArray("cd");
+		playerdata.intemple=nbt.getInt("intemple");
 	}
 	public static void sendzeldaplayerdatapack(PlayerEntity player) {
 		Networking.ZELDANBT.send(

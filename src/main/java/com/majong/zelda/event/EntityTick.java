@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
+import com.majong.zelda.data.ZeldaPlayerData;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
@@ -38,7 +39,8 @@ public class EntityTick {
 	public static void onEntityTick(LivingUpdateEvent event) {
 		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) event.getEntity();
-			if(DataManager.data.get(player).intemple>1) {
+			ZeldaPlayerData playerdata=DataManager.data.get(player);
+			if(playerdata.intemple>1) {
 				if(player.isOnGround()&&!player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isAir())
 					LAST_STAND_POS.put(player, player.blockPosition());
 				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {
@@ -49,21 +51,21 @@ public class EntityTick {
 				}
 			}
 			for(int i=0;i<4;i++) {
-			if(DataManager.data.get(player).skill[i]==0) {
-				DataManager.data.get(player).cd[i]--;
-				if(DataManager.data.get(player).cd[i]%20==0&&DataManager.data.get(player).cd[i]>0)
+			if(playerdata.skill[i]==0) {
+				playerdata.cd[i]--;
+				if(playerdata.cd[i]%20==0&&playerdata.cd[i]>0)
 					DataManager.sendzeldaplayerdatapack(player);
-				if(DataManager.data.get(player).cd[i]<=0) {
+				if(playerdata.cd[i]<=0) {
 					switch(i) {
-					case 0:DataManager.data.get(player).cd[i]=ZeldaConfig.WATER.get();break;
-					case 1:DataManager.data.get(player).cd[i]=ZeldaConfig.WIND.get();break;
-					case 2:DataManager.data.get(player).cd[i]=ZeldaConfig.FIRE.get();break;
-					case 3:DataManager.data.get(player).cd[i]=ZeldaConfig.THUNDER.get();break;
+					case 0:playerdata.cd[i]=ZeldaConfig.WATER.get();break;
+					case 1:playerdata.cd[i]=ZeldaConfig.WIND.get();break;
+					case 2:playerdata.cd[i]=ZeldaConfig.FIRE.get();break;
+					case 3:playerdata.cd[i]=ZeldaConfig.THUNDER.get();break;
 					}
 					if(i==0)
-						DataManager.data.get(player).skill[i]=1;
+						playerdata.skill[i]=1;
 					else
-						DataManager.data.get(player).skill[i]=3;
+						playerdata.skill[i]=3;
 					DataManager.sendzeldaplayerdatapack(player);
 				}
 			}
