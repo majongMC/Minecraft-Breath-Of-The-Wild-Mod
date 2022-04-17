@@ -5,11 +5,19 @@ import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.RockGiantEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.gui.OpenDialogBox;
+import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
@@ -32,10 +40,22 @@ public class PlayerUsualEvent {
 		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
 		{
 			if(event.getWorld().isClientSide) {
-				new OpenDialogBox((int) (Math.random()*2));
+				new OpenDialogBox((int) (Math.random()*3));
 			}else {
 				((YigaTeamMemberEntity)event.getTarget()).activate();
 			}
+		}
+		PlayerEntity player=event.getPlayer();
+		if(player!=null&&!player.level.isClientSide) {
+			ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+			if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
+	    		return;
+	    	CompoundNBT nbt = stack.getOrCreateTagElement("static");
+	    	Entity target=event.getTarget();
+	    	if(nbt.contains("activated")&&nbt.getBoolean("activated")&&target instanceof LivingEntity) {
+	    		((LivingEntity)target).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,200,9));
+	    		nbt.putBoolean("activated", false);
+	    	}
 		}
 	}
 	@SubscribeEvent

@@ -11,20 +11,28 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
 import com.majong.zelda.entity.EntityLoader;
+import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -57,6 +65,10 @@ public class PackWithUUID {
         	case 2:placebomb(false);break;
         	case 3:detonate();break;
         	case 4:teleporttooverworld();break;
+        	case 5:usemagnet();break;
+        	case 6:useStatic();break;
+        	case 7:useice();break;
+        	case 8:usecamera();break;
         	}
         });
         ctx.get().setPacketHandled(true);
@@ -187,5 +199,54 @@ public class PackWithUUID {
 				isoffground=true;
 		}
 		return isoffground;
+    }
+    private void usemagnet() {
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	double x=player.getX();
+    	double y=player.getY();
+    	double z=player.getZ();
+    	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
+			@Override
+			public boolean test(Object t) {
+				// TODO 自动生成的方法存根
+				return t instanceof ItemEntity;
+			}});
+    	Iterator<ItemEntity> it=itemlist.iterator();
+		while(it.hasNext()) {
+			ItemEntity item=it.next();
+			item.teleportTo(x, y, z);
+		}
+    }
+    private void useStatic() {
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+    	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
+    		return;
+    	CompoundNBT nbt = stack.getOrCreateTagElement("static");
+    	nbt.putBoolean("activated", true);
+    	player.sendMessage(new TranslationTextComponent("msg.zelda.staticactivated"), UUID.randomUUID());
+    }
+    private void useice() {
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	if(player.isInWater())
+    		return;
+    	BlockPos playerpos=player.blockPosition();
+    	World world=player.level;
+    	for(int x=-8;x<9;x++)
+    		for(int z=-8;z<9;z++) {
+    			BlockPos pos=playerpos.offset(x,-1,z);
+    			if(world.getBlockState(pos).getBlock()==Blocks.WATER) {
+    				world.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+    			}
+    		}
+    }
+    private void usecamera() {
+    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+    	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
+    		return;
+    	CompoundNBT nbt = stack.getOrCreateTagElement("camera");
+    	nbt.putBoolean("activated", true);
+    	player.sendMessage(new TranslationTextComponent("msg.zelda.cameraactivated"), UUID.randomUUID());
     }
 }

@@ -4,6 +4,8 @@ import com.majong.zelda.Utils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.data.ZeldaPlayerData;
+import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.item.ShikaStone;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -57,7 +59,9 @@ public class ZeldaOverlays extends AbstractGui{
 			drawCenteredString(matrixStack,Minecraft.getInstance().font,"x"+playerdata.skill[2],(int)(0.05*w)+24,(int)(0.4*h)+12,16777215);
 		if(playerdata.unlocked[3])
 			drawCenteredString(matrixStack,Minecraft.getInstance().font,"x"+playerdata.skill[3],(int)(0.05*w)+24,(int)(0.5*h)+12,16777215);
-		/*if(player.getMainHandItem().getItem()==ItemLoader.SHIKA_STONE.get())
-			drawCenteredString(matrixStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);*/
+		if(player.getMainHandItem().getItem()==ItemLoader.SHIKA_STONE.get()) {
+			drawCenteredString(matrixStack,Minecraft.getInstance().font,ShikaStone.name,(int)(0.9*w),(int)(0.85*h),16777215);
+			drawCenteredString(matrixStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);
+		}
 	}
 }

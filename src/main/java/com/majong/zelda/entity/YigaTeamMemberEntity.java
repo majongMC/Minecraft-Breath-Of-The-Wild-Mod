@@ -97,12 +97,15 @@ public class YigaTeamMemberEntity extends MonsterEntity{
 		return this.entityData.get(ACTIVATED);
 	}
 	public void yigadamage(LivingEntity entity) {
+		int damage=7;
+		if(entity.level.getServer().isSingleplayer())
+			damage=10;
 		if(entity instanceof PlayerEntity) {
-			if(PlayerHurtEvent.TryReflect((PlayerEntity) entity, this, 5F))
+			if(PlayerHurtEvent.TryReflect((PlayerEntity) entity, this, damage))
 				return;
 		}
-		if(entity.getHealth()>5) {
-			entity.setHealth(entity.getHealth()-5);
+		if(entity.getHealth()>damage) {
+			entity.setHealth(entity.getHealth()-damage);
 			if(entity instanceof PlayerEntity) {
 				Networking.SOUND.send(
 					      PacketDistributor.PLAYER.with(
