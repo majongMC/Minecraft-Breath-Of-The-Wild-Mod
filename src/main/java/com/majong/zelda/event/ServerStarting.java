@@ -4,19 +4,19 @@ import com.majong.zelda.api.util.AttributeDamageApi;
 import com.majong.zelda.api.util.ConductiveItemApi;
 import com.majong.zelda.entity.GuardianEntity;
 
-import net.minecraft.entity.monster.BlazeEntity;
-import net.minecraft.entity.monster.StrayEntity;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.monster.Blaze;
+import net.minecraft.world.entity.monster.Stray;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 @Mod.EventBusSubscriber()
 public class ServerStarting {
 	@SubscribeEvent
-	public static void onServerStarting(FMLServerStartingEvent event) {
-		AttributeDamageApi.registerrestraint(AttributeDamageApi.ICE_RESTRAINTED, BlazeEntity.class);
-		AttributeDamageApi.registerrestraint(AttributeDamageApi.FIRE_RESTRAINTED, StrayEntity.class);
+	public static void onServerStarting(ServerStartingEvent event) {
+		AttributeDamageApi.registerrestraint(AttributeDamageApi.ICE_RESTRAINTED, Blaze.class);
+		AttributeDamageApi.registerrestraint(AttributeDamageApi.FIRE_RESTRAINTED, Stray.class);
 		AttributeDamageApi.registerrestraint(AttributeDamageApi.ANCIENT_RESTRAINTED, GuardianEntity.class);
 		registerConductiveItem();
 	}

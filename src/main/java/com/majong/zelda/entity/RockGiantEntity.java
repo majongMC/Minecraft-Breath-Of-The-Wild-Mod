@@ -1,45 +1,45 @@
 package com.majong.zelda.entity;
 
-import com.majong.zelda.api.overlays.ZeldaBloodBarApi;
+import com.majong.zelda.api.overlays.ZeldaHealthBarApi;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.entity.ai.DestroyBlockGoal;
 import com.majong.zelda.event.EntitySpottedEvent;
 import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ToolActions;
 
-public class RockGiantEntity extends MonsterEntity{
-	public static final DataParameter<Integer> HANDSWING = EntityDataManager.defineId(RockGiantEntity.class, DataSerializers.INT);
+public class RockGiantEntity extends Monster{
+	public static final EntityDataAccessor<Integer> HANDSWING = SynchedEntityData.defineId(RockGiantEntity.class, EntityDataSerializers.INT);
 	public float lasty=0;
 	public float currenty=0;
-	public RockGiantEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+	public RockGiantEntity(EntityType<? extends Monster> type, Level worldIn) {
 		super(type, worldIn);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 		this.goalSelector.addGoal(1, new DestroyBlockGoal(this,4));
 		this.goalSelector.addGoal(2, new DelayMeleeAttackGoal(this, 1.0D, true,10));
-		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 50.0F));
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 50.0F));
+		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
 		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
@@ -51,9 +51,9 @@ public class RockGiantEntity extends MonsterEntity{
 	}
 	@Override
 	public boolean skipAttackInteraction(Entity entityIn) {
-		if(entityIn instanceof PlayerEntity&&!this.level.isClientSide) {
-			PlayerEntity player=(PlayerEntity) entityIn;
-			if(player.getMainHandItem().getToolTypes().contains(ToolType.PICKAXE)) {
+		if(entityIn instanceof Player&&!this.level.isClientSide) {
+			Player player=(Player) entityIn;
+			if(player.getMainHandItem().getItem().canPerformAction(player.getMainHandItem(), ToolActions.PICKAXE_DIG)) {
 				this.hurt(new EntityDamageSource("pickaxe",player), 20);
 			}
 		}
@@ -62,7 +62,7 @@ public class RockGiantEntity extends MonsterEntity{
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if(!this.level.isClientSide&&(cause.getEntity() instanceof PlayerEntity||cause.isExplosion())) {
+		if(!this.level.isClientSide&&(cause.getEntity() instanceof Player||cause.isExplosion())) {
 		this.spawnAtLocation(new ItemStack(Items.ANCIENT_DEBRIS,(int) (Math.random()*2)));
 		this.spawnAtLocation(new ItemStack(Items.DIAMOND_ORE,(int) (Math.random()*3)));
 		this.spawnAtLocation(new ItemStack(Items.EMERALD_ORE,(int) (Math.random()*3)));
@@ -85,9 +85,9 @@ public class RockGiantEntity extends MonsterEntity{
 		if(this.level.isClientSide) {
 			lasty=currenty;
 			currenty=this.getEntityData().get(RockGiantEntity.HANDSWING);
-			ZeldaBloodBarApi.DisplayBloodBarClient(this.getHealth()/this.getMaxHealth(),this.getName());
-			if(EntitySpottedEvent.SoundRemainTime==0&&!this.dead) {
-				Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,this.blockPosition(), SoundLoader.ROCK_GIANT.get(), SoundCategory.AMBIENT, 10f, 1f);
+			ZeldaHealthBarApi.DisplayHealthBarClient(this.getHealth()/this.getMaxHealth(),this.getName());
+			if(EntitySpottedEvent.SoundRemainTime<=0&&!this.dead) {
+				Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,this.blockPosition(), SoundLoader.ROCK_GIANT.get(), SoundSource.AMBIENT, 10f, 1f);
 				EntitySpottedEvent.SoundRemainTime=1200;
 			}
 		}

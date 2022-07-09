@@ -1,8 +1,8 @@
 package com.majong.zelda.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class StaticTempleStartBlock extends TempleStartBlock{
 	   @Override

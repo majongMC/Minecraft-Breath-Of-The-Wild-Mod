@@ -2,9 +2,9 @@ package com.majong.zelda.network;
 
 import com.majong.zelda.Utils;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Networking {
 	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKWITHUUID,FOODMESSAGEPACK,BAR;
@@ -77,10 +77,10 @@ public class Networking {
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
         );
-        BAR.messageBuilder(BloodBarPack.class, nextID())
-                .encoder(BloodBarPack::toBytes)
-                .decoder(BloodBarPack::new)
-                .consumer(BloodBarPack::handler)
+        BAR.messageBuilder(HealthBarPack.class, nextID())
+                .encoder(HealthBarPack::toBytes)
+                .decoder(HealthBarPack::new)
+                .consumer(HealthBarPack::handler)
                 .add();
     }
 }

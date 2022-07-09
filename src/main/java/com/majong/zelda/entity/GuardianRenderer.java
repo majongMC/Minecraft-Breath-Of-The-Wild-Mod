@@ -2,23 +2,23 @@ package com.majong.zelda.entity;
 
 import com.majong.zelda.Utils;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class GuardianRenderer extends MobRenderer<GuardianEntity, GuardianModel>{
 
-	public GuardianRenderer(EntityRendererManager renderManagerIn, GuardianModel entityModelIn, float shadowSizeIn) {
+	public GuardianRenderer(EntityRendererProvider.Context renderManagerIn, GuardianModel entityModelIn, float shadowSizeIn) {
 		super(renderManagerIn, entityModelIn, shadowSizeIn);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
-	public GuardianRenderer(EntityRendererManager renderManagerIn) {
-		super(renderManagerIn, new GuardianModel(), 0.7F);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+	public GuardianRenderer(EntityRendererProvider.Context renderManagerIn) {
+		super(renderManagerIn, new GuardianModel(renderManagerIn.bakeLayer(GuardianModel.LAYER_LOCATION)), 0.7F);
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	@Override
 	public ResourceLocation getTextureLocation(GuardianEntity entity) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/guardian.png");
 	}
 

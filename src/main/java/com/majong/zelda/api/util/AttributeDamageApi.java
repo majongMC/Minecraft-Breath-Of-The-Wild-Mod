@@ -3,20 +3,20 @@ package com.majong.zelda.api.util;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class AttributeDamageApi {
-	public static final Collection<Class<? extends LivingEntity>> FIRE_RESTRAINTED=new ArrayList<>();//±»»ğÊôĞÔ¿ËÖÆ
-	public static final Collection<Class<? extends LivingEntity>> ICE_RESTRAINTED=new ArrayList<>();//±»±ùÊôĞÔ¿ËÖÆ
-	public static final Collection<Class<? extends LivingEntity>> ANCIENT_RESTRAINTED=new ArrayList<>();//±»¹Å´úÉËº¦¿ËÖÆ
-	//ÔÚFMLServerStartingEventÊÂ¼şÖĞÊ¹ÓÃÒÔÏÂ·½·¨×¢²áÊôĞÔ¿ËÖÆ(×¢²áºóµ±Ä¿±êÉúÎïÊÜµ½¶ÔÓ¦ÊôĞÔÉËº¦Ê±±»ÃëÉ±)
-	//µÚÒ»¸ö²ÎÊıÎª±»¿ËÖÆµÄÊôĞÔ£¬´ÓÉÏ·½µÄ³£Á¿ÖĞÑ¡ÔñÒ»¸öÌîÈë
-	//µÚ¶ş¸ö²ÎÊıÎª±»¿ËÖÆÉúÎïËùÊôµÄÀà
-	//Ê¹ÓÃÊ¾Àı¼ûcom.majong.zelda.event.ServerStarting
+	public static final Collection<Class<? extends LivingEntity>> FIRE_RESTRAINTED=new ArrayList<>();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½
+	public static final Collection<Class<? extends LivingEntity>> ICE_RESTRAINTED=new ArrayList<>();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½
+	public static final Collection<Class<? extends LivingEntity>> ANCIENT_RESTRAINTED=new ArrayList<>();//ï¿½ï¿½ï¿½Å´ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½FMLServerStartingEventï¿½Â¼ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½(×¢ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½Ê±ï¿½ï¿½ï¿½ï¿½É±)
+	//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//Ê¹ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½com.majong.zelda.event.ServerStarting
 	public static void registerrestraint(Collection<Class<? extends LivingEntity>> restrainted_list,Class<? extends LivingEntity> entityclass) {
     	restrainted_list.add(entityclass);
     }
-	//ÔÚFMLServerStartingEventÊÂ¼şÖĞÊ¹ÓÃÒÔÏÂ·½·¨ÒÆ³ıÊôĞÔ¿ËÖÆ(ÇëÊ¹ÓÃ×îµÍµÄÓÅÏÈ¼¶)
+	//ï¿½ï¿½FMLServerStartingEventï¿½Â¼ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½(ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½È¼ï¿½)
 	public static void removerestraint(Collection<Class<? extends LivingEntity>> restrainted_list,Class<? extends LivingEntity> entityclass) {
     	if(restrainted_list.contains(entityclass))
     		restrainted_list.remove(entityclass);

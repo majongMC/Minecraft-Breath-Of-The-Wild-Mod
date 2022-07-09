@@ -2,27 +2,25 @@ package com.majong.zelda.util;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.UUID;
 
-import com.majong.zelda.Utils;
 import com.majong.zelda.api.util.AttributeDamageApi;
 import com.majong.zelda.config.ZeldaConfig;
+import com.majong.zelda.network.Networking;
+import com.majong.zelda.network.SoundPack;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.PacketDistributor;
 
 public class AttributeDamage {
 	//public static final Collection<Class<? extends LivingEntity>> FIRE_RESTRAINTED=new ArrayList<>();
@@ -38,7 +36,7 @@ public class AttributeDamage {
 	}
     public static void icedamage(LivingEntity living,Entity attacker) {
     	Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.ICE_RESTRAINTED.iterator();
-    	living.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,200,9));
+    	living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,200,9));
     	while(it.hasNext())
 		{
     		Class<? extends LivingEntity> restrainted=it.next();
@@ -48,24 +46,24 @@ public class AttributeDamage {
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
     	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()) {
-    		if(living instanceof PlayerEntity) {
-    			PlayerEntity player=(PlayerEntity) living;
+    		if(living instanceof Player) {
+    			Player player=(Player) living;
     			player.drop(player.getMainHandItem(), true, true);
     			player.drop(player.getOffhandItem(), true, true);
     			if(!player.getMainHandItem().isEmpty())
-    				player.sendMessage(new TranslationTextComponent(player.getMainHandItem().getItem().getDescription().getString()+"µôÂä"), UUID.randomUUID());
+    				player.sendSystemMessage(Component.translatable(player.getMainHandItem().getItem().getDescription().getString()+"æŽ‰è½"));
     			if(!player.getOffhandItem().isEmpty())
-        			player.sendMessage(new TranslationTextComponent(player.getOffhandItem().getItem().getDescription().getString()+"µôÂä"), UUID.randomUUID());
-    			living.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
-    			living.setItemInHand(Hand.OFF_HAND, ItemStack.EMPTY);
+        			player.sendSystemMessage(Component.translatable(player.getOffhandItem().getItem().getDescription().getString()+"æŽ‰è½"));
+    			living.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+    			living.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
     		}
     		else {
 			Entity itemdrops1=new ItemEntity(living.level,living.getX(),living.getY(),living.getZ(),living.getMainHandItem());
 			living.level.addFreshEntity(itemdrops1);
 			Entity itemdrops2=new ItemEntity(living.level,living.getX(),living.getY(),living.getZ(),living.getOffhandItem());
 			living.level.addFreshEntity(itemdrops2);
-			living.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
-			living.setItemInHand(Hand.OFF_HAND, ItemStack.EMPTY);
+			living.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+			living.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
     		}
 		}
 	}
@@ -80,19 +78,30 @@ public class AttributeDamage {
 	    			return;
 	    		}
 			}
-			if(ischaoisland(living.level,living.blockPosition())&&living instanceof WitherEntity&&ZeldaConfig.KILLWITHER.get()) {
+	    	if((living.getMaxHealth()<=20&&!(living instanceof Player))||living instanceof Warden) {
+	    		living.teleportTo(living.getX(), -80, living.getZ());
+	    		if(attacker instanceof Player) {
+	    			Networking.SOUND.send(
+		                    PacketDistributor.PLAYER.with(
+		                            () -> (ServerPlayer) attacker
+		                    ),
+		                    new SoundPack());
+	    		}
+	    		return;   
+	    	}
+			/*if(ischaoisland(living.level,living.blockPosition())&&living instanceof WitherEntity&&ZeldaConfig.KILLWITHER.get()) {
 				living.spawnAtLocation(new ItemStack(Items.NETHER_STAR,1));
 				living.kill();
 				return;
-			}
+			}*/
 			if(living.canChangeDimensions())
 				living.hurt(new EntityDamageSource("ancient",attacker),20);
 			else
 				living.hurt(new EntityDamageSource("ancient",attacker),40);
 		}
 	}
-    public static boolean ischaoisland(World world,BlockPos pos) {
-    	if(!world.dimension().location().equals(DimensionType.END_EFFECTS)||!Utils.DRACONIC_EVOLUTION_LOADED)
+    /*public static boolean ischaoisland(Level Level,BlockPos pos) {
+    	if(!Level.dimension().location().equals(DimensionType.END_EFFECTS)||!Utils.DRACONIC_EVOLUTION_LOADED)
     		return false;
     	int x=Math.abs(pos.getX());
     	int y=Math.abs(pos.getY());
@@ -104,7 +113,7 @@ public class AttributeDamage {
     }
     private static boolean isnear10000(int x) {
     	return x%10000<128||x%10000>(10000-128);
-    }
+    }*/
     public static void registerrestraint(Collection<Class<? extends LivingEntity>> restrainted_list,Class<? extends LivingEntity> entityclass) {
     	restrainted_list.add(entityclass);
     }

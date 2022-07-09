@@ -3,24 +3,25 @@ package com.majong.zelda.network;
 import java.util.function.Supplier;
 
 import com.majong.zelda.data.DataManager;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class ZeldaNBTPack {
 	private final int type;
-	private final CompoundNBT nbt;
-    public ZeldaNBTPack(PacketBuffer buffer) {
+	private final CompoundTag nbt;
+    public ZeldaNBTPack(FriendlyByteBuf buffer) {
     	this.type=buffer.readInt();
     	this.nbt=buffer.readNbt();
     }
 
-    public ZeldaNBTPack(int type,CompoundNBT nbt) {
+    public ZeldaNBTPack(int type,CompoundTag nbt) {
     	this.type=type;
     	this.nbt=nbt;
     }
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
     	buf.writeInt(type);
     	buf.writeNbt(nbt);
     }

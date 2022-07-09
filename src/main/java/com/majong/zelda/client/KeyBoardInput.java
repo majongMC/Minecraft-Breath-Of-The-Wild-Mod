@@ -3,12 +3,12 @@ package com.majong.zelda.client;
 import org.lwjgl.glfw.GLFW;
 
 import com.majong.zelda.Utils;
-import com.majong.zelda.network.PackWithUUID;
 import com.majong.zelda.network.Networking;
+import com.majong.zelda.network.PackWithUUID;
+import com.mojang.blaze3d.platform.InputConstants;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -18,16 +18,16 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class KeyBoardInput {
-	public static final KeyBinding SKILL_KEY = new KeyBinding("key.skill",
+	public static final KeyMapping SKILL_KEY = new KeyMapping("key.skill",
             KeyConflictContext.IN_GAME,
             KeyModifier.NONE,
-            InputMappings.Type.KEYSYM,
+            InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
             "key.category." + Utils.MOD_ID);
-	public static final KeyBinding DETONATE_KEY = new KeyBinding("key.detonate",
+	public static final KeyMapping DETONATE_KEY = new KeyMapping("key.detonate",
             KeyConflictContext.IN_GAME,
             KeyModifier.NONE,
-            InputMappings.Type.KEYSYM,
+            InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_C,
             "key.category." + Utils.MOD_ID);
 	@SubscribeEvent

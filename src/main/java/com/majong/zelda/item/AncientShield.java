@@ -1,21 +1,17 @@
 package com.majong.zelda.item;
 
-import javax.annotation.Nullable;
-
 import com.majong.zelda.Utils;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
+import net.minecraft.world.item.ShieldItem;
 
 public class AncientShield extends ShieldItem{
 
 	public AncientShield() {
 		super(new Properties().tab(Utils.ZELDA_CREATIVE_TAB).durability(320));
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
-	@Override
+	/*@Override
     public boolean isShield(ItemStack stack, @Nullable LivingEntity entity) {
 		return true;
-	}
+	}*/
 }

@@ -3,33 +3,33 @@ package com.majong.zelda.gui;
 import com.majong.zelda.Utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
 
 public class OpenDialogBox {
 	private String[] text,text1,text2;
 	public OpenDialogBox(int text) {
 		init();
 		switch(text) {
-		case 0:Minecraft.getInstance().setScreen(new DialogBox(new TranslationTextComponent(Utils.MOD_ID + ".dialog"),this.text));break;
-		case 1:Minecraft.getInstance().setScreen(new DialogBox(new TranslationTextComponent(Utils.MOD_ID + ".dialog"),text1));break;
-		case 2:Minecraft.getInstance().setScreen(new DialogBox(new TranslationTextComponent(Utils.MOD_ID + ".dialog"),text2));break;
-		default:Minecraft.getInstance().setScreen(new DialogBox(new TranslationTextComponent(Utils.MOD_ID + ".dialog"),this.text));
+		case 0:Minecraft.getInstance().setScreen(new DialogBox(Component.translatable(Utils.MOD_ID + ".dialog"),this.text));break;
+		case 1:Minecraft.getInstance().setScreen(new DialogBox(Component.translatable(Utils.MOD_ID + ".dialog"),text1));break;
+		case 2:Minecraft.getInstance().setScreen(new DialogBox(Component.translatable(Utils.MOD_ID + ".dialog"),text2));break;
+		default:Minecraft.getInstance().setScreen(new DialogBox(Component.translatable(Utils.MOD_ID + ".dialog"),this.text));
 		}
 	}
 	private void init() {
 		text=new String[2];
-		text[0]="ÎØÎØ...... ÎÒÃÇ²»»áÔÙ¼ûÃæÁË......";
-		text[1]="¿É¸Ç´óÈËµÄ³ğµĞ£¡";
+		text[0]="å‘œå‘œ...... æˆ‘ä»¬ä¸ä¼šå†è§é¢äº†......";
+		text[1]="çº³å‘½æ¥ï¼";
 		text1=new String[5];
-		text1[0]="ÎØÎØ......";
-		text1[1]="ÎØÎØ...... ÎÒÏëÒª......";
-		text1[2]="......¿¾ÈıÎÄÓã";
-		text1[3]="»¹ÓĞ......";
-		text1[4]="¿É¸Ç´óÈËµÄ³ğµĞ£¡";
+		text1[0]="å‘œå‘œ......";
+		text1[1]="å‘œå‘œ...... æˆ‘æƒ³è¦......";
+		text1[2]="......çƒ¤ä¸‰æ–‡é±¼";
+		text1[3]="è¿˜æœ‰......";
+		text1[4]="çº³å‘½æ¥ï¼";
 		text2=new String[4];
-		text2[0]="·ç¾°ÕæÃÀ°¡......";
-		text2[1]="ºÃºÃ¼Ç×¡ÕâÆ¬ÃÀ¾°°É......";
-		text2[2]="ÒòÎªÕâ½«ÊÇÄã.....ÁÙÖÕÇ°µÄ·ç¾°£¡";
-		text2[3]="¿É¸Ç´óÈËµÄ³ğµĞ£¡";
+		text2[0]="é£æ™¯çœŸç¾å•Š......";
+		text2[1]="å¥½å¥½è®°ä½è¿™ç‰‡ç¾æ™¯å§......";
+		text2[2]="å› ä¸ºè¿™å°†æ˜¯ä½ .....ä¸´ç»ˆå‰çš„é£æ™¯ï¼";
+		text2[3]="çº³å‘½æ¥ï¼";
 	}
 }

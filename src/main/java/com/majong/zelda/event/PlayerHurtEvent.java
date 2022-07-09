@@ -3,11 +3,10 @@ package com.majong.zelda.event;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,11 +15,11 @@ import net.minecraftforge.fml.common.Mod;
 public class PlayerHurtEvent {
 	@SubscribeEvent
 	public static void onPlayerHurt(LivingDamageEvent event) {
-		if(event.getEntityLiving() instanceof PlayerEntity&&!event.getEntityLiving().level.isClientSide) {
-			event.setCanceled(TryReflect((PlayerEntity) event.getEntityLiving(),event.getSource().getEntity(),event.getAmount()));
+		if(event.getEntityLiving() instanceof Player&&!event.getEntityLiving().level.isClientSide) {
+			event.setCanceled(TryReflect((Player) event.getEntityLiving(),event.getSource().getEntity(),event.getAmount()));
 		}
 	}
-	public static boolean TryReflect(PlayerEntity player,Entity source,float amount) {
+	public static boolean TryReflect(Player player,Entity source,float amount) {
 		long respondtime=player.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
 			if(source==null||!(source instanceof LivingEntity))
@@ -38,8 +37,8 @@ public class PlayerHurtEvent {
 			source.hurt(new EntityDamageSource("shield",player).setThorns(), amountback);
 			float yaw=player.yHeadRot;
 			float f = 2F;
-			double mz = MathHelper.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
-			double mx = -MathHelper.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			source.setDeltaMovement(source.getDeltaMovement().add(mx,0.1, mz));
 			return true;
 		}

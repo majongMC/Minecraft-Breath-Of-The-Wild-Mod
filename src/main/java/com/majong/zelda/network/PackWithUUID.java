@@ -14,35 +14,33 @@ import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public class PackWithUUID {
 	private final UUID uuid;
 	private final int type;
-    public PackWithUUID(PacketBuffer buffer) {
+    public PackWithUUID(FriendlyByteBuf buffer) {
     	type=buffer.readInt();
     	uuid=buffer.readUUID();
     }
@@ -52,7 +50,7 @@ public class PackWithUUID {
     	this.uuid=Minecraft.getInstance().player.getUUID();
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
     	buf.writeInt(type);
     	buf.writeUUID(uuid);
     }
@@ -74,35 +72,35 @@ public class PackWithUUID {
         ctx.get().setPacketHandled(true);
     }
     private void teleporttooverworld() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	TempleDimensionData.ExitTemple(player.level, player);
     }
     private void useskill() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	//DataManager.preventnull(player);
     	if(player.isShiftKeyDown()&&DataManager.data.get(player).unlocked[1]&&DataManager.data.get(player).skill[1]>0) {
-    		player.addEffect(new EffectInstance(Effects.LEVITATION,60,10));
+    		player.addEffect(new MobEffectInstance(MobEffects.LEVITATION,60,10));
     		DataManager.data.get(player).skill[1]--;
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     	else if(DataManager.data.get(player).unlocked[3]&&DataManager.data.get(player).skill[3]>0) {
-    		World world=Minecraft.getInstance().getSingleplayerServer().getLevel(player.level.dimension());
+    		Level Level=Minecraft.getInstance().getSingleplayerServer().getLevel(player.level.dimension());
     		List<Entity> partentitylist=new ArrayList<>();
-    		List<Entity> targrtlist= world.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
+    		List<Entity> targrtlist= Level.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
-					// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+					// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					if(t instanceof PartEntity) {
 						Entity parent=((PartEntity)t).getParent();
-						if(parent instanceof LivingEntity&&(parent.getClassification(false)==EntityClassification.MONSTER||(!(parent instanceof PlayerEntity)&&((LivingEntity) parent).getMaxHealth()>101))) {
+						if(parent instanceof LivingEntity&&(parent.getClassification(false)==MobCategory.MONSTER||(!(parent instanceof Player)&&((LivingEntity) parent).getMaxHealth()>101))) {
 							partentitylist.add(parent);
 							return false;
 						}
 					}
 					if(t instanceof LivingEntity) {
 						LivingEntity entity=(LivingEntity) t;
-						if(entity.getClassification(false)==EntityClassification.MONSTER||(!(entity instanceof PlayerEntity)&&entity.getMaxHealth()>101)) {
+						if(entity.getClassification(false)==MobCategory.MONSTER||(!(entity instanceof Player)&&entity.getMaxHealth()>101)) {
 							return true;
 						}
 						else
@@ -115,10 +113,10 @@ public class PackWithUUID {
     		Iterator<Entity> it=targrtlist.iterator();
     		while(it.hasNext()) {
     			LivingEntity target=(LivingEntity) it.next();
-    			LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,world);
+    			LightningBolt lightning=new LightningBolt(EntityType.LIGHTNING_BOLT,Level);
     			lightning.setPos(target.getX(), target.getY(), target.getZ());
     			lightning.setVisualOnly(true);
-    			world.addFreshEntity(lightning);
+    			Level.addFreshEntity(lightning);
     			if(target.getMaxHealth()<=100)
     				target.hurt(new EntityDamageSource("hero",player).setThorns(), 15);
     			else
@@ -126,19 +124,19 @@ public class PackWithUUID {
     			target.setSecondsOnFire(10);
     		}
     		for(int i=0;i<10;i++) {
-    			LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,world);
+    			LightningBolt lightning=new LightningBolt(EntityType.LIGHTNING_BOLT,Level);
     			lightning.setPos(player.getX()+Math.random()*20-10, player.getY()-3, player.getZ()+Math.random()*20-10);
     			lightning.setVisualOnly(true);
-    			world.addFreshEntity(lightning);
+    			Level.addFreshEntity(lightning);
     		}
     		DataManager.data.get(player).skill[3]--;
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     }
     private void placebomb(boolean round) {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
-			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
+			player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
 			return;
 		}
     	BombEntity bomb=new BombEntity(EntityLoader.BOMB.get(),player.level);
@@ -147,30 +145,30 @@ public class PackWithUUID {
     	player.level.addFreshEntity(bomb);
     }
     private void detonate() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
-			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
+			player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
 			return;
 		}
     	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,new Predicate<Object>() {
 
 			@Override
 			public boolean test(Object t) {
-				// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+				// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				return t instanceof BombEntity&&((BombEntity)t).owner==player;
 			}});
 		Iterator<LivingEntity> it=bomblist.iterator();
 		boolean iswindbomb=iswindbomb(player);
 		if(iswindbomb) {
-			player.removeEffect(Effects.SLOW_FALLING);
-			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+			player.removeEffect(MobEffects.SLOW_FALLING);
+			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
 			player.hurt(DamageSource.explosion((LivingEntity)null), 2);
-			player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,5,5));
+			player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,5,5));
 			float yaw=player.yHeadRot;
 			float f = 30F;
-			double mz = MathHelper.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
-			double mx = -MathHelper.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			player.setDeltaMovement(player.getDeltaMovement().add(mx,5, mz));
 		}
 		while(it.hasNext()) {
@@ -180,13 +178,13 @@ public class PackWithUUID {
 			}
 		}
     }
-    private boolean iswindbomb(PlayerEntity player) {
+    private boolean iswindbomb(Player player) {
     	if(!player.isNoGravity()||!ZeldaConfig.WINDBOMB.get())
     		return false;
     	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(5, 5, 5) ,new Predicate<Object>() {
 			@Override
 			public boolean test(Object t) {
-				// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+				// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				return t instanceof BombEntity&&((BombEntity)t).owner==player;
 			}});
     	if(bomblist.size()!=2)
@@ -201,14 +199,14 @@ public class PackWithUUID {
 		return isoffground;
     }
     private void usemagnet() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	double x=player.getX();
     	double y=player.getY();
     	double z=player.getZ();
     	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
 			@Override
 			public boolean test(Object t) {
-				// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+				// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				return t instanceof ItemEntity;
 			}});
     	Iterator<ItemEntity> it=itemlist.iterator();
@@ -218,35 +216,35 @@ public class PackWithUUID {
 		}
     }
     private void useStatic() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
-    	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;
-    	CompoundNBT nbt = stack.getOrCreateTagElement("static");
+    	CompoundTag nbt = stack.getOrCreateTagElement("static");
     	nbt.putBoolean("activated", true);
-    	player.sendMessage(new TranslationTextComponent("msg.zelda.staticactivated"), UUID.randomUUID());
+    	player.sendSystemMessage(Component.translatable("msg.zelda.staticactivated"));
     }
     private void useice() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(player.isInWater())
     		return;
     	BlockPos playerpos=player.blockPosition();
-    	World world=player.level;
+    	Level Level=player.level;
     	for(int x=-8;x<9;x++)
     		for(int z=-8;z<9;z++) {
     			BlockPos pos=playerpos.offset(x,-1,z);
-    			if(world.getBlockState(pos).getBlock()==Blocks.WATER) {
-    				world.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+    			if(Level.getBlockState(pos).getBlock()==Blocks.WATER) {
+    				Level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
     			}
     		}
     }
     private void usecamera() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
-    	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+    	Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;
-    	CompoundNBT nbt = stack.getOrCreateTagElement("camera");
+    	CompoundTag nbt = stack.getOrCreateTagElement("camera");
     	nbt.putBoolean("activated", true);
-    	player.sendMessage(new TranslationTextComponent("msg.zelda.cameraactivated"), UUID.randomUUID());
+    	player.sendSystemMessage(Component.translatable("msg.zelda.cameraactivated"));
     }
 }

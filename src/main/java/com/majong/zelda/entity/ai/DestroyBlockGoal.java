@@ -1,10 +1,11 @@
 package com.majong.zelda.entity.ai;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class DestroyBlockGoal extends Goal{
 	private Entity owner;
@@ -15,20 +16,20 @@ public class DestroyBlockGoal extends Goal{
 	}
 	@Override
 	public boolean canUse() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(owner.level.getGameTime()%20!=5)
 			return false;
 		int X=(int) owner.getX();
 		int Y=(int) owner.getY();
 		int Z=(int) owner.getZ();
-		World world=owner.level;
+		Level Level=owner.level;
 		for(int x=X-range;x<=X+range;x++) {
 			for(int z=Z-range;z<=Z+range;z++) {
-				for(int y=Y;y<=Y+2*range;y++) {
+				for(int y=Y;y<=Y+range;y++) {
 					BlockPos pos=new BlockPos(x,y,z);
-					BlockState state=world.getBlockState(pos);
-					if(!state.isAir()&&!state.getBlock().hasTileEntity(state)&&state.getDestroySpeed(world, pos)<50&&state.getDestroySpeed(world, pos)>0) {
-						world.destroyBlock(pos, false);
+					BlockState state=Level.getBlockState(pos);
+					if(!state.isAir()&&!(state.getBlock() instanceof EntityBlock)&&state.getDestroySpeed(Level, pos)<50&&state.getDestroySpeed(Level, pos)>0) {
+						Level.destroyBlock(pos, false, owner);
 					}
 				}
 			}

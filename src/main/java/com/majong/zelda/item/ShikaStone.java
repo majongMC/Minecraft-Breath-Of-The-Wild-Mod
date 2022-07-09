@@ -1,7 +1,6 @@
 package com.majong.zelda.item;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -10,54 +9,53 @@ import com.majong.zelda.gui.ShikaStoneGui;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.world.structure.ModStructures;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 public class ShikaStone extends Item{
 	private int soundremaintime=0;
 	public static double delta=180;
-	public static ITextComponent name=new TranslationTextComponent("tooltip.zelda.temple");
+	public static Component name=Component.translatable("tooltip.zelda.temple");
 	private boolean twice=false;
 	public ShikaStone() {
 		super(new Properties().tab(Utils.ZELDA_CREATIVE_TAB).stacksTo(1));
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	@Override
-    public void inventoryTick(ItemStack itemStack, World world, Entity entity, int itemSlot, boolean isSelected) {
-		if(isSelected&&world.isClientSide&&entity instanceof PlayerEntity) {
-			CompoundNBT camera =itemStack.getOrCreateTagElement("camera");
+    public void inventoryTick(ItemStack itemStack, Level world, Entity entity, int itemSlot, boolean isSelected) {
+		if(isSelected&&world.isClientSide&&entity instanceof Player) {
+			CompoundTag camera =itemStack.getOrCreateTagElement("camera");
 			if(camera.contains("target_block")) {
 				Block block=Registry.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
 				name=block.getName();
 			}else {
-				name=new TranslationTextComponent("tooltip.zelda.temple");
+				name=Component.translatable("tooltip.zelda.temple");
 			}
-			float yaw=((PlayerEntity)entity).yHeadRot;
-			float pitch=((PlayerEntity)entity).xRot;
+			float yaw=((Player)entity).yHeadRot;
+			float pitch=((Player)entity).xRotO;
 			//entity.sendMessage(new TranslationTextComponent("pitch"+pitch), UUID.randomUUID());
 			while(yaw<0)
 				yaw+=360;
 			while(yaw>360)
 				yaw-=360;
-			CompoundNBT nbt = itemStack.getOrCreateTagElement("target_location");
+			CompoundTag nbt = itemStack.getOrCreateTagElement("target_location");
 			double rx,rz,targetyaw;
 			if(!nbt.contains("posX"))
 				return;
@@ -79,7 +77,7 @@ public class ShikaStone extends Item{
 			if(delta<90||delta>270) {
 				if(delta<5||delta>355) {
 					if(soundremaintime<=0) {
-						world.playSound((PlayerEntity)entity, entity.blockPosition(), SoundLoader.RADAR.get(), SoundCategory.AMBIENT, 10f, 1f);
+						world.playSound((Player)entity, entity.blockPosition(), SoundLoader.RADAR.get(), SoundSource.AMBIENT, 10f, 1f);
 						if(twice) {
 							soundremaintime=20;
 							twice=false;
@@ -90,7 +88,7 @@ public class ShikaStone extends Item{
 					}
 				}else {
 					if(soundremaintime<=0) {
-						world.playSound((PlayerEntity)entity, entity.blockPosition(), SoundLoader.RADAR.get(), SoundCategory.AMBIENT, 10f, 1f);
+						world.playSound((Player)entity, entity.blockPosition(), SoundLoader.RADAR.get(), SoundSource.AMBIENT, 10f, 1f);
 						soundremaintime=(int) (20+delta/2);
 					}
 				}
@@ -99,33 +97,33 @@ public class ShikaStone extends Item{
 		}
 	}
 	@Override
-	public ActionResultType useOn(ItemUseContext p_195939_1_) {
-		World world = p_195939_1_.getLevel();
-	      if (!(world instanceof ServerWorld)) {
+	public InteractionResult useOn(UseOnContext p_195939_1_) {
+		Level world = p_195939_1_.getLevel();
+	      if (world.isClientSide) {
 	         return super.useOn(p_195939_1_);
 	      } else {
 	    	  ItemStack itemStack = p_195939_1_.getItemInHand();
-	          CompoundNBT camera =itemStack.getOrCreateTagElement("camera");
+	          CompoundTag camera =itemStack.getOrCreateTagElement("camera");
 	          if(camera.contains("activated")&&camera.getBoolean("activated")) {
 	        	  BlockPos blockpos = p_195939_1_.getClickedPos();
 	        	  Block block=world.getBlockState(blockpos).getBlock();
 	        	  if(block!=null) {
-	        		camera.putString("target_block", block.getRegistryName().toString());
-	        	  	p_195939_1_.getPlayer().sendMessage(new TranslationTextComponent("msg.zelda.blocksaved"), UUID.randomUUID());
+	        		camera.putString("target_block", Registry.BLOCK.getKey(block).toString());
+	        	  	p_195939_1_.getPlayer().sendSystemMessage(Component.translatable("msg.zelda.blocksaved"));
 	        	  }else {
-	        		  p_195939_1_.getPlayer().sendMessage(new TranslationTextComponent("msg.zelda.blocksavedfailed"), UUID.randomUUID());
+	        		  p_195939_1_.getPlayer().sendSystemMessage(Component.translatable("msg.zelda.blocksavedfailed"));
 	        	  }
 	        	  camera.putBoolean("activated", false);
-	        	  return ActionResultType.SUCCESS;
+	        	  return InteractionResult.SUCCESS;
 			}
 	    	  return super.useOn(p_195939_1_);
 	      }
 	}
 	@Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if(!worldIn.isClientSide()){
             ItemStack itemStack = playerIn.getItemInHand(handIn);
-            CompoundNBT camera =itemStack.getOrCreateTagElement("camera");
+            CompoundTag camera =itemStack.getOrCreateTagElement("camera");
             if(playerIn.isShiftKeyDown()) {
             	camera.remove("target_block");
             }
@@ -134,18 +132,18 @@ public class ShikaStone extends Item{
             	Block block=Registry.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
             	BlockPos pos=LocateTargetBlock(worldIn,playerIn.blockPosition(),block);
             	if(pos!=null) {
-            		playerIn.sendMessage(new TranslationTextComponent("msg.zelda.blockfound"), UUID.randomUUID());
-            		CompoundNBT nbt = itemStack.getOrCreateTagElement("target_location");
+            		playerIn.sendSystemMessage(Component.translatable("msg.zelda.blockfound"));
+            		CompoundTag nbt = itemStack.getOrCreateTagElement("target_location");
             		nbt.putInt("posX", pos.getX());
                     nbt.putInt("posY", pos.getY());
                     nbt.putInt("posZ", pos.getZ());
             	}else {
-            		playerIn.sendMessage(new TranslationTextComponent("msg.zelda.blockfoundfailed"), UUID.randomUUID());
+            		playerIn.sendSystemMessage(Component.translatable("msg.zelda.blockfoundfailed"));
             	}
-            	return ActionResult.pass(playerIn.getItemInHand(handIn));
+            	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
             }
-            CompoundNBT nbt = itemStack.getOrCreateTagElement("target_location");
-                BlockPos blockpos = ((ServerWorld) worldIn).findNearestMapFeature(ModStructures.ZELDA_TEMPLE.get(), playerIn.blockPosition(), 100, false);
+            CompoundTag nbt = itemStack.getOrCreateTagElement("target_location");
+                BlockPos blockpos = ((ServerLevel) worldIn).findNearestMapStructure(ModStructures.ZELDA_TEMPLE, playerIn.blockPosition(), 100, false);
                 if(blockpos!=null){
                     nbt.putInt("posX", blockpos.getX());
                     nbt.putInt("posY", -1);
@@ -154,25 +152,25 @@ public class ShikaStone extends Item{
         }
 		if(worldIn.isClientSide)
 			Minecraft.getInstance().setScreen(new ShikaStoneGui());
-		return ActionResult.pass(playerIn.getItemInHand(handIn));
+		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 	}
 	@Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, worldIn, tooltip, flag);
-		CompoundNBT camera =stack.getOrCreateTagElement("camera");
+		CompoundTag camera =stack.getOrCreateTagElement("camera");
 		if(camera.contains("target_block")) {
-			tooltip.add(new TranslationTextComponent("tooltip.shikastone.researchtarget"));
+			tooltip.add(Component.translatable("tooltip.shikastone.researchtarget"));
 			Block block=Registry.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
 			tooltip.add(block.getName());
-			tooltip.add(new TranslationTextComponent("tooltip.shikastone.clear"));
+			tooltip.add(Component.translatable("tooltip.shikastone.clear"));
 		}
 	}
-	private BlockPos LocateTargetBlock(World worldIn,BlockPos basepos,Block targetblock) {
+	private BlockPos LocateTargetBlock(Level worldIn,BlockPos basepos,Block targetblock) {
 		int basex=basepos.getX();
 		int basez=basepos.getZ();
 		for(int x=basex-8;x<basex+8;x++)
 			for(int z=basez-8;z<basez+8;z++)
-				for(int y=0;y<255;y++) {
+				for(int y=-64;y<319;y++) {
 					BlockPos pos=new BlockPos(x,y,z);
 					Block block=worldIn.getBlockState(pos).getBlock();
 					if(block==targetblock)

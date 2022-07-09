@@ -1,35 +1,30 @@
 package com.majong.zelda.entity;
 
-import com.brandon3055.draconicevolution.entity.guardian.DraconicGuardianEntity;
-import com.majong.zelda.Utils;
 import com.majong.zelda.entity.ai.ChangeDistanceNearestAttackableTargetGoal;
 import com.majong.zelda.entity.ai.GuardianAi;
 import com.majong.zelda.item.ItemLoader;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
-public class GuardianEntity extends MonsterEntity{
+public class GuardianEntity extends Monster{
 
-	public GuardianEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+	public GuardianEntity(EntityType<? extends Monster> type, Level worldIn) {
 		super(type, worldIn);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
-		this.goalSelector.addGoal(1, new SwimGoal(this));
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
+		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2,new GuardianAi(this));
-		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 50.0F));
+		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 50.0F));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		if(Utils.DRACONIC_EVOLUTION_LOADED) {
-			this.targetSelector.addGoal(2, new ChangeDistanceNearestAttackableTargetGoal<>(this, DraconicGuardianEntity.class,1, false,false,64));
-		}
-		this.targetSelector.addGoal(3, new ChangeDistanceNearestAttackableTargetGoal<>(this, PlayerEntity.class,1, true,false,48));
+		this.targetSelector.addGoal(3, new ChangeDistanceNearestAttackableTargetGoal<>(this, Player.class,1, true,false,48));
 		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
 		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
@@ -37,7 +32,7 @@ public class GuardianEntity extends MonsterEntity{
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if(cause.getEntity() instanceof PlayerEntity) {
+		if(cause.getEntity() instanceof Player) {
 		if(Math.random()<0.2)
 		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_CORE.get(),1));
 		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_GEAR.get(),(int) (Math.random()*3)));

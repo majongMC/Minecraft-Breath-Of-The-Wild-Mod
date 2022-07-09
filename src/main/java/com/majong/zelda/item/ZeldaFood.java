@@ -6,43 +6,42 @@ import javax.annotation.Nullable;
 
 import com.majong.zelda.Utils;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 public class ZeldaFood extends Item{
-	private static final Food ZELDA_FOOD = (new Food.Builder())
+	private static final FoodProperties ZELDA_FOOD = (new FoodProperties.Builder())
 			.saturationMod(0)
 			.nutrition(0)
 			.alwaysEat()
             .build();
 	public ZeldaFood() {
 		super(new Properties().food(ZELDA_FOOD).tab(Utils.ZELDA_CREATIVE_TAB).stacksTo(1));
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êı´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	@Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, worldIn, tooltip, flag);
 		if(stack.getTag()!=null) {
 		int hunger=stack.getTag().getInt("hunger");
 		float heal=stack.getTag().getFloat("heal");
-		tooltip.add(new TranslationTextComponent("»Ø¸´±¥Ê³¶È:"+hunger));
-		tooltip.add(new TranslationTextComponent("»Ø¸´ÉúÃüÖµ:"+heal));
+		tooltip.add(Component.translatable("å›å¤é¥±é£Ÿåº¦ï¼š"+hunger));
+		tooltip.add(Component.translatable("å›å¤ç”Ÿå‘½å€¼ï¼š"+heal));
 		}
 	}
 	@Override
-	public ItemStack finishUsingItem(ItemStack stack, World worldIn, LivingEntity entityLiving) {
+	public ItemStack finishUsingItem(ItemStack stack, Level worldIn, LivingEntity entityLiving) {
 		if(stack.getTag()!=null) {
 		int hunger=stack.getTag().getInt("hunger");
 		float heal=stack.getTag().getFloat("heal");
-		if(entityLiving instanceof PlayerEntity) {
-			PlayerEntity player=(PlayerEntity) entityLiving;
+		if(entityLiving instanceof Player) {
+			Player player=(Player) entityLiving;
 			player.heal(heal);
 			player.getFoodData().eat(hunger,1);
 		}

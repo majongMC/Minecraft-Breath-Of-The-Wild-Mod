@@ -2,14 +2,14 @@ package com.majong.zelda.api.util;
 
 import com.majong.zelda.util.ConductiveItem;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 public class ConductiveItemApi {
-	//ÔÚFMLServerStartingEventÊÂ¼şÖĞÊ¹ÓÃÒÔÏÂ·½·¨×¢²áµ¼µçÎïÆ·(×¢²áºóµ±Íæ¼ÒÔÚÀ×ÓêÌìÊÖ³Ö»ò´©´÷¸ÃÎïÆ·Ê±»áÒıÀ×)
-	//Ê¹ÓÃÊ¾Àı¼ûcom.majong.zelda.event.ServerStarting
+	//ï¿½ï¿½FMLServerStartingEventï¿½Â¼ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½×¢ï¿½áµ¼ï¿½ï¿½ï¿½ï¿½Æ·(×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö³Ö»ò´©´ï¿½ï¿½ï¿½ï¿½ï¿½Æ·Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+	//Ê¹ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½com.majong.zelda.event.ServerStarting
 	public static void registerConductiveItem(Item item) {
 		ConductiveItem.CONDUCTIVE_ITEM.add(item);
 	}
-	//ÔÚFMLServerStartingEventÊÂ¼şÖĞÊ¹ÓÃÒÔÏÂ·½·¨ÒÆ³ıµ¼µçÎïÆ·(ÇëÊ¹ÓÃ×îµÍµÄÓÅÏÈ¼¶)
+	//ï¿½ï¿½FMLServerStartingEventï¿½Â¼ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·(ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½È¼ï¿½)
 	public static void removeConductiveItem(Item item) {
 		if(ConductiveItem.CONDUCTIVE_ITEM.contains(item))
 			ConductiveItem.CONDUCTIVE_ITEM.remove(item);

@@ -8,23 +8,23 @@ import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.util.AttributeDamage;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
 
-public class ElectricityArrowEntity extends ArrowEntity{
-	public ElectricityArrowEntity(EntityType<? extends ArrowEntity> type, World worldIn) {
+public class ElectricityArrowEntity extends Arrow{
+	public ElectricityArrowEntity(EntityType<? extends Arrow> type, Level worldIn) {
 		super(type, worldIn);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
-	public ElectricityArrowEntity(World worldIn, double x, double y, double z) {
+	public ElectricityArrowEntity(Level worldIn, double x, double y, double z) {
 		super(worldIn,x,y,z);
 	}
-	public ElectricityArrowEntity(World worldIn, LivingEntity shooter) {
+	public ElectricityArrowEntity(Level worldIn, LivingEntity shooter) {
 		super(worldIn,shooter);
 	}
 	@Override
@@ -36,22 +36,22 @@ public class ElectricityArrowEntity extends ArrowEntity{
 	@Override
 	public void tick() {
 		if(!this.level.isClientSide) {
-			List<PlayerEntity> playerlist=level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
+			List<Player> playerlist=level.getEntitiesOfClass(Player.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
-					// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-					if(t instanceof PlayerEntity) 
+					// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					if(t instanceof Player) 
 						return true;
 					else
 						return false;
 				}});
-    		Iterator<PlayerEntity> it=playerlist.iterator();
+    		Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {
-    			PlayerEntity player=(PlayerEntity) it.next();
+    			Player player=(Player) it.next();
     			Networking.PARTICLE.send(
 	                    PacketDistributor.PLAYER.with(
-	                            () -> (ServerPlayerEntity) player
+	                            () -> (ServerPlayer) player
 	                    ),
 	                    new ParticlePack(1,this.getX(),this.getY(),this.getZ(),0,0,0));
     		}

@@ -1,7 +1,5 @@
 package com.majong.zelda.block;
 
-import java.util.UUID;
-
 import javax.annotation.Nullable;
 
 import com.majong.zelda.data.DataManager;
@@ -12,45 +10,52 @@ import com.majong.zelda.world.dimension.TempleDimensionData;
 import com.majong.zelda.world.dimension.TempleTeleporter;
 import com.majong.zelda.world.structure.ModStructures;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameType;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.BlockHitResult;
 
-public class TempleEntryBlock extends Block{
-	private static DirectionProperty FACING = HorizontalBlock.FACING;
+public class TempleEntryBlock extends BaseEntityBlock{
+	private static DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public TempleEntryBlock() {
-		super(Properties.of(Material.STONE).strength(-1).noOcclusion());
+		super(Properties.of(Material.METAL,MaterialColor.STONE).strength(-1).noOcclusion());
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING,Direction.NORTH));
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	@Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
 		if (context.getPlayer() != null) {
 			return defaultBlockState().setValue(FACING,context.getPlayer().getDirection().getOpposite());
 		}
 		return defaultBlockState();
     }
+	@Override
+	public RenderShape getRenderShape(BlockState p_60550_) {
+	      return RenderShape.MODEL;
+	   }
 	@Override
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
@@ -61,28 +66,29 @@ public class TempleEntryBlock extends Block{
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
         super.createBlockStateDefinition(builder);
 	   }
-	@Override
+	/*@Override
     public boolean hasTileEntity(BlockState state) {
         return true;
-    }
+    }*/
 	@Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TempleEntryTileEntity();
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+		return new TempleEntryTileEntity(pPos,pState);
+		//return null;
 	}
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if(!worldIn.isClientSide) {
 			if(TempleDimensionData.occupied) {
-				player.sendMessage(new TranslationTextComponent("·þÎñÆ÷·±Ã¦£¬ÇëÉÔºóÔÙÊÔ"), UUID.randomUUID());
-				return ActionResultType.SUCCESS;
+				player.sendSystemMessage(Component.translatable("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½"));
+				return InteractionResult.SUCCESS;
 			}
 			HasTempleIDTileEntity tile=(HasTempleIDTileEntity) worldIn.getBlockEntity(pos);
-			CompoundNBT data=TempleDimensionData.get(worldIn).DATA;
+			CompoundTag data=TempleDimensionData.get(worldIn).DATA;
 			if(tile.getID()<=1) {
 				TempleDimensionData.occupied=true;
 				int templeID=TempleDimensionData.AllocateNewTemple(worldIn);
@@ -91,33 +97,33 @@ public class TempleEntryBlock extends Block{
 				TempleDimensionData.getTempleData(worldIn, templeID).putIntArray("temple_location", position);
 				TempleDimensionData.get(worldIn).setDirty();
 				DataManager.data.get(player).intemple=templeID;
-				player.setGameMode(GameType.ADVENTURE);
+				((ServerPlayer)player).setGameMode(GameType.ADVENTURE);
 				DataManager.AdjustAllSkills(player, false);
-				ServerWorld temple=worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION);
+				ServerLevel temple=worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION);
 				BlockPos searchpos=player.blockPosition();
 				player.changeDimension(temple,new TempleTeleporter());
-				player.addEffect(new EffectInstance(Effects.SLOW_FALLING,60,8));
+				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 				BlockPos templepos;
 				while(true) {
-				templepos = temple.findNearestMapFeature(ModStructures.TEMPLES.get(), searchpos, 100, false);
+				templepos = temple.findNearestMapStructure(ModStructures.TEMPLES, searchpos, 100, false);
 				//boolean out=TempleDimensionData.isAllocated(worldIn, templepos);
 				//LogManager.getLogger().info("allocated"+out);
 				if(!TempleDimensionData.isAllocated(worldIn, templepos))
 					break;
 				searchpos=searchpos.offset(1000, 0, 0);
 				}
-				player.teleportTo(templepos.getX(),160,templepos.getZ());
-				player.addEffect(new EffectInstance(Effects.SLOW_FALLING,60,8));
+				player.teleportTo(templepos.getX(),80,templepos.getZ());
+				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 			}else {
-				player.setGameMode(GameType.ADVENTURE);
+				((ServerPlayer)player).setGameMode(GameType.ADVENTURE);
 				DataManager.AdjustAllSkills(player, false);
 				DataManager.data.get(player).intemple=tile.getID();
 				player.changeDimension(worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION),new TempleTeleporter());
-				player.addEffect(new EffectInstance(Effects.SLOW_FALLING,60,8));
+				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 				int[] templepos=data.getCompound(Integer.toString(tile.getID())).getIntArray("startpoint");
 				player.teleportTo(templepos[0]+0.5, templepos[1]+2, templepos[2]+0.5);
 			}
 		}
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 }

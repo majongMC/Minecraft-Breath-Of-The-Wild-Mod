@@ -1,15 +1,15 @@
 {
-  "name": "zelda:zelda_temple/start_pool", 
-  "fallback": "minecraft:empty",
-  "elements": [
-    {
-      "weight": 1,
-      "element": {
-        "location": "zelda:zelda_temple", 
-        "processors": "minecraft:empty",
-        "projection": "rigid",
-        "element_type": "minecraft:single_pool_element"
+    "name": "zelda:zelda_temple/start_pool", 
+    "fallback": "minecraft:empty",
+    "elements": [
+      {
+        "weight": 1,
+        "element": {
+          "location": "zelda:zelda_temple", 
+          "processors": "minecraft:empty",
+          "projection": "rigid",
+          "element_type": "minecraft:single_pool_element"
+        }
       }
-    }
-  ]
-}
+    ]
+  }

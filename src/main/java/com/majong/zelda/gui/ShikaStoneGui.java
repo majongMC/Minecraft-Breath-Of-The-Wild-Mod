@@ -1,19 +1,18 @@
 package com.majong.zelda.gui;
 
-import java.util.UUID;
-
 import com.majong.zelda.Utils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.PackWithUUID;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class ShikaStoneGui extends Screen{
 	private final int w;
@@ -22,45 +21,47 @@ public class ShikaStoneGui extends Screen{
     //private ItemStack shikastone;
     private final ResourceLocation ICONS=new ResourceLocation(Utils.MOD_ID, "textures/gui/shikastonegui.png");
 	public ShikaStoneGui() {
-		super(new TranslationTextComponent(""));
+		super(Component.translatable(""));
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
         //this.shikastone=shikastone;
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	@Override
 	protected void init() {
-		this.bomb1 = new Button((int)(0.5*w-96), (int)(0.3*h), 32, 32, new TranslationTextComponent("Õ¨µ¯1"), (button) -> {placebomb(true);});
-		this.bomb2 = new Button((int)(0.5*w-64), (int)(0.3*h), 32, 32, new TranslationTextComponent("Õ¨µ¯2"), (button) -> {placebomb(true);});
-		this.addButton(bomb1);
-		this.addButton(bomb2);
-		this.magnet= new Button((int)(0.5*w-32), (int)(0.3*h), 32, 32, new TranslationTextComponent("´ÅÁ¦"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(5));this.onClose();});
-		this.addButton(magnet);
-		this.Static= new Button((int)(0.5*w), (int)(0.3*h), 32, 32, new TranslationTextComponent("¾²Ö¹Æ÷"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(6));this.onClose();});
-		this.addButton(Static);
-		this.ice= new Button((int)(0.5*w+32), (int)(0.3*h), 32, 32, new TranslationTextComponent("ÖÆ±ùÆ÷"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(7));this.onClose();});
-		this.addButton(ice);
-		this.camera= new Button((int)(0.5*w+64), (int)(0.3*h), 32, 32, new TranslationTextComponent("ÕÕÏà»ú"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(8));this.onClose();});
-		this.addButton(camera);
+		this.bomb1 = new Button((int)(0.5*w-96), (int)(0.3*h), 32, 32, Component.translatable("Õ¨ï¿½ï¿½1"), (button) -> {placebomb(true);});
+		this.bomb2 = new Button((int)(0.5*w-64), (int)(0.3*h), 32, 32, Component.translatable("Õ¨ï¿½ï¿½2"), (button) -> {placebomb(true);});
+		this.addRenderableWidget(bomb1);
+		this.addRenderableWidget(bomb2);
+		this.magnet= new Button((int)(0.5*w-32), (int)(0.3*h), 32, 32, Component.translatable("ï¿½ï¿½ï¿½ï¿½"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(5));this.onClose();});
+		this.addRenderableWidget(magnet);
+		this.Static= new Button((int)(0.5*w), (int)(0.3*h), 32, 32,Component.translatable("ï¿½ï¿½Ö¹ï¿½ï¿½"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(6));this.onClose();});
+		this.addRenderableWidget(Static);
+		this.ice= new Button((int)(0.5*w+32), (int)(0.3*h), 32, 32, Component.translatable("ï¿½Æ±ï¿½ï¿½ï¿½"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(7));this.onClose();});
+		this.addRenderableWidget(ice);
+		this.camera= new Button((int)(0.5*w+64), (int)(0.3*h), 32, 32, Component.translatable("ï¿½ï¿½ï¿½ï¿½ï¿½"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(8));this.onClose();});
+		this.addRenderableWidget(camera);
 		super.init();
 	}
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.renderBackground(matrixStack);
-		this.minecraft.getTextureManager().bind(ICONS);
-		blit(matrixStack, (int)(0.5*w-96), (int)(0.3*h), 0, 0, 192, 32, 192, 32);
-		//blit(matrixStack, (int)(0.45*w-16), (int)(0.3*h), 128, 0, 32, 32, 32, 192);
-		//blit(matrixStack, (int)(0.5*w-16), (int)(0.3*h), 256, 0, 32, 32, 32, 192);
-		//blit(matrixStack, (int)(0.55*w-16), (int)(0.3*h), 384, 0, 32, 32, 32, 192);
-		//blit(matrixStack, (int)(0.6*w-16), (int)(0.3*h), 512, 0, 32, 32, 32, 192);
-		//blit(matrixStack, (int)(0.65*w-16), (int)(0.3*h), 640, 0, 32, 32, 32, 192);
-		//super.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		this.renderBackground(PoseStack);
+		RenderSystem.setShaderTexture(0, ICONS);
+		//this.minecraft.getTextureManager().bind(ICONS);
+		blit(PoseStack, (int)(0.5*w-96), (int)(0.3*h), 0, 0, 192, 32, 192, 32);
+		//blit(PoseStack, (int)(0.45*w-16), (int)(0.3*h), 128, 0, 32, 32, 32, 192);
+		//blit(PoseStack, (int)(0.5*w-16), (int)(0.3*h), 256, 0, 32, 32, 32, 192);
+		//blit(PoseStack, (int)(0.55*w-16), (int)(0.3*h), 384, 0, 32, 32, 32, 192);
+		//blit(PoseStack, (int)(0.6*w-16), (int)(0.3*h), 512, 0, 32, 32, 32, 192);
+		//blit(PoseStack, (int)(0.65*w-16), (int)(0.3*h), 640, 0, 32, 32, 32, 192);
+		//super.render(PoseStack, mouseX, mouseY, partialTicks);
 	}
 	private void placebomb(boolean round) {
 		this.onClose();
 		if(!ZeldaConfig.BOMB.get()) {
-			Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
+			Minecraft.getInstance().player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
 			return;
 		}
 		if(round)

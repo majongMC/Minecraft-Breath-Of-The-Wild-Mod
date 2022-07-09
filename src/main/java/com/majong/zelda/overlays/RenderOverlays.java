@@ -1,8 +1,7 @@
 package com.majong.zelda.overlays;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,7 +13,7 @@ public class RenderOverlays {
 	private static long lastattack=0;
 	private static double percentage=1,last=1,delay=1;
 	public static boolean rendering=false;
-	private static ITextComponent name=new TranslationTextComponent("");
+	private static Component name=Component.translatable("");
 	@SubscribeEvent
 	public static void onOverlayRender(RenderGameOverlayEvent event) {
 		if (event.getType() != RenderGameOverlayEvent.ElementType.ALL) {
@@ -23,7 +22,7 @@ public class RenderOverlays {
 		if (Minecraft.getInstance().player == null) {
 	           return;
 	       }
-		ZeldaOverlays zeldaoverlays=new ZeldaOverlays(event.getMatrixStack());
+		ZeldaOverlays zeldaoverlays=new ZeldaOverlays(event.getPoseStack());
 		zeldaoverlays.render(Minecraft.getInstance().player);
 		if(Minecraft.getInstance().level.getGameTime()-lastrecieve<20L) {
 			rendering=true;
@@ -38,14 +37,14 @@ public class RenderOverlays {
 			if(Minecraft.getInstance().level.getGameTime()-lastattack>10&&percentage<delay) {
 				delay=delay-0.002;
 			}
-			BloodBar bar=new BloodBar(event.getMatrixStack());
+			HealthBar bar=new HealthBar(event.getPoseStack());
 			bar.render(percentage, delay,name);
 		}
 		else
 			rendering=false;
 	}
-	@Deprecated//ÇëÊ¹ÓÃapiÖÐµÄ·½·¨
-	public static void DisplayBloodBar(double percentage,ITextComponent name) {
+	@Deprecated//ï¿½ï¿½Ê¹ï¿½ï¿½apiï¿½ÐµÄ·ï¿½ï¿½ï¿½
+	public static void DisplayHealthBar(double percentage,Component name) {
 		lastrecieve=Minecraft.getInstance().level.getGameTime();
 		RenderOverlays.percentage=percentage;
 		RenderOverlays.name=name;

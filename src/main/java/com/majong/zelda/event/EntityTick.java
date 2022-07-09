@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import com.majong.zelda.api.overlays.ZeldaHealthBarApi;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.data.ZeldaPlayerData;
@@ -14,38 +15,38 @@ import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.util.ConductiveItem;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber()
 public class EntityTick {
-	public static final Map<PlayerEntity,Integer> THUNDER_COUNT_TIME=new HashMap<>();
-	public static final Map<PlayerEntity,BlockPos> LAST_STAND_POS=new HashMap<>();
+	public static final Map<Player,Integer> THUNDER_COUNT_TIME=new HashMap<>();
+	public static final Map<Player,BlockPos> LAST_STAND_POS=new HashMap<>();
 	@SubscribeEvent
 	public static void onEntityTick(LivingUpdateEvent event) {
-		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
-			PlayerEntity player=(PlayerEntity) event.getEntity();
+		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
+			Player player=(Player) event.getEntity();
 			ZeldaPlayerData playerdata=DataManager.data.get(player);
 			if(playerdata.intemple>1) {
 				if(player.isOnGround()&&!player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isAir())
 					LAST_STAND_POS.put(player, player.blockPosition());
 				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {
 					BlockPos pos=LAST_STAND_POS.get(player);
-					player.addEffect(new EffectInstance(Effects.SLOW_FALLING,60,8));
+					player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 					player.teleportTo(pos.getX(),pos.getY(), pos.getZ());
 					player.hurt(DamageSource.OUT_OF_WORLD,2);
 				}
@@ -73,7 +74,7 @@ public class EntityTick {
 			if(player.level.isThundering()) {
 				if(ConductiveItem.HeldConductiveItem(player)&&isOutdoors(player)) {
 					if(THUNDER_COUNT_TIME.get(player)==0) {
-						LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,player.level);
+						LightningBolt lightning=new LightningBolt(EntityType.LIGHTNING_BOLT,player.level);
 		    			lightning.setPos(player.getX(), player.getY()+1, player.getZ());
 		    			player.level.addFreshEntity(lightning);
 		    			THUNDER_COUNT_TIME.put(player,100);
@@ -81,7 +82,7 @@ public class EntityTick {
 					else {
 						Networking.PARTICLE.send(
 			                    PacketDistributor.PLAYER.with(
-			                            () -> (ServerPlayerEntity) player
+			                            () -> (ServerPlayer) player
 			                    ),
 			                    new ParticlePack(1,player.getX()-0.5+Math.random(),player.getY()+0.5+Math.random(),player.getZ()-0.5+Math.random(),0,0,0));
 						THUNDER_COUNT_TIME.put(player,THUNDER_COUNT_TIME.get(player)-1);
@@ -91,12 +92,12 @@ public class EntityTick {
 					THUNDER_COUNT_TIME.put(player,100);
 			}
 	}
-		if(Math.random()<ZeldaConfig.YIGATEAM.get()*0.00002&&event.getEntity() instanceof VillagerEntity&&!event.getEntity().level.isClientSide) {
-			List<LivingEntity> list=event.getEntity().level.getEntitiesOfClass(YigaTeamMemberEntity.class,event.getEntity().getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
+		if(Math.random()<ZeldaConfig.YIGATEAM.get()*0.00002&&event.getEntity() instanceof Villager&&!event.getEntity().level.isClientSide) {
+			List<YigaTeamMemberEntity> list=event.getEntity().level.getEntitiesOfClass(YigaTeamMemberEntity.class,event.getEntity().getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
 
 				@Override
 				public boolean test(Object t) {
-					// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+					// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					return true;
 				}});
 			if(list.size()>5)
@@ -107,12 +108,17 @@ public class EntityTick {
 			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
 			villager.level.addFreshEntity(entity);
 		}
-		if(event.getEntity() instanceof PlayerEntity&&event.getEntity().level.isClientSide) {
+		if(event.getEntity() instanceof Warden&&event.getEntity().level.isClientSide) {
+			Warden warden=(Warden) event.getEntity();
+			if(warden.blockPosition().getY()>=-64)
+				ZeldaHealthBarApi.DisplayHealthBarClient(warden.getHealth()/warden.getMaxHealth(), warden.getName());
+		}
+		if(event.getEntity() instanceof Player&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)
 				EntitySpottedEvent.SoundRemainTime--;
 		}
 }
-	private static boolean isOutdoors(PlayerEntity player) {
+	private static boolean isOutdoors(Player player) {
 		BlockPos pos=player.blockPosition();
 		for(int i=pos.getY()+1;i<256;i++) {
 			if(!player.level.getBlockState(new BlockPos(pos.getX(),i,pos.getZ())).isAir())

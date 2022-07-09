@@ -1,43 +1,40 @@
 package com.majong.zelda.entity;
 
-import java.util.UUID;
-
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.PlayerUseShield;
 import com.majong.zelda.item.ItemLoader;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.Explosion.Mode;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
-public class LaserEntity extends ThrowableEntity{
-	public static final DataParameter<Integer> YAW = EntityDataManager.defineId(LaserEntity.class, DataSerializers.INT);
-	public static final DataParameter<Integer> PITCH = EntityDataManager.defineId(LaserEntity.class, DataSerializers.INT);
+public class LaserEntity extends ThrowableProjectile{
+	public static final EntityDataAccessor<Integer> YAW = SynchedEntityData.defineId(LaserEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> PITCH = SynchedEntityData.defineId(LaserEntity.class, EntityDataSerializers.INT);
 	private long spawntime=0;
 	private LivingEntity owner;
 	private float range=0.5F;
-	public LaserEntity(EntityType<? extends ThrowableEntity> entityTypeIn, World worldIn) {
+	public LaserEntity(EntityType<? extends ThrowableProjectile> entityTypeIn, Level worldIn) {
 		super(entityTypeIn, worldIn);
 		this.setNoGravity(true);
 		this.setDeltaMovement(0,0,0);
 		spawntime=this.level.getGameTime();
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êı´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	@Override
 	public void tick() {
@@ -52,10 +49,10 @@ public class LaserEntity extends ThrowableEntity{
 			explode();
 			return;
 		}
-		LivingEntity target=this.level.getNearestEntity(LivingEntity.class,new EntityPredicate().range(range), null, this.getX(), this.getY(), this.getZ(),this.getBoundingBox().inflate(range, range, range));
+		LivingEntity target=this.level.getNearestEntity(LivingEntity.class,TargetingConditions.forCombat().range(range), null, this.getX(), this.getY(), this.getZ(),this.getBoundingBox().inflate(range, range, range));
 		if(target!=null&&target!=owner) {
-			if(target instanceof PlayerEntity) {
-				trysheldreflect((PlayerEntity) target);
+			if(target instanceof Player) {
+				trysheldreflect((Player) target);
 			}
 			else
 				explode();
@@ -67,48 +64,48 @@ public class LaserEntity extends ThrowableEntity{
 	}
 	@Override
 	protected void defineSynchedData() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		this.entityData.define(YAW, 0);
 		this.entityData.define(PITCH, 0);
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundNBT compound) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	protected void readAdditionalSaveData(CompoundTag compound) {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		this.entityData.set(YAW, compound.getInt("yaw"));
 		this.entityData.set(PITCH, compound.getInt("pitch"));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundNBT compound) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	protected void addAdditionalSaveData(CompoundTag compound) {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		compound.putInt("yaw", this.entityData.get(YAW));
 		compound.putInt("pitch", this.entityData.get(PITCH));
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	public Packet<?> getAddEntityPacket() {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	public void setspeed(float yaw,float pitch) {
 		float f = 5F;
-		double mz = -MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f / 2D;
-		double mx = -(MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f) / 2D;
-		double my = MathHelper.sin(pitch / 180.0F * (float) Math.PI) * f / 2D;
-		Vector3d speed=new Vector3d(mx,my,mz);
+		double mz = -Math.sin(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI) * f / 2D;
+		double mx = -(Math.cos(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI) * f) / 2D;
+		double my = Math.sin(pitch / 180.0F * (float) Math.PI) * f / 2D;
+		Vec3 speed=new Vec3(mx,my,mz);
 		this.entityData.set(YAW, (int)yaw);
 		this.entityData.set(PITCH, (int)pitch);
 		this.setDeltaMovement(speed);
 	}
 	private void explode() {
-		this.level.explode(owner,this.getX(),this.getY(),this.getZ(),5,Mode.NONE);
+		this.level.explode(owner,this.getX(),this.getY(),this.getZ(),5,BlockInteraction.NONE);
 		this.kill();
 	}
-	private void trysheldreflect(PlayerEntity player) {
+	private void trysheldreflect(Player player) {
 		long respondtime=this.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 		if(ZeldaConfig.DISPLAYTIME.get())
-			player.sendMessage(new TranslationTextComponent("·´Ó¦Ê±¼ä"+respondtime), UUID.randomUUID());
+			player.sendSystemMessage(Component.translatable("ååº”æ—¶é—´ï¼š"+respondtime));
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
 			reflect(player);
 		}
@@ -119,20 +116,20 @@ public class LaserEntity extends ThrowableEntity{
 		}
 		else if(player.getMainHandItem().getItem()==ItemLoader.ANCIENT_SHIELD.get()) {
 			player.getMainHandItem().hurtAndBreak(16, player,(entity) -> {
-		         entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+		         entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		      });
 			reflect(player);
 		}
 		else if(player.getOffhandItem().getItem()==ItemLoader.ANCIENT_SHIELD.get()) {
 			player.getOffhandItem().hurtAndBreak(16, player,(entity) -> {
-		         entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+		         entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		      });
 			reflect(player);
 		}
 		else
 			explode();
 	}
-	private void reflect(PlayerEntity player) {
+	private void reflect(Player player) {
 		this.setowner(player);
 		this.setDeltaMovement(this.getDeltaMovement().reverse());
 		this.range=1.5F;

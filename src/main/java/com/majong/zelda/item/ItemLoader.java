@@ -7,15 +7,15 @@ import com.majong.zelda.entity.ElectricityArrowEntity;
 import com.majong.zelda.entity.FireArrowEntity;
 import com.majong.zelda.entity.IceArrowEntity;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ItemLoader {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Utils.MOD_ID);
@@ -29,45 +29,45 @@ public class ItemLoader {
 	public static final RegistryObject<Item> ANCIENT_ARROW = ITEMS.register("ancient_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new AncientArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new AncientArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> ELECTRICITY_ARROW = ITEMS.register("electricity_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new ElectricityArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new ElectricityArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> BOMB_ARROW = ITEMS.register("bomb_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new BombArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new BombArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> ICE_ARROW = ITEMS.register("ice_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new IceArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new IceArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> FIRE_ARROW = ITEMS.register("fire_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new FireArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new FireArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    arrowentity.setSecondsOnFire(32767);
 		    return arrowentity;
@@ -78,4 +78,5 @@ public class ItemLoader {
 	public static final RegistryObject<Item> HORN = ITEMS.register("horn", HornItem::new);
 	public static final RegistryObject<Item> RED_ENVELOPE = ITEMS.register("red_envelope", RedEnvelope::new);
 	public static final RegistryObject<Item> SPIRIT_ORB = ITEMS.register("spirit_orb", BasicItem::new);
+	public static final RegistryObject<Item> ANCIENT_HORN = ITEMS.register("ancient_horn", AncientHorn::new);
 }

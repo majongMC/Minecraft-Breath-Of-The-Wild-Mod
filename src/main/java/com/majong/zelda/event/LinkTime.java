@@ -6,12 +6,12 @@ import java.util.function.Predicate;
 
 import com.majong.zelda.config.ZeldaConfig;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -22,19 +22,19 @@ public class LinkTime {
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
 		if(!event.getWorld().isClientSide) {
-			PlayerEntity player=event.getPlayer();
+			Player player=event.getPlayer();
 			if(!player.isOnGround()&&!player.isFallFlying()) {
-				player.setDeltaMovement(Vector3d.ZERO);
-				player.addEffect(new EffectInstance(Effects.SLOW_FALLING,120,8));
-				player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,120,3));
+				player.setDeltaMovement(Vec3.ZERO);
+				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,120,8));
+				player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,120,3));
 				player.setNoGravity(true);
 				slownearmonsters(player,false);
 				Thread t=new Thread(new Runnable() {
 
 					@Override
 					public void run() {
-						// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-						PlayerEntity player=event.getPlayer();
+						// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+						Player player=event.getPlayer();
 						for(int i=0;i<ZeldaConfig.LINKTIME.get();i++) {
 						try {Thread.sleep(50);} catch (InterruptedException e) {break;}
 						if(player==null||!player.isNoGravity())
@@ -46,8 +46,8 @@ public class LinkTime {
 				t.start();
 			}
 			else {
-				player.removeEffect(Effects.SLOW_FALLING);
-				player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+				player.removeEffect(MobEffects.SLOW_FALLING);
+				player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 				player.setNoGravity(false);
 			}
 		}
@@ -55,29 +55,29 @@ public class LinkTime {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerLooseArrow(ArrowLooseEvent event) {
 		if(!event.getWorld().isClientSide) {
-			PlayerEntity player=event.getPlayer();
-			player.removeEffect(Effects.SLOW_FALLING);
-			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+			Player player=event.getPlayer();
+			player.removeEffect(MobEffects.SLOW_FALLING);
+			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
 			slownearmonsters(player,true);
 		}
 	}
-	private static void slownearmonsters(PlayerEntity player,boolean remove) {
-		World world=player.level;
-		List<LivingEntity> entitylist= world.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,new Predicate<Object>() {
+	private static void slownearmonsters(Player player,boolean remove) {
+		Level Level=player.level;
+		List<LivingEntity> entitylist= Level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,new Predicate<Object>() {
 
 			@Override
 			public boolean test(Object t) {
-				// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-				return t instanceof LivingEntity&&!(t instanceof PlayerEntity);
+				// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				return t instanceof LivingEntity&&!(t instanceof Player);
 			}});
 		Iterator<LivingEntity> it=entitylist.iterator();
 		while(it.hasNext()) {
 			LivingEntity entity=it.next();
 			if(remove) {
-				entity.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+				entity.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			}else {
-				entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,100,9));
+				entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,9));
 			}
 		}
 	}
