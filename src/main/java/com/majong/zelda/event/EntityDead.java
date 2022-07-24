@@ -8,6 +8,7 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.GuardianEntity;
 import com.majong.zelda.entity.MollyBrinEntity;
+import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.network.SoundPack;
@@ -66,7 +67,7 @@ public class EntityDead {
                     ),
                     new SoundPack(1,new BlockPos(player.getX(),player.getY(),player.getZ())));
 		}
-		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof BokoBrinEntity)) {
+		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof BokoBrinEntity||entity instanceof YigaTeamMemberEntity)) {
 			List<Player> playerlist= entity.level.getEntitiesOfClass(Player.class,entity.getBoundingBox().inflate(64, 32, 64) ,new Predicate<Object>() {
 
 				@Override

@@ -36,22 +36,22 @@ public class ZeldaOverlays extends GuiComponent{
 		ZeldaPlayerData playerdata=DataManager.data.get(player);
 		if(playerdata.unlocked[0]) {
 			blit(PoseStack, (int)(0.05*w), (int)(0.2*h), 0, 0, 16, 16, 64, 64);
-			if(playerdata.skill[0]==0)
+			if(playerdata.skill[0]<=0)
 				blit(PoseStack, (int)(0.05*w), (int)(0.2*h+16*(1.0-playerdata.cd[0]/((double)ZeldaConfig.WATER.get()))), 0, 16, 16, (int)(16*(playerdata.cd[0]/((double)ZeldaConfig.WATER.get()))+1), 64, 64);
 		}
 		if(playerdata.unlocked[1]) {
 			blit(PoseStack, (int)(0.05*w), (int)(0.3*h), 16, 0, 16, 16, 64, 64);
-			if(playerdata.skill[1]==0)
+			if(playerdata.skill[1]<=0)
 				blit(PoseStack, (int)(0.05*w), (int)(0.3*h+16*(1.0-playerdata.cd[1]/((double)ZeldaConfig.WIND.get()))), 0, 16, 16, (int)(16*(playerdata.cd[1]/((double)ZeldaConfig.WIND.get()))+1), 64, 64);
 		}
 		if(playerdata.unlocked[2]) {
 			blit(PoseStack, (int)(0.05*w), (int)(0.4*h), 32, 0, 16, 16, 64, 64);
-			if(playerdata.skill[2]==0)
+			if(playerdata.skill[2]<=0)
 				blit(PoseStack, (int)(0.05*w), (int)(0.4*h+16*(1.0-playerdata.cd[2]/((double)ZeldaConfig.FIRE.get()))), 0, 16, 16, (int)(16*(playerdata.cd[2]/((double)ZeldaConfig.FIRE.get()))+1), 64, 64);
 		}
 		if(playerdata.unlocked[3]) {
 			blit(PoseStack, (int)(0.05*w), (int)(0.5*h), 48, 0, 16, 16, 64, 64);
-			if(playerdata.skill[3]==0)
+			if(playerdata.skill[3]<=0)
 				blit(PoseStack, (int)(0.05*w), (int)(0.5*h+16*(1.0-playerdata.cd[3]/((double)ZeldaConfig.THUNDER.get()))), 0, 16, 16, (int)(16*(playerdata.cd[3]/((double)ZeldaConfig.THUNDER.get()))+1), 64, 64);
 		}
 		if(playerdata.unlocked[0])

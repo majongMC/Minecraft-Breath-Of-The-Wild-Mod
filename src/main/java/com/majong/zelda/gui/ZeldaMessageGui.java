@@ -2,7 +2,7 @@ package com.majong.zelda.gui;
 
 import com.majong.zelda.Utils;
 import com.majong.zelda.network.Networking;
-import com.majong.zelda.network.PackWithUUID;
+import com.majong.zelda.network.PackToServer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -81,6 +81,6 @@ public class ZeldaMessageGui extends Screen{
 	public void onClose() {
 		super.onClose();
 		if(this.type==2)
-			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(4));
+			Networking.PACKWITHUUID.sendToServer(new PackToServer(4));
 	}
 }

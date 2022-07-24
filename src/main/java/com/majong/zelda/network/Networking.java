@@ -55,10 +55,10 @@ public class Networking {
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
         );
-        PACKWITHUUID.messageBuilder(PackWithUUID.class, nextID())
-                .encoder(PackWithUUID::toBytes)
-                .decoder(PackWithUUID::new)
-                .consumer(PackWithUUID::handler)
+        PACKWITHUUID.messageBuilder(PackToServer.class, nextID())
+                .encoder(PackToServer::toBytes)
+                .decoder(PackToServer::new)
+                .consumer(PackToServer::handler)
                 .add();
         FOODMESSAGEPACK = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(Utils.MOD_ID, "foodmessage_pack"),

@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 public class PlayerLoggedEvent {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-		Player player=event.getPlayer();
+		Player player=event.getEntity();
 		CompoundTag entityData = player.getPersistentData();
 		DataManager.preventnull(player);
 		if(entityData.contains("zpd")) {
@@ -48,7 +48,7 @@ public class PlayerLoggedEvent {
 	}
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
-		Player player=event.getPlayer();
+		Player player=event.getEntity();
 		EntityTick.THUNDER_COUNT_TIME.remove(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(player);
 		CompoundTag entityData = player.getPersistentData();

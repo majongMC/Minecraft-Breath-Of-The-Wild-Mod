@@ -4,12 +4,13 @@ import org.lwjgl.glfw.GLFW;
 
 import com.majong.zelda.Utils;
 import com.majong.zelda.network.Networking;
-import com.majong.zelda.network.PackWithUUID;
+import com.majong.zelda.network.PackToServer;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
@@ -30,13 +31,14 @@ public class KeyBoardInput {
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_C,
             "key.category." + Utils.MOD_ID);
+	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
-    public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
+    public static void onKeyboardInput(InputEvent.Key event) {
 		if(SKILL_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
-			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(0));
+			Networking.PACKWITHUUID.sendToServer(new PackToServer(0));
 		}
 		if(DETONATE_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
-			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(3));
+			Networking.PACKWITHUUID.sendToServer(new PackToServer(3));
 		}
 	}
 }

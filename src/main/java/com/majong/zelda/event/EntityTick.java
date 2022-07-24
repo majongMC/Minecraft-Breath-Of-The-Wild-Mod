@@ -26,7 +26,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,7 +37,7 @@ public class EntityTick {
 	public static final Map<Player,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	public static final Map<Player,BlockPos> LAST_STAND_POS=new HashMap<>();
 	@SubscribeEvent
-	public static void onEntityTick(LivingUpdateEvent event) {
+	public static void onEntityTick(LivingTickEvent event) {
 		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
 			Player player=(Player) event.getEntity();
 			ZeldaPlayerData playerdata=DataManager.data.get(player);
@@ -52,7 +52,7 @@ public class EntityTick {
 				}
 			}
 			for(int i=0;i<4;i++) {
-			if(playerdata.skill[i]==0) {
+			if(playerdata.skill[i]<=0) {
 				playerdata.cd[i]--;
 				if(playerdata.cd[i]%20==0&&playerdata.cd[i]>0)
 					DataManager.sendzeldaplayerdatapack(player);
@@ -129,12 +129,12 @@ public class EntityTick {
 	@SubscribeEvent
 	public static void onPlayerClone(Clone event) {
 		//DataManager.preventnull(event.getOriginal());
-		DataManager.preventnull(event.getPlayer());
-		DataManager.writefromnbt(DataManager.readtonbt(event.getOriginal()), event.getPlayer());
+		DataManager.preventnull(event.getEntity());
+		DataManager.writefromnbt(DataManager.readtonbt(event.getOriginal()), event.getEntity());
 		//DataManager.removedata(event.getOriginal());
-		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(event.getPlayer(),0L);
+		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(event.getEntity(),0L);
 		//PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(event.getOriginal());
-		EntityTick.THUNDER_COUNT_TIME.put(event.getPlayer(), 100);
+		EntityTick.THUNDER_COUNT_TIME.put(event.getEntity(), 100);
 		//PlayerTick.THUNDER_COUNT_TIME.remove(event.getOriginal());
 	}
 }

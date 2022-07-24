@@ -22,12 +22,12 @@ import net.minecraftforge.fml.common.Mod;
 public class EntitySpawn {
 	@SubscribeEvent
 	public static void onLivingSpawn(SpecialSpawn event) {
-		if(!event.getWorld().isClientSide()) {
-			if(Math.random()<0.01*ZeldaConfig.GUARDIAN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof GuardianEntity)&&((Level) event.getWorld()).dimension().location().equals(Level.OVERWORLD.location())) {
-				GuardianEntity entity=new GuardianEntity(EntityLoader.GUARDIAN.get(),(Level) event.getWorld());
+		if(!event.getLevel().isClientSide()) {
+			if(Math.random()<0.01*ZeldaConfig.GUARDIAN.get()&&event.getLevel().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof GuardianEntity)&&((Level) event.getLevel()).dimension().location().equals(Level.OVERWORLD.location())) {
+				GuardianEntity entity=new GuardianEntity(EntityLoader.GUARDIAN.get(),(Level) event.getLevel());
 				BlockPos pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 				int count=0;
-				while(!(event.getWorld().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getWorld()))) {
+				while(!(event.getLevel().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getLevel()))) {
 					pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 					count++;
 					if(count>10) {
@@ -35,13 +35,13 @@ public class EntitySpawn {
 					}
 				}
 				entity.setPos(pos.getX()+0.5,pos.getY(),pos.getZ()+0.5);
-				event.getWorld().addFreshEntity(entity);
+				event.getLevel().addFreshEntity(entity);
 			}
-			if(Math.random()<0.01*ZeldaConfig.POKBRIN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof BokoBrinEntity)) {
-				BokoBrinEntity entity=new BokoBrinEntity(EntityLoader.BOKO_BRIN.get(),(Level) event.getWorld());
+			if(Math.random()<0.01*ZeldaConfig.BOKOBRIN.get()&&event.getLevel().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof BokoBrinEntity)) {
+				BokoBrinEntity entity=new BokoBrinEntity(EntityLoader.BOKO_BRIN.get(),(Level) event.getLevel());
 				BlockPos pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 				int count=0;
-				while(!(event.getWorld().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getWorld()))) {
+				while(!(event.getLevel().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getLevel()))) {
 					pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 					count++;
 					if(count>10) {
@@ -49,13 +49,13 @@ public class EntitySpawn {
 					}
 				}
 				entity.setPos(pos.getX()+0.5,pos.getY(),pos.getZ()+0.5);
-				event.getWorld().addFreshEntity(entity);
+				event.getLevel().addFreshEntity(entity);
 			}
-			if(Math.random()<0.005*ZeldaConfig.WALKING_GUARDIAN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof GuardianEntity&&((Level) event.getWorld()).dimension().location().equals(Level.OVERWORLD.location()))) {
-				GuardianEntity entity=new WalkingGuardianEntity(EntityLoader.WALKING_GUARDIAN.get(),(Level) event.getWorld());
+			if(Math.random()<0.005*ZeldaConfig.WALKING_GUARDIAN.get()&&event.getLevel().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof GuardianEntity&&((Level) event.getLevel()).dimension().location().equals(Level.OVERWORLD.location()))) {
+				GuardianEntity entity=new WalkingGuardianEntity(EntityLoader.WALKING_GUARDIAN.get(),(Level) event.getLevel());
 				BlockPos pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 				int count=0;
-				while(!(event.getWorld().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getWorld()))) {
+				while(!(event.getLevel().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getLevel()))) {
 					pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 					count++;
 					if(count>10) {
@@ -63,24 +63,24 @@ public class EntitySpawn {
 					}
 				}
 				entity.setPos(pos.getX()+0.5,pos.getY(),pos.getZ()+0.5);
-				event.getWorld().addFreshEntity(entity);
+				event.getLevel().addFreshEntity(entity);
 			}
-			if(Math.random()<0.03*ZeldaConfig.MOLLYBRIN.get()&&event.getWorld().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof MollyBrinEntity&&((Level) event.getWorld()).dimension().location().equals(Level.OVERWORLD.location()))) {
+			if(Math.random()<0.03*ZeldaConfig.MOLLYBRIN.get()&&event.getLevel().getDifficulty()!=Difficulty.PEACEFUL&&!(event.getEntity() instanceof MollyBrinEntity&&((Level) event.getLevel()).dimension().location().equals(Level.OVERWORLD.location()))) {
 				BlockPos pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 				int count=0;
-				while(!(event.getWorld().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getWorld()))) {
+				while(!(event.getLevel().getBlockState(pos).getBlock()==Blocks.AIR&&!isabovewater(pos,(Level) event.getLevel()))) {
 					pos=new BlockPos(event.getX()+Math.random()*16-8,event.getY()+1,event.getZ()+Math.random()*16-8);
 					count++;
 					if(count>10) {
 						break;
 					}
 				}
-				if(event.getWorld().getMaxLocalRawBrightness(pos)>7)
+				if(event.getLevel().getMaxLocalRawBrightness(pos)>7)
 					return;
-				MollyBrinEntity entity=new MollyBrinEntity(EntityLoader.MOLLY_BRIN.get(),(Level) event.getWorld());
+				MollyBrinEntity entity=new MollyBrinEntity(EntityLoader.MOLLY_BRIN.get(),(Level) event.getLevel());
 				entity.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.BOW,1));
 				entity.setPos(pos.getX()+0.5,pos.getY(),pos.getZ()+0.5);
-				event.getWorld().addFreshEntity(entity);
+				event.getLevel().addFreshEntity(entity);
 			}
 		}
 	}

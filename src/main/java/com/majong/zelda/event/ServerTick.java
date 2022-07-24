@@ -2,7 +2,6 @@ package com.majong.zelda.event;
 
 import com.majong.zelda.config.ZeldaConfig;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ServerLevelData;
@@ -14,9 +13,10 @@ import net.minecraftforge.fml.common.Mod;
 public class ServerTick {
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		if(Minecraft.getInstance().getSingleplayerServer()==null||!ZeldaConfig.WEATHER_CHANGE.get())
+		Level level=event.getServer().overworld();
+		if(!ZeldaConfig.WEATHER_CHANGE.get())
 			return;
-		Level level=Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD);
+		//Level level=Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD);
 		if(level==null)
 			return;
 		long time=level.getGameTime();

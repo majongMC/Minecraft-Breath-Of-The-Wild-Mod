@@ -1,18 +1,15 @@
 package com.majong.zelda.client;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class KeybindingRegistry {
 	@SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-        		ClientRegistry.registerKeyBinding(KeyBoardInput.SKILL_KEY);
-        		ClientRegistry.registerKeyBinding(KeyBoardInput.DETONATE_KEY);
-        	});
+    public static void onClientSetup(RegisterKeyMappingsEvent event) {
+        		event.register(KeyBoardInput.SKILL_KEY);
+        		event.register(KeyBoardInput.DETONATE_KEY);
     }
 }

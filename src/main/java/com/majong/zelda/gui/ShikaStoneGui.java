@@ -3,7 +3,7 @@ package com.majong.zelda.gui;
 import com.majong.zelda.Utils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.network.Networking;
-import com.majong.zelda.network.PackWithUUID;
+import com.majong.zelda.network.PackToServer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -33,13 +33,13 @@ public class ShikaStoneGui extends Screen{
 		this.bomb2 = new Button((int)(0.5*w-64), (int)(0.3*h), 32, 32, Component.translatable("ը��2"), (button) -> {placebomb(true);});
 		this.addRenderableWidget(bomb1);
 		this.addRenderableWidget(bomb2);
-		this.magnet= new Button((int)(0.5*w-32), (int)(0.3*h), 32, 32, Component.translatable("����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(5));this.onClose();});
+		this.magnet= new Button((int)(0.5*w-32), (int)(0.3*h), 32, 32, Component.translatable("����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(5));this.onClose();});
 		this.addRenderableWidget(magnet);
-		this.Static= new Button((int)(0.5*w), (int)(0.3*h), 32, 32,Component.translatable("��ֹ��"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(6));this.onClose();});
+		this.Static= new Button((int)(0.5*w), (int)(0.3*h), 32, 32,Component.translatable("��ֹ��"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(6));this.onClose();});
 		this.addRenderableWidget(Static);
-		this.ice= new Button((int)(0.5*w+32), (int)(0.3*h), 32, 32, Component.translatable("�Ʊ���"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(7));this.onClose();});
+		this.ice= new Button((int)(0.5*w+32), (int)(0.3*h), 32, 32, Component.translatable("�Ʊ���"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(7));this.onClose();});
 		this.addRenderableWidget(ice);
-		this.camera= new Button((int)(0.5*w+64), (int)(0.3*h), 32, 32, Component.translatable("�����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackWithUUID(8));this.onClose();});
+		this.camera= new Button((int)(0.5*w+64), (int)(0.3*h), 32, 32, Component.translatable("�����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(8));this.onClose();});
 		this.addRenderableWidget(camera);
 		super.init();
 	}
@@ -65,8 +65,8 @@ public class ShikaStoneGui extends Screen{
 			return;
 		}
 		if(round)
-			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(1));
+			Networking.PACKWITHUUID.sendToServer(new PackToServer(1));
 		else
-			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(2));
+			Networking.PACKWITHUUID.sendToServer(new PackToServer(2));
 	}
 }

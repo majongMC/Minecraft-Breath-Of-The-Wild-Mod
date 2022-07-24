@@ -3,7 +3,7 @@ package com.majong.zelda.overlays;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -15,10 +15,10 @@ public class RenderOverlays {
 	public static boolean rendering=false;
 	private static Component name=Component.translatable("");
 	@SubscribeEvent
-	public static void onOverlayRender(RenderGameOverlayEvent event) {
-		if (event.getType() != RenderGameOverlayEvent.ElementType.ALL) {
+	public static void onOverlayRender(RenderGuiOverlayEvent.Post event) {
+		/*if (event.getType() != RenderGuiOverlayEvent.ElementType.ALL) {
 	           return;
-	       }
+	       }*/
 		if (Minecraft.getInstance().player == null) {
 	           return;
 	       }

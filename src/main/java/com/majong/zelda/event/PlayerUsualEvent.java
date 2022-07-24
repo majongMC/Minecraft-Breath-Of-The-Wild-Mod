@@ -21,6 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -29,6 +31,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber()
 public class PlayerUsualEvent {
+	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
 		if(event.getEntity().level.isClientSide) {
@@ -39,13 +42,13 @@ public class PlayerUsualEvent {
 	public static void onPlayerRightClickEntity(EntityInteract event) {
 		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
 		{
-			if(event.getWorld().isClientSide) {
+			if(event.getLevel().isClientSide) {
 				new OpenDialogBox((int) (Math.random()*3));
 			}else {
 				((YigaTeamMemberEntity)event.getTarget()).activate();
 			}
 		}
-		Player player=event.getPlayer();
+		Player player=event.getEntity();
 		if(player!=null&&!player.level.isClientSide) {
 			ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
 			if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
@@ -61,7 +64,7 @@ public class PlayerUsualEvent {
 	@SubscribeEvent
 	public static void onPlayerDestroyBlock(HarvestCheck event) {
 		if(!event.getEntity().level.isClientSide&&event.canHarvest()) {
-			Player player=event.getPlayer();
+			Player player=event.getEntity();
 			if(player.level.dimension().location().equals(Level.OVERWORLD.location())&&player.getY()<40) {
 				if(Math.random()<0.0005*ZeldaConfig.ROCKGIANT.get()) {
 					RockGiantEntity entity=new RockGiantEntity(EntityLoader.ROCK_GIANT.get(),event.getEntity().level);

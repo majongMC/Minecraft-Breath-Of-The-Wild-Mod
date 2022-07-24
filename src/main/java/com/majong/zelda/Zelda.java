@@ -19,10 +19,11 @@ public class Zelda {
 		IEventBus bus=FMLJavaModLoadingContext.get().getModEventBus();
 		//bus.addListener(this::setup);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ZeldaConfig.COMMON_CONFIG);
+		EntityLoader.ENTITY_TYPES.register(bus);
+		//try{Thread.sleep(30000);}catch(Exception e) {}
 		ItemLoader.ITEMS.register(bus);
 		BlockLoader.BLOCKS.register(bus);
 		TileEntityLoader.TILE_ENTITIES.register(bus);
-		EntityLoader.ENTITY_TYPES.register(bus);
 		SoundLoader.SOUNDS.register(bus);
 		//ModStructures.register(bus);
 		//BiomeInit.BIOMES.register(bus);

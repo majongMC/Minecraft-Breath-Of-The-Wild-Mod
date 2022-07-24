@@ -21,8 +21,8 @@ import net.minecraftforge.fml.common.Mod;
 public class LinkTime {
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
-		if(!event.getWorld().isClientSide) {
-			Player player=event.getPlayer();
+		if(!event.getLevel().isClientSide) {
+			Player player=event.getEntity();
 			if(!player.isOnGround()&&!player.isFallFlying()) {
 				player.setDeltaMovement(Vec3.ZERO);
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,120,8));
@@ -34,14 +34,14 @@ public class LinkTime {
 					@Override
 					public void run() {
 						// TODO �Զ����ɵķ������
-						Player player=event.getPlayer();
+						Player player=event.getEntity();
 						for(int i=0;i<ZeldaConfig.LINKTIME.get();i++) {
 						try {Thread.sleep(50);} catch (InterruptedException e) {break;}
 						if(player==null||!player.isNoGravity())
 							break;
 						}
 						if(!(player==null))
-						event.getPlayer().setNoGravity(false);
+						event.getEntity().setNoGravity(false);
 					}});
 				t.start();
 			}
@@ -54,8 +54,8 @@ public class LinkTime {
 	}
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerLooseArrow(ArrowLooseEvent event) {
-		if(!event.getWorld().isClientSide) {
-			Player player=event.getPlayer();
+		if(!event.getLevel().isClientSide) {
+			Player player=event.getEntity();
 			player.removeEffect(MobEffects.SLOW_FALLING);
 			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
