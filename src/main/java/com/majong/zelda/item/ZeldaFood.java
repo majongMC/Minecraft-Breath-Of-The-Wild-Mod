@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ZeldaFood extends Item{
 	private static final Food ZELDA_FOOD = (new Food.Builder())
@@ -26,6 +28,7 @@ public class ZeldaFood extends Item{
 		super(new Properties().food(ZELDA_FOOD).tab(Utils.ZELDA_CREATIVE_TAB).stacksTo(1));
 		// TODO 自动生成的构造函数存根
 	}
+	@OnlyIn(Dist.CLIENT)
 	@Override
     public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		super.appendHoverText(stack, worldIn, tooltip, flag);

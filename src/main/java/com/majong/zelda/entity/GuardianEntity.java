@@ -1,7 +1,5 @@
 package com.majong.zelda.entity;
 
-import com.brandon3055.draconicevolution.entity.guardian.DraconicGuardianEntity;
-import com.majong.zelda.Utils;
 import com.majong.zelda.entity.ai.ChangeDistanceNearestAttackableTargetGoal;
 import com.majong.zelda.entity.ai.GuardianAi;
 import com.majong.zelda.item.ItemLoader;
@@ -26,9 +24,6 @@ public class GuardianEntity extends MonsterEntity{
 		this.goalSelector.addGoal(2,new GuardianAi(this));
 		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 50.0F));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		if(Utils.DRACONIC_EVOLUTION_LOADED) {
-			this.targetSelector.addGoal(2, new ChangeDistanceNearestAttackableTargetGoal<>(this, DraconicGuardianEntity.class,1, false,false,64));
-		}
 		this.targetSelector.addGoal(3, new ChangeDistanceNearestAttackableTargetGoal<>(this, PlayerEntity.class,1, true,false,48));
 		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
 		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);

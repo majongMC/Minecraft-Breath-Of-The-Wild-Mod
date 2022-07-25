@@ -1,6 +1,5 @@
 package com.majong.zelda.event;
 
-import com.github.alexthe666.iceandfire.entity.EntityCyclops;
 import com.majong.zelda.Utils;
 import com.majong.zelda.api.overlays.ZeldaBloodBarApi;
 import com.majong.zelda.entity.GuardianEntity;
@@ -11,6 +10,7 @@ import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.HealthBarPack;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.util.Linkage;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -63,8 +63,8 @@ public class EntitySpottedEvent {
 			                    new SoundPack(4,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
 				}
 			}
-			if(Utils.ICE_AND_FIRE_LOADED&&entity instanceof EntityCyclops) {
-				EntityCyclops cyclops=(EntityCyclops) entity;
+			if(Utils.ICE_AND_FIRE_LOADED&&Linkage.isHinox(entity)) {
+				LivingEntity cyclops=(LivingEntity) entity;
 				PlayerEntity player=(PlayerEntity) target;
 				ZeldaBloodBarApi.DisplayBloodBarServer(cyclops.getHealth()/cyclops.getMaxHealth(), HealthBarPack.SINOX, player);
 				if(entity.level.getGameTime()%20==9) {

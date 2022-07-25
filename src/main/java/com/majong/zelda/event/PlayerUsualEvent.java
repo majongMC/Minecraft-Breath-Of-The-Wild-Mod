@@ -1,5 +1,6 @@
 package com.majong.zelda.event;
 
+import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.RockGiantEntity;
@@ -9,7 +10,6 @@ import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +35,7 @@ public class PlayerUsualEvent {
 	@SubscribeEvent
 	public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
 		if(event.getEntity().level.isClientSide) {
-			Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,Minecraft.getInstance().player.blockPosition(), SoundLoader.WAKE_UP.get(), SoundCategory.AMBIENT, 10f, 1f);
+			ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),ClientUtils.GetClientPlayer().blockPosition(), SoundLoader.WAKE_UP.get(), SoundCategory.AMBIENT, 10f, 1f);
 		}
 	}
 	@SubscribeEvent

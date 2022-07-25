@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.github.alexthe666.iceandfire.entity.EntityCyclops;
 import com.majong.zelda.Utils;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.GuardianEntity;
@@ -14,6 +13,7 @@ import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.util.Linkage;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -69,7 +69,7 @@ public class EntityDead {
                     ),
                     new SoundPack(1,new BlockPos(player.getX(),player.getY(),player.getZ())));
 		}
-		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof PokBrinEntity||entity instanceof YigaTeamMemberEntity||(Utils.ICE_AND_FIRE_LOADED&&entity instanceof EntityCyclops))) {
+		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof PokBrinEntity||entity instanceof YigaTeamMemberEntity||(Utils.ICE_AND_FIRE_LOADED&&Linkage.isHinox(entity)))) {
 			List<PlayerEntity> playerlist= entity.level.getEntitiesOfClass(PlayerEntity.class,entity.getBoundingBox().inflate(64, 32, 64) ,new Predicate<Object>() {
 
 				@Override
