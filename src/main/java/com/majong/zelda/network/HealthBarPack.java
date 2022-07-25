@@ -9,16 +9,16 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class BloodBarPack {
+public class HealthBarPack {
 	private final double DATA;
 	private final ITextComponent NAME;
 	public static final ITextComponent SINOX=new TranslationTextComponent("boss.sinox.bar");
-	public BloodBarPack(PacketBuffer buffer) {
+	public HealthBarPack(PacketBuffer buffer) {
 		DATA=buffer.readDouble();
 		NAME=buffer.readComponent();
     }
 	@Deprecated//请使用api中的方法
-    public BloodBarPack(ITextComponent name,double percentage) {
+    public HealthBarPack(ITextComponent name,double percentage) {
         this.DATA=percentage;
         this.NAME=name;
     }

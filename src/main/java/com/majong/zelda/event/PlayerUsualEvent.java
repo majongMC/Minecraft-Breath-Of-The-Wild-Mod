@@ -21,6 +21,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -29,6 +31,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber()
 public class PlayerUsualEvent {
+	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
 		if(event.getEntity().level.isClientSide) {

@@ -25,6 +25,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
 public class RockGiantEntity extends MonsterEntity{
@@ -79,6 +81,7 @@ public class RockGiantEntity extends MonsterEntity{
 			Minecraft.getInstance().getSoundManager().stop();
 		}
 	}
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void tick() {
 		super.tick();

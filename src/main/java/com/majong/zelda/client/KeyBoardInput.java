@@ -3,7 +3,7 @@ package com.majong.zelda.client;
 import org.lwjgl.glfw.GLFW;
 
 import com.majong.zelda.Utils;
-import com.majong.zelda.network.PackWithUUID;
+import com.majong.zelda.network.PackToServer;
 import com.majong.zelda.network.Networking;
 
 import net.minecraft.client.Minecraft;
@@ -33,10 +33,10 @@ public class KeyBoardInput {
 	@SubscribeEvent
     public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
 		if(SKILL_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
-			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(0));
+			Networking.PACKTOSERVER.sendToServer(new PackToServer(0));
 		}
 		if(DETONATE_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
-			Networking.PACKWITHUUID.sendToServer(new PackWithUUID(3));
+			Networking.PACKTOSERVER.sendToServer(new PackToServer(3));
 		}
 	}
 }

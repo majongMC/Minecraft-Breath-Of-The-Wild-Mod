@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class Networking {
-	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKWITHUUID,FOODMESSAGEPACK,BAR;
+	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKTOSERVER,FOODMESSAGEPACK,BAR;
     public static final String VERSION = "1.0";
     private static int ID = 0;
 
@@ -49,16 +49,16 @@ public class Networking {
                 .decoder(ZeldaNBTPack::new)
                 .consumer(ZeldaNBTPack::handler)
                 .add();
-        PACKWITHUUID = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "pack_with_uuid"),
+        PACKTOSERVER = NetworkRegistry.newSimpleChannel(
+                new ResourceLocation(Utils.MOD_ID, "pack_to_server"),
                 () -> VERSION,
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
         );
-        PACKWITHUUID.messageBuilder(PackWithUUID.class, nextID())
-                .encoder(PackWithUUID::toBytes)
-                .decoder(PackWithUUID::new)
-                .consumer(PackWithUUID::handler)
+        PACKTOSERVER.messageBuilder(PackToServer.class, nextID())
+                .encoder(PackToServer::toBytes)
+                .decoder(PackToServer::new)
+                .consumer(PackToServer::handler)
                 .add();
         FOODMESSAGEPACK = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(Utils.MOD_ID, "foodmessage_pack"),
@@ -77,10 +77,10 @@ public class Networking {
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
         );
-        BAR.messageBuilder(BloodBarPack.class, nextID())
-                .encoder(BloodBarPack::toBytes)
-                .decoder(BloodBarPack::new)
-                .consumer(BloodBarPack::handler)
+        BAR.messageBuilder(HealthBarPack.class, nextID())
+                .encoder(HealthBarPack::toBytes)
+                .decoder(HealthBarPack::new)
+                .consumer(HealthBarPack::handler)
                 .add();
     }
 }

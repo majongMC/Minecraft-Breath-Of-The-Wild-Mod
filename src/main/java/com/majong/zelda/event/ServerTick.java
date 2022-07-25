@@ -2,7 +2,7 @@ package com.majong.zelda.event;
 
 import com.majong.zelda.config.ZeldaConfig;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
@@ -12,11 +12,13 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber()
 public class ServerTick {
+	public static MinecraftServer server;
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		if(Minecraft.getInstance().getSingleplayerServer()==null||!ZeldaConfig.WEATHER_CHANGE.get())
+		if(server==null||!ZeldaConfig.WEATHER_CHANGE.get())
 			return;
-		World world=Minecraft.getInstance().getSingleplayerServer().getLevel(World.OVERWORLD);
+		World world=server.overworld();
+		//World world=Minecraft.getInstance().getSingleplayerServer().getLevel(World.OVERWORLD);
 		if(world==null)
 			return;
 		long time=world.getGameTime();

@@ -15,7 +15,6 @@ import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -23,7 +22,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -39,46 +37,47 @@ import net.minecraft.world.World;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class PackWithUUID {
-	private final UUID uuid;
+public class PackToServer {
+	//private final UUID uuid;
 	private final int type;
-    public PackWithUUID(PacketBuffer buffer) {
+    public PackToServer(PacketBuffer buffer) {
     	type=buffer.readInt();
-    	uuid=buffer.readUUID();
+    	//uuid=buffer.readUUID();
     }
 
-    public PackWithUUID(int type) {
+    public PackToServer(int type) {
     	this.type=type;
-    	this.uuid=Minecraft.getInstance().player.getUUID();
+    	//this.uuid=Minecraft.getInstance().player.getUUID();
     }
 
     public void toBytes(PacketBuffer buf) {
     	buf.writeInt(type);
-    	buf.writeUUID(uuid);
+    	//buf.writeUUID(uuid);
     }
 
     public void handler(Supplier<NetworkEvent.Context> ctx) {
+    	PlayerEntity player=ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
         	switch(type) {
-        	case 0:useskill();break;
-        	case 1:placebomb(true);break;
-        	case 2:placebomb(false);break;
-        	case 3:detonate();break;
-        	case 4:teleporttooverworld();break;
-        	case 5:usemagnet();break;
-        	case 6:useStatic();break;
-        	case 7:useice();break;
-        	case 8:usecamera();break;
+        	case 0:useskill(player);break;
+        	case 1:placebomb(player,true);break;
+        	case 2:placebomb(player,false);break;
+        	case 3:detonate(player);break;
+        	case 4:teleporttooverworld(player);break;
+        	case 5:usemagnet(player);break;
+        	case 6:useStatic(player);break;
+        	case 7:useice(player);break;
+        	case 8:usecamera(player);break;
         	}
         });
         ctx.get().setPacketHandled(true);
     }
-    private void teleporttooverworld() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void teleporttooverworld(PlayerEntity player) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	TempleDimensionData.ExitTemple(player.level, player);
     }
-    private void useskill() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void useskill(PlayerEntity player) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	//DataManager.preventnull(player);
     	if(player.isShiftKeyDown()&&DataManager.data.get(player).unlocked[1]&&DataManager.data.get(player).skill[1]>0) {
     		player.addEffect(new EffectInstance(Effects.LEVITATION,60,10));
@@ -86,7 +85,7 @@ public class PackWithUUID {
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     	else if(DataManager.data.get(player).unlocked[3]&&DataManager.data.get(player).skill[3]>0) {
-    		World world=Minecraft.getInstance().getSingleplayerServer().getLevel(player.level.dimension());
+    		World world=player.level;
     		List<Entity> partentitylist=new ArrayList<>();
     		List<Entity> targrtlist= world.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
 
@@ -135,8 +134,8 @@ public class PackWithUUID {
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     }
-    private void placebomb(boolean round) {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void placebomb(PlayerEntity player,boolean round) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
 			return;
@@ -146,8 +145,8 @@ public class PackWithUUID {
     	bomb.setowner(player);
     	player.level.addFreshEntity(bomb);
     }
-    private void detonate() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void detonate(PlayerEntity player) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
 			return;
@@ -200,8 +199,8 @@ public class PackWithUUID {
 		}
 		return isoffground;
     }
-    private void usemagnet() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void usemagnet(PlayerEntity player) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	double x=player.getX();
     	double y=player.getY();
     	double z=player.getZ();
@@ -217,8 +216,8 @@ public class PackWithUUID {
 			item.teleportTo(x, y, z);
 		}
     }
-    private void useStatic() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void useStatic(PlayerEntity player) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;
@@ -226,8 +225,8 @@ public class PackWithUUID {
     	nbt.putBoolean("activated", true);
     	player.sendMessage(new TranslationTextComponent("msg.zelda.staticactivated"), UUID.randomUUID());
     }
-    private void useice() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void useice(PlayerEntity player) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(player.isInWater())
     		return;
     	BlockPos playerpos=player.blockPosition();
@@ -240,8 +239,8 @@ public class PackWithUUID {
     			}
     		}
     }
-    private void usecamera() {
-    	PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    private void usecamera(PlayerEntity player) {
+    	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;

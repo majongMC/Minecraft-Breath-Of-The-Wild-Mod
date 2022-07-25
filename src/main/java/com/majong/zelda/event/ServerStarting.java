@@ -9,10 +9,15 @@ import net.minecraft.entity.monster.StrayEntity;
 import net.minecraft.item.Items;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 @Mod.EventBusSubscriber()
 public class ServerStarting {
+	@SubscribeEvent
+	public static void onServerAboutToStartStarting(FMLServerAboutToStartEvent event) {
+		ServerTick.server=event.getServer();
+	}
 	@SubscribeEvent
 	public static void onServerStarting(FMLServerStartingEvent event) {
 		AttributeDamageApi.registerrestraint(AttributeDamageApi.ICE_RESTRAINTED, BlazeEntity.class);

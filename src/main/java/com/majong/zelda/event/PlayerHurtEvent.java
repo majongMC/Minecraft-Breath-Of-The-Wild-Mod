@@ -23,7 +23,7 @@ public class PlayerHurtEvent {
 	public static boolean TryReflect(PlayerEntity player,Entity source,float amount) {
 		long respondtime=player.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
-			if(source==null||!(source instanceof LivingEntity))
+			if(source==null||!(source instanceof LivingEntity)||source==player)
 				return false;
 			float amountback=0;
 			float maxhealth=((LivingEntity)source).getMaxHealth();
@@ -43,7 +43,7 @@ public class PlayerHurtEvent {
 			source.setDeltaMovement(source.getDeltaMovement().add(mx,0.1, mz));
 			return true;
 		}
-		if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&source instanceof LivingEntity&&amount>0&&player.isShiftKeyDown()) {
+		if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&source instanceof LivingEntity&&source!=player&&amount>0&&player.isShiftKeyDown()) {
 			float amountback=0;
 			float maxhealth=((LivingEntity)source).getMaxHealth();
 			if(maxhealth>100) {

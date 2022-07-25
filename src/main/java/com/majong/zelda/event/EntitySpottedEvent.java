@@ -8,7 +8,7 @@ import com.majong.zelda.entity.MollyBrinEntity;
 import com.majong.zelda.entity.PokBrinEntity;
 import com.majong.zelda.entity.WalkingGuardianEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
-import com.majong.zelda.network.BloodBarPack;
+import com.majong.zelda.network.HealthBarPack;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 
@@ -66,7 +66,7 @@ public class EntitySpottedEvent {
 			if(Utils.ICE_AND_FIRE_LOADED&&entity instanceof EntityCyclops) {
 				EntityCyclops cyclops=(EntityCyclops) entity;
 				PlayerEntity player=(PlayerEntity) target;
-				ZeldaBloodBarApi.DisplayBloodBarServer(cyclops.getHealth()/cyclops.getMaxHealth(), BloodBarPack.SINOX, player);
+				ZeldaBloodBarApi.DisplayBloodBarServer(cyclops.getHealth()/cyclops.getMaxHealth(), HealthBarPack.SINOX, player);
 				if(entity.level.getGameTime()%20==9) {
 					Networking.SOUND.send(
 				      PacketDistributor.PLAYER.with(

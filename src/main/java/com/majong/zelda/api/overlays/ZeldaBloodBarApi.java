@@ -1,6 +1,6 @@
 package com.majong.zelda.api.overlays;
 
-import com.majong.zelda.network.BloodBarPack;
+import com.majong.zelda.network.HealthBarPack;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.overlays.RenderOverlays;
 
@@ -27,6 +27,6 @@ public class ZeldaBloodBarApi {
 	             PacketDistributor.PLAYER.with(
 	                            () -> (ServerPlayerEntity) player
 	                    ),
-	                    new BloodBarPack(name,percentage));
+	                    new HealthBarPack(name,percentage));
 	}
 }
