@@ -19,14 +19,16 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 
 public class AttributeDamage {
-	//public static final Collection<Class<? extends LivingEntity>> FIRE_RESTRAINTED=new ArrayList<>();
-	//public static final Collection<Class<? extends LivingEntity>> ICE_RESTRAINTED=new ArrayList<>();
+	public static final ResourceLocation FIRE_RESTRAINTED=new ResourceLocation(Utils.MOD_ID,"fire_restrainted");
+	public static final ResourceLocation ICE_RESTRAINTED=new ResourceLocation(Utils.MOD_ID,"ice_restrainted");
+	public static final ResourceLocation ANCIENT_RESTRAINTED=new ResourceLocation(Utils.MOD_ID,"ancient_restrainted");
 	public static void firedamage(LivingEntity living,Entity attacker) {
 		Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.FIRE_RESTRAINTED.iterator();
     	while(it.hasNext())
@@ -35,6 +37,8 @@ public class AttributeDamage {
     		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get())
     			living.hurt(new EntityDamageSource("arrow",attacker),32767);
 		}
+    	if(living.getType().getTags().contains(FIRE_RESTRAINTED))
+    		living.hurt(new EntityDamageSource("arrow",attacker),32767);
 	}
     public static void icedamage(LivingEntity living,Entity attacker) {
     	Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.ICE_RESTRAINTED.iterator();
@@ -45,6 +49,8 @@ public class AttributeDamage {
     		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get())
     			living.hurt(new EntityDamageSource("arrow",attacker),32767);
 		}
+    	if(living.getType().getTags().contains(ICE_RESTRAINTED))
+    		living.hurt(new EntityDamageSource("arrow",attacker),32767);
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
     	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()) {
@@ -80,6 +86,8 @@ public class AttributeDamage {
 	    			return;
 	    		}
 			}
+	    	if(living.getType().getTags().contains(ANCIENT_RESTRAINTED))
+	    		{living.hurt(new EntityDamageSource("arrow",attacker),32767);return;}
 			if(ischaoisland(living.level,living.blockPosition())&&living instanceof WitherEntity&&ZeldaConfig.KILLWITHER.get()) {
 				living.spawnAtLocation(new ItemStack(Items.NETHER_STAR,1));
 				living.kill();

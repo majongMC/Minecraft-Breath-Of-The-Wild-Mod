@@ -1,16 +1,8 @@
 package com.majong.zelda.event;
 
-import com.majong.zelda.api.util.AttributeDamageApi;
-import com.majong.zelda.api.util.ConductiveItemApi;
-import com.majong.zelda.entity.GuardianEntity;
-
-import net.minecraft.entity.monster.BlazeEntity;
-import net.minecraft.entity.monster.StrayEntity;
-import net.minecraft.item.Items;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 @Mod.EventBusSubscriber()
 public class ServerStarting {
@@ -18,14 +10,14 @@ public class ServerStarting {
 	public static void onServerAboutToStartStarting(FMLServerAboutToStartEvent event) {
 		ServerTick.server=event.getServer();
 	}
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void onServerStarting(FMLServerStartingEvent event) {
 		AttributeDamageApi.registerrestraint(AttributeDamageApi.ICE_RESTRAINTED, BlazeEntity.class);
 		AttributeDamageApi.registerrestraint(AttributeDamageApi.FIRE_RESTRAINTED, StrayEntity.class);
 		AttributeDamageApi.registerrestraint(AttributeDamageApi.ANCIENT_RESTRAINTED, GuardianEntity.class);
-		registerConductiveItem();
-	}
-	private static void registerConductiveItem() {
+		//registerConductiveItem();
+	}*/
+	/*private static void registerConductiveItem() {
 		ConductiveItemApi.registerConductiveItem(Items.IRON_BLOCK);
 		ConductiveItemApi.registerConductiveItem(Items.IRON_INGOT);
 		ConductiveItemApi.registerConductiveItem(Items.IRON_NUGGET);
@@ -60,5 +52,5 @@ public class ServerStarting {
 		ConductiveItemApi.registerConductiveItem(Items.NETHERITE_CHESTPLATE);
 		ConductiveItemApi.registerConductiveItem(Items.NETHERITE_LEGGINGS);
 		ConductiveItemApi.registerConductiveItem(Items.NETHERITE_BOOTS);
-	}
+	}*/
 }

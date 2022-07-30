@@ -2,6 +2,7 @@ package com.majong.zelda;
 
 import com.majong.zelda.block.BlockLoader;
 import com.majong.zelda.config.ZeldaConfig;
+import com.majong.zelda.config.ZeldaConfigClient;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
@@ -23,6 +24,7 @@ public class Zelda {
 		IEventBus bus=FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::setup);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ZeldaConfig.COMMON_CONFIG);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ZeldaConfigClient.CLIENT_CONFIG);
 		ItemLoader.ITEMS.register(bus);
 		BlockLoader.BLOCKS.register(bus);
 		TileEntityLoader.TILE_ENTITIES.register(bus);

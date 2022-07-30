@@ -1,0 +1,23 @@
+package com.majong.zelda.config;
+
+import net.minecraftforge.common.ForgeConfigSpec;
+
+public class ZeldaConfigClient {
+	public static ForgeConfigSpec CLIENT_CONFIG;
+	public static ForgeConfigSpec.IntValue GUARDIAN,WALKING_GUARDIAN,FIGHT,HINOX,ROCK_GIANT;
+	public static ForgeConfigSpec.BooleanValue DISPLAY_ANGLE;
+	static {
+        ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
+        CLIENT_BUILDER.comment("Sound 声音(如果你用资源包修改了战斗音乐，请在此处修改对应的音乐长度（单位:tick），否则会造成音乐过早或过晚循环)").push("sound");
+        GUARDIAN = CLIENT_BUILDER.comment("Guardian Misic Length 守护者音乐长度").defineInRange("guardian", 1200, 0, Integer.MAX_VALUE);
+        WALKING_GUARDIAN = CLIENT_BUILDER.comment("Walking Guardian Misic Length 行走的守护者音乐长度").defineInRange("walking_guardian", 1800, 0, Integer.MAX_VALUE);
+        FIGHT = CLIENT_BUILDER.comment("Fight Misic Length 战斗音乐长度").defineInRange("fight", 2060, 0, Integer.MAX_VALUE);
+        HINOX = CLIENT_BUILDER.comment("Hinox Misic Length 西诺克斯音乐长度").defineInRange("hinox", 2200, 0, Integer.MAX_VALUE);
+        ROCK_GIANT =CLIENT_BUILDER.comment("Rock Giant Misic Length 岩石巨人音乐长度").defineInRange("rock_giant", 1200, 0, Integer.MAX_VALUE);
+        CLIENT_BUILDER.pop();
+        CLIENT_BUILDER.comment("Display 显示").push("display");
+        DISPLAY_ANGLE =CLIENT_BUILDER.comment("手持希卡之石时显示目标与视线之间的夹角").define("displayangle", true);
+        CLIENT_BUILDER.pop();
+        CLIENT_CONFIG=CLIENT_BUILDER.build();
+	}
+}

@@ -3,8 +3,9 @@ package com.majong.zelda.event;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
+import com.majong.zelda.Utils;
+import com.majong.zelda.api.overlays.ZeldaBloodBarApi;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.data.ZeldaPlayerData;
@@ -24,6 +25,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
@@ -35,6 +37,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class EntityTick {
 	public static final Map<PlayerEntity,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	public static final Map<PlayerEntity,BlockPos> LAST_STAND_POS=new HashMap<>();
+	public static final ResourceLocation ROCK_GIANT=new ResourceLocation(Utils.MOD_ID,"has_healthbar");
 	@SubscribeEvent
 	public static void onEntityTick(LivingUpdateEvent event) {
 		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
@@ -92,13 +95,7 @@ public class EntityTick {
 			}
 	}
 		if(Math.random()<ZeldaConfig.YIGATEAM.get()*0.00002&&event.getEntity() instanceof VillagerEntity&&!event.getEntity().level.isClientSide) {
-			List<LivingEntity> list=event.getEntity().level.getEntitiesOfClass(YigaTeamMemberEntity.class,event.getEntity().getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
-					// TODO 自动生成的方法存根
-					return true;
-				}});
+			List<LivingEntity> list=event.getEntity().level.getEntitiesOfClass(YigaTeamMemberEntity.class,event.getEntity().getBoundingBox().inflate(16, 16, 16),(LivingEntity entity)->true);
 			if(list.size()>5)
 				return;
 			Entity villager=event.getEntity();
@@ -107,12 +104,17 @@ public class EntityTick {
 			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
 			villager.level.addFreshEntity(entity);
 		}
+		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().contains(ROCK_GIANT)&&event.getEntity().level.isClientSide) {
+			LivingEntity entity=(LivingEntity) event.getEntity();
+			if(entity.blockPosition().getY()>=0)
+				ZeldaBloodBarApi.DisplayBloodBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName());
+		}
 		if(event.getEntity() instanceof PlayerEntity&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)
 				EntitySpottedEvent.SoundRemainTime--;
 		}
 }
-	private static boolean isOutdoors(PlayerEntity player) {
+	private static boolean isOutdoors(Entity player) {
 		BlockPos pos=player.blockPosition();
 		for(int i=pos.getY()+1;i<256;i++) {
 			if(!player.level.getBlockState(new BlockPos(pos.getX(),i,pos.getZ())).isAir())
