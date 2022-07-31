@@ -4,12 +4,12 @@ import com.majong.zelda.util.ConductiveItem;
 
 import net.minecraft.world.item.Item;
 public class ConductiveItemApi {
-	//��FMLServerStartingEvent�¼���ʹ�����·���ע�ᵼ����Ʒ(ע���������������ֳֻ򴩴�����Ʒʱ������)
-	//ʹ��ʾ����com.majong.zelda.event.ServerStarting
+	//不推荐使用，给物品添加zelda:conductive标签即可实现相同功能
+	@Deprecated
 	public static void registerConductiveItem(Item item) {
 		ConductiveItem.CONDUCTIVE_ITEM.add(item);
 	}
-	//��FMLServerStartingEvent�¼���ʹ�����·����Ƴ�������Ʒ(��ʹ����͵����ȼ�)
+	@Deprecated
 	public static void removeConductiveItem(Item item) {
 		if(ConductiveItem.CONDUCTIVE_ITEM.contains(item))
 			ConductiveItem.CONDUCTIVE_ITEM.remove(item);

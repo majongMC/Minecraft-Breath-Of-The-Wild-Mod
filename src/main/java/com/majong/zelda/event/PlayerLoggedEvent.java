@@ -6,16 +6,20 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.data.ZeldaPlayerData;
 import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.network.Networking;
+import com.majong.zelda.network.ZeldaNBTPack;
 import com.majong.zelda.util.Festival;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber()
 public class PlayerLoggedEvent {
@@ -39,6 +43,14 @@ public class PlayerLoggedEvent {
 		EntityTick.THUNDER_COUNT_TIME.put(player, 100);
 		DataManager.preventnull(player);
 		DataManager.sendzeldaplayerdatapack(player);
+		CompoundTag cdpack=new CompoundTag();
+		int[] cd= {ZeldaConfig.WATER.get(),ZeldaConfig.WIND.get(),ZeldaConfig.FIRE.get(),ZeldaConfig.THUNDER.get()};
+		cdpack.putIntArray("cd",cd);
+		Networking.ZELDANBT.send(
+                PacketDistributor.PLAYER.with(
+                        () -> (ServerPlayer) player
+                ),
+                new ZeldaNBTPack(2,cdpack));
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(player,0L);
 		if(Festival.isLunarSpringFestival(new Date())) {
 			player.sendSystemMessage(Component.translatable("msg.zelda.lunaryear"));

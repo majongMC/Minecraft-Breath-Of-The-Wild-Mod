@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.majong.zelda.tag.ItemTag;
+
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +23,7 @@ public class ConductiveItem {
 			if(item==it.next()) 
 				return true;
 		}
-		return false;
+		return item.builtInRegistryHolder().tags().anyMatch((TagKey<Item> t)->t.equals(ItemTag.CONDUCTIVE));
 	}
 	private static boolean isArmorConductive(Player player) {
 		Iterator<ItemStack> it=player.getArmorSlots().iterator();

@@ -2,7 +2,6 @@ package com.majong.zelda.event;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.majong.zelda.config.ZeldaConfig;
 
@@ -64,13 +63,9 @@ public class LinkTime {
 	}
 	private static void slownearmonsters(Player player,boolean remove) {
 		Level Level=player.level;
-		List<LivingEntity> entitylist= Level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,new Predicate<Object>() {
-
-			@Override
-			public boolean test(Object t) {
-				// TODO �Զ����ɵķ������
+		List<LivingEntity> entitylist= Level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,(LivingEntity t)->{
 				return t instanceof LivingEntity&&!(t instanceof Player);
-			}});
+			});
 		Iterator<LivingEntity> it=entitylist.iterator();
 		while(it.hasNext()) {
 			LivingEntity entity=it.next();

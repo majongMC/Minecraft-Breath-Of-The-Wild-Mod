@@ -2,9 +2,9 @@ package com.majong.zelda.network;
 
 import java.util.function.Supplier;
 
+import com.majong.zelda.client.ClientUtils;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -47,17 +47,17 @@ public class ParticlePack {
         		rx=rand*DATA[0]+(1-rand)*DATA[3];
         		ry=rand*DATA[1]+(1-rand)*DATA[4];
         		rz=rand*DATA[2]+(1-rand)*DATA[5];
-        		Minecraft.getInstance().level.addAlwaysVisibleParticle(DustParticleOptions.REDSTONE,rx,ry,rz,0,0,0);
+        		ClientUtils.GetClientLevel().addAlwaysVisibleParticle(DustParticleOptions.REDSTONE,rx,ry,rz,0,0,0);
         	}
         	}
         	if(type!=0) {
         		switch(type) {
-        		case 1:Minecraft.getInstance().level.addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,1F,0F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 2:Minecraft.getInstance().level.addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,0.5F,0F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 3:Minecraft.getInstance().level.addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,1F,1F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 4:Minecraft.getInstance().level.addAlwaysVisibleParticle(DustParticleOptions.REDSTONE,DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 5:Minecraft.getInstance().level.addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0F,0F,1F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 6:Minecraft.getInstance().level.addAlwaysVisibleParticle(ParticleTypes.FLASH,DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 1:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,1F,0F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 2:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,0.5F,0F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 3:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,1F,1F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 4:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(DustParticleOptions.REDSTONE,DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 5:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0F,0F,1F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 6:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(ParticleTypes.FLASH,DATA[0],DATA[1],DATA[2],0,0,0);break;
         		case 7:PerformMiphaParticle();break;
         		}
         	}
@@ -66,8 +66,8 @@ public class ParticlePack {
     }
     private void PerformMiphaParticle() {
     	for(int i=0;i<50;i++) {
-    		Minecraft.getInstance().level.addAlwaysVisibleParticle(ParticleTypes.HAPPY_VILLAGER,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);
-    		Minecraft.getInstance().level.addAlwaysVisibleParticle(ParticleTypes.NAUTILUS,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);
+    		ClientUtils.GetClientLevel().addAlwaysVisibleParticle(ParticleTypes.HAPPY_VILLAGER,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);
+    		ClientUtils.GetClientLevel().addAlwaysVisibleParticle(ParticleTypes.NAUTILUS,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);
     	}
     }
 }

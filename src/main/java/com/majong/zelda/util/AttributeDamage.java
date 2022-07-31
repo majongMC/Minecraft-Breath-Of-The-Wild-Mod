@@ -7,14 +7,17 @@ import com.majong.zelda.api.util.AttributeDamageApi;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.tag.EntityTypeTag;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.warden.Warden;
@@ -33,6 +36,8 @@ public class AttributeDamage {
     		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get())
     			living.hurt(new EntityDamageSource("arrow",attacker),32767);
 		}
+    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.FIRE_RESTRAINTED)))
+    		living.hurt(new EntityDamageSource("arrow",attacker),32767);
 	}
     public static void icedamage(LivingEntity living,Entity attacker) {
     	Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.ICE_RESTRAINTED.iterator();
@@ -43,6 +48,8 @@ public class AttributeDamage {
     		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get())
     			living.hurt(new EntityDamageSource("arrow",attacker),32767);
 		}
+    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ICE_RESTRAINTED)))
+    		living.hurt(new EntityDamageSource("arrow",attacker),32767);
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
     	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()) {
@@ -78,6 +85,8 @@ public class AttributeDamage {
 	    			return;
 	    		}
 			}
+	    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ANCIENT_RESTRAINTED)))
+	    		{living.hurt(new EntityDamageSource("arrow",attacker),32767);return;}
 	    	if((living.getMaxHealth()<=20&&!(living instanceof Player))||living instanceof Warden) {
 	    		living.teleportTo(living.getX(), -80, living.getZ());
 	    		if(attacker instanceof Player) {

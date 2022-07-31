@@ -13,7 +13,6 @@ import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -84,12 +83,9 @@ public class PackToServer {
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     	else if(DataManager.data.get(player).unlocked[3]&&DataManager.data.get(player).skill[3]>0) {
-    		Level Level=Minecraft.getInstance().getSingleplayerServer().getLevel(player.level.dimension());
+    		Level Level=player.level;
     		List<Entity> partentitylist=new ArrayList<>();
-    		List<Entity> targrtlist= Level.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
+    		List<Entity> targrtlist= Level.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,(Entity t)-> {
 					// TODO �Զ����ɵķ������
 					if(t instanceof PartEntity) {
 						Entity parent=((PartEntity)t).getParent();
@@ -108,7 +104,7 @@ public class PackToServer {
 					}
 					else
 						return false;
-				}});
+					});
     		targrtlist.addAll(partentitylist);
     		Iterator<Entity> it=targrtlist.iterator();
     		while(it.hasNext()) {

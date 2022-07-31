@@ -3,7 +3,6 @@ package com.majong.zelda.event;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import com.majong.zelda.api.overlays.ZeldaHealthBarApi;
 import com.majong.zelda.config.ZeldaConfig;
@@ -13,17 +12,19 @@ import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
+import com.majong.zelda.tag.EntityTypeTag;
 import com.majong.zelda.util.ConductiveItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
@@ -93,13 +94,7 @@ public class EntityTick {
 			}
 	}
 		if(Math.random()<ZeldaConfig.YIGATEAM.get()*0.00002&&event.getEntity() instanceof Villager&&!event.getEntity().level.isClientSide) {
-			List<YigaTeamMemberEntity> list=event.getEntity().level.getEntitiesOfClass(YigaTeamMemberEntity.class,event.getEntity().getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
-					// TODO �Զ����ɵķ������
-					return true;
-				}});
+			List<YigaTeamMemberEntity> list=event.getEntity().level.getEntitiesOfClass(YigaTeamMemberEntity.class,event.getEntity().getBoundingBox().inflate(16, 16, 16) ,(YigaTeamMemberEntity entity)->true);
 			if(list.size()>5)
 				return;
 			Entity villager=event.getEntity();
@@ -108,10 +103,10 @@ public class EntityTick {
 			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
 			villager.level.addFreshEntity(entity);
 		}
-		if(event.getEntity() instanceof Warden&&event.getEntity().level.isClientSide) {
-			Warden warden=(Warden) event.getEntity();
-			if(warden.blockPosition().getY()>=-64)
-				ZeldaHealthBarApi.DisplayHealthBarClient(warden.getHealth()/warden.getMaxHealth(), warden.getName());
+		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.HAS_HEALTH_BAR))&&event.getEntity().level.isClientSide) {
+			LivingEntity entity=(LivingEntity) event.getEntity();
+			if(entity.blockPosition().getY()>=0)
+				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName());
 		}
 		if(event.getEntity() instanceof Player&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)
