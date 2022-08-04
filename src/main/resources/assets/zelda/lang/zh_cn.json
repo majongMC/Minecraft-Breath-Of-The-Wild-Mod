@@ -47,6 +47,7 @@
 "msg.zelda.blocksavedfailed":"方块保存失败",
 "msg.zelda.blockfound":"找到目标方块",
 "msg.zelda.blockfoundfailed":"方块寻找失败",
+"msg.zelda.temple_failed":"神庙挑战失败",
 "tooltip.zelda.temple":"试炼神庙",
 "tooltip.shikastone.researchtarget":"搜寻目标：",
 "tooltip.shikastone.clear":"右键以查找目标方块，潜行右键以清除。",

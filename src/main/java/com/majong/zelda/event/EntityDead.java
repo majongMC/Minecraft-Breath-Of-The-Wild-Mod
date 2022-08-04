@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.GuardianEntity;
@@ -12,8 +13,10 @@ import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -33,7 +36,14 @@ public class EntityDead {
 		Entity entity=event.getEntity();
 		if(entity instanceof Player&&!entity.level.isClientSide) {
 			Player player=(Player) entity;
-			if(DataManager.data.get(player).unlocked[0]&&DataManager.data.get(player).skill[0]==1) {
+			if(DataManager.data.get(player).intemple>0&&!ZeldaConfig.CANDEATHINTEMPLE.get()) {
+				player.setHealth(((Player)event.getEntity()).getMaxHealth());
+				event.setCanceled(true);
+				TempleDimensionData.ExitTemple(player.level, player);
+				player.sendSystemMessage(Component.translatable("msg.zelda.temple_failed"));
+				return;
+			}
+			if(DataManager.data.get(player).unlocked[0]&&DataManager.data.get(player).skill[0]>0) {
 				player.setHealth(((Player)event.getEntity()).getMaxHealth());
 				player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION,1200,2));
 				event.setCanceled(true);

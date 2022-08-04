@@ -52,7 +52,7 @@ public class AttributeDamage {
     		living.hurt(new EntityDamageSource("arrow",attacker),32767);
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
-    	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()) {
+    	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()&&!living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ELECTRICITY_INVULNERABLE))) {
     		if(living instanceof Player) {
     			Player player=(Player) living;
     			player.drop(player.getMainHandItem(), true, true);

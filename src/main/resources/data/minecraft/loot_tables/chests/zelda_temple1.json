@@ -1,0 +1,65 @@
+{
+    "type": "minecraft:chest",
+    "pools": [
+      {
+        "rolls": {
+          "min": 18,
+          "max": 27
+        },
+        "bonus_rolls": 0,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:diamond"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:ancient_arrow"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 2,
+            "name": "minecraft:ender_pearl"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:horn"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 3,
+            "name": "minecraft:gold_ingot"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 4,
+            "name": "minecraft:iron_ingot"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 2,
+            "name": "zelda:bomb_arrow"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 4,
+            "name": "zelda:electricity_arrow"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 4,
+            "name": "zelda:ice_arrow"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 4,
+            "name": "zelda:fire_arrow"
+          }
+        ]
+      }
+    ]
+  }
+  

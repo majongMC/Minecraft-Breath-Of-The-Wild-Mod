@@ -3,6 +3,7 @@ package com.majong.zelda.entity.ai;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,7 +18,7 @@ public class DestroyBlockGoal extends Goal{
 	@Override
 	public boolean canUse() {
 		// TODO �Զ����ɵķ������
-		if(owner.level.getGameTime()%20!=5)
+		if(owner.level.getGameTime()%20!=5||!owner.getServer().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))
 			return false;
 		int X=(int) owner.getX();
 		int Y=(int) owner.getY();

@@ -12,7 +12,7 @@ public class ZeldaConfig {
     public static ForgeConfigSpec.DoubleValue ELECTRICITY;
     public static ForgeConfigSpec.BooleanValue WEATHER_CHANGE;
     public static ForgeConfigSpec.DoubleValue WEATHER_CHANGE_CHANCE;
-    public static ForgeConfigSpec.BooleanValue WINDBOMB,REDENVELOPE;
+    public static ForgeConfigSpec.BooleanValue WINDBOMB,REDENVELOPE,CANDEATHINTEMPLE;
     static {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
         COMMON_BUILDER.comment("Skill 技能").push("skill");
@@ -51,6 +51,7 @@ public class ZeldaConfig {
         WINDBOMB = COMMON_BUILDER.comment("Enable Wind Bomb 允许使用风弹").define("windbomb", true);
         COMMON_BUILDER.pop();
         COMMON_BUILDER.comment("Others 其他").push("others");
+        CANDEATHINTEMPLE=COMMON_BUILDER.comment("Can Death In Temple 玩家会在神庙内死亡,关闭后当玩家在神庙内受到致命伤害时会被强制传送出神庙而不是直接死亡（可以防止玩家在神庙内丢失物品）").define("can_death_in_temple", false);
         REDENVELOPE = COMMON_BUILDER.comment("Enable Red Envelope 允许新年红包").define("redenvelope", true);
         COMMON_BUILDER.pop();
         COMMON_CONFIG = COMMON_BUILDER.build();
