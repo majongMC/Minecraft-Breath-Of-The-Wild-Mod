@@ -40,6 +40,8 @@
 "msg.zelda.blocksavedfailed":"Block Save Failed",
 "msg.zelda.blockfound":"Block Found",
 "msg.zelda.blockfoundfailed":"Block Find Failed",
+"biome.zelda.temple":"Trial Temple",
+"dimension.zelda.temple":"Trial Temple",
 "tooltip.zelda.temple":"Temple",
 "tooltip.shikastone.researchtarget":"Research Target",
 "tooltip.shikastone.clear":"Right click to find block.Sneak right click to clear saved block.",

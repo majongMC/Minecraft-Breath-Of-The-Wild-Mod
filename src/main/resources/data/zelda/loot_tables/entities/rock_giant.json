@@ -1,0 +1,152 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+      {
+        "rolls": 10,
+        "bonus_rolls": 1,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:cobblestone",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 64
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:ancient_debris",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 1
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:diamond_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 2
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:emerald_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 2
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:redstone_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 4
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:lapis_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 4
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:iron_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 8
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:gold_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 9
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:nether_quartz_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 11
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "minecraft:coal_ore",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 12
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

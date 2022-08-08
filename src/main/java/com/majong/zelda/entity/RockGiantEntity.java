@@ -17,8 +17,6 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -65,7 +63,7 @@ public class RockGiantEntity extends MonsterEntity{
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if(!this.level.isClientSide&&(cause.getEntity() instanceof PlayerEntity||cause.isExplosion())) {
+		/*if(!this.level.isClientSide&&(cause.getEntity() instanceof PlayerEntity||cause.isExplosion())) {
 		this.spawnAtLocation(new ItemStack(Items.ANCIENT_DEBRIS,(int) (Math.random()*2)));
 		this.spawnAtLocation(new ItemStack(Items.DIAMOND_ORE,(int) (Math.random()*3)));
 		this.spawnAtLocation(new ItemStack(Items.EMERALD_ORE,(int) (Math.random()*3)));
@@ -76,7 +74,7 @@ public class RockGiantEntity extends MonsterEntity{
 		this.spawnAtLocation(new ItemStack(Items.NETHER_QUARTZ_ORE,(int) (Math.random()*12)));
 		this.spawnAtLocation(new ItemStack(Items.COAL_ORE,(int) (Math.random()*13)));
 		this.spawnAtLocation(new ItemStack(Items.COBBLESTONE,(int) (Math.random()*64)));
-		}
+		}*/
 		if(this.level.isClientSide) {
 			EntitySpottedEvent.SoundRemainTime=0;
 			Minecraft.getInstance().getSoundManager().stop();
