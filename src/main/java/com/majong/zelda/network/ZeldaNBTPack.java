@@ -2,6 +2,7 @@ package com.majong.zelda.network;
 
 import java.util.function.Supplier;
 
+import com.majong.zelda.api.effects.CameraShakeApi;
 import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
@@ -31,7 +32,8 @@ public class ZeldaNBTPack {
         ctx.get().enqueueWork(() -> {
         	switch(type) {
         	case 1:DataManager.writefromnbt(nbt,ClientUtils.GetClientPlayer());break;
-        	case 2:setConfig();
+        	case 2:setConfig();break;
+        	case 3:CameraShakeApi.CameraShakeClient(nbt.getInt("frame"));break;
         	}
         });
         ctx.get().setPacketHandled(true);

@@ -5,7 +5,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class ZeldaConfigClient {
 	public static ForgeConfigSpec CLIENT_CONFIG;
 	public static ForgeConfigSpec.IntValue GUARDIAN,WALKING_GUARDIAN,FIGHT,HINOX,ROCK_GIANT;
-	public static ForgeConfigSpec.BooleanValue DISPLAY_ANGLE;
+	public static ForgeConfigSpec.BooleanValue DISPLAY_ANGLE,CAMERA_SHAKE;
 	static {
         ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
         CLIENT_BUILDER.comment("Sound 声音(如果你用资源包修改了战斗音乐，请在此处修改对应的音乐长度（单位:tick），否则会造成音乐过早或过晚循环)").push("sound");
@@ -17,6 +17,7 @@ public class ZeldaConfigClient {
         CLIENT_BUILDER.pop();
         CLIENT_BUILDER.comment("Display 显示").push("display");
         DISPLAY_ANGLE =CLIENT_BUILDER.comment("手持希卡之石时显示目标与视线之间的夹角").define("displayangle", true);
+        CAMERA_SHAKE=CLIENT_BUILDER.comment("Enable Camera Shake 允许相机抖动").define("camera_shake", true);
         CLIENT_BUILDER.pop();
         CLIENT_CONFIG=CLIENT_BUILDER.build();
 	}

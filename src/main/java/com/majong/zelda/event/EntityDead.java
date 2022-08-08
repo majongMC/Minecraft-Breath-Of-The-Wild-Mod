@@ -2,7 +2,6 @@ package com.majong.zelda.event;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
@@ -78,13 +77,7 @@ public class EntityDead {
                     new SoundPack(1,new BlockPos(player.getX(),player.getY(),player.getZ())));
 		}
 		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof BokoBrinEntity||entity instanceof YigaTeamMemberEntity)) {
-			List<Player> playerlist= entity.level.getEntitiesOfClass(Player.class,entity.getBoundingBox().inflate(64, 32, 64) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
-					// TODO �Զ����ɵķ������
-					return t instanceof Player;
-				}});
+			List<Player> playerlist= entity.level.getEntitiesOfClass(Player.class,entity.getBoundingBox().inflate(64, 32, 64));
     		Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {
     			Player player=(Player) it.next();

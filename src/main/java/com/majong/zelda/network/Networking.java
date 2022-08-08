@@ -8,7 +8,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Networking {
 	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKWITHUUID,FOODMESSAGEPACK,BAR;
-    public static final String VERSION = "19.1.3.2";
+    public static final String VERSION = "19.1.4.0";
     private static int ID = 0;
 
     public static int nextID() {

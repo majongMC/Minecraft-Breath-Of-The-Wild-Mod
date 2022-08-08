@@ -1,0 +1,82 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+      {
+        "rolls": 5,
+        "bonus_rolls": 1,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:ancient_core",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 1
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:ancient_gear",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 2
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:ancient_shaft",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 3
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:ancient_spring",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 3
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:ancient_screw",
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                    "min": 0,
+                    "max": 3
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

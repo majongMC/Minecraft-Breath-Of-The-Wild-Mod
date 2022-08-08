@@ -1,5 +1,6 @@
 package com.majong.zelda.item;
 
+import com.majong.zelda.api.effects.CameraShakeApi;
 import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +19,7 @@ public class RedEnvelope extends BasicItem{
 			playerIn.addItem(new ItemStack(Items.GOLD_NUGGET,(int)(Math.random()*16)));
 		}
 		else {
+			CameraShakeApi.CameraShakeClient(120);
 			worldIn.playSound(playerIn, playerIn.blockPosition(), SoundLoader.RED_ENVELOPE.get(), SoundSource.AMBIENT, 10f, 1f);
 		}
 		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn).split(playerIn.getItemInHand(handIn).getCount()-1));

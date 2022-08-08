@@ -22,15 +22,15 @@ public class GuardianAi extends Goal{
 	double targetlocation[]=new double[] {0,0,0};
 	private long lastattacktime=0;
 	private int attackprocess;
-	private boolean isshooting=false;
+	//private boolean isshooting=false;
 	public GuardianAi(PathfinderMob creature) {
 		this.attacker = creature;
 	}
 	@Override
 	public boolean canUse() {
 		// TODO �Զ����ɵķ������
-		if(isshooting)
-			return true;
+		/*if(isshooting)
+			return true;*/
 		if(this.attacker.level.getGameTime()-lastattacktime<60)
 		return false;
 		LivingEntity target=this.attacker.getTarget();
@@ -59,6 +59,9 @@ public class GuardianAi extends Goal{
 	public void stop() {
 		this.start();
 	}
+	public boolean requiresUpdateEveryTick() {
+        return true;
+     }
 	@Override
 	 public void tick() {
 		 if(attackprocess<95) {

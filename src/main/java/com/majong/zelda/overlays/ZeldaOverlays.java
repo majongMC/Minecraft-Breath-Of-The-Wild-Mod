@@ -19,6 +19,7 @@ public class ZeldaOverlays extends GuiComponent{
 	private final int w;
     private final int h;
     private PoseStack PoseStack;
+    //public static float ls=0,lsa=0,y=0,p=0;
     //private final Minecraft minecraft;
 	private ResourceLocation texture=new ResourceLocation(Utils.MOD_ID, "textures/gui/hud.png");
 	public ZeldaOverlays(PoseStack PoseStack) {
@@ -66,5 +67,9 @@ public class ZeldaOverlays extends GuiComponent{
 			drawCenteredString(PoseStack,Minecraft.getInstance().font,ShikaStone.name,(int)(0.9*w),(int)(0.85*h),16777215);
 			drawCenteredString(PoseStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);
 		}
+		//drawCenteredString(PoseStack,Minecraft.getInstance().font,"sf:"+CameraShake.shakeframe,(int)(0.8*w),(int)(0.1*h),971077);
+		//drawCenteredString(PoseStack,Minecraft.getInstance().font,"lsa:"+lsa,(int)(0.8*w),(int)(0.15*h),971077);
+		//drawCenteredString(PoseStack,Minecraft.getInstance().font,"y:"+y,(int)(0.8*w),(int)(0.2*h),971077);
+		//drawCenteredString(PoseStack,Minecraft.getInstance().font,"p:"+p,(int)(0.8*w),(int)(0.25*h),971077);
 	}
 }

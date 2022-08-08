@@ -2,9 +2,7 @@ package com.majong.zelda.entity;
 
 import com.majong.zelda.entity.ai.ChangeDistanceNearestAttackableTargetGoal;
 import com.majong.zelda.entity.ai.GuardianAi;
-import com.majong.zelda.item.ItemLoader;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -12,7 +10,6 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class GuardianEntity extends Monster{
@@ -29,7 +26,7 @@ public class GuardianEntity extends Monster{
 		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 	}
-	@Override
+	/*@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if(cause.getEntity() instanceof Player) {
@@ -40,5 +37,5 @@ public class GuardianEntity extends Monster{
 		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SPRING.get(),(int) (Math.random()*4)));
 		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SCREW.get(),(int) (Math.random()*4)));
 		}
-	}
+	}*/
 }

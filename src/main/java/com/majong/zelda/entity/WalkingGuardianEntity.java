@@ -1,14 +1,9 @@
 package com.majong.zelda.entity;
 
-import com.majong.zelda.item.ItemLoader;
-
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class WalkingGuardianEntity extends GuardianEntity{
@@ -19,7 +14,7 @@ public class WalkingGuardianEntity extends GuardianEntity{
 		this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		// TODO �Զ����ɵĹ��캯�����
 	}
-	@Override
+	/*@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if(cause.getEntity() instanceof Player) {
@@ -32,5 +27,5 @@ public class WalkingGuardianEntity extends GuardianEntity{
 		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SPRING.get(),(int) (Math.random()*4)));
 		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SCREW.get(),(int) (Math.random()*4)));
 		}
-	}
+	}*/
 }

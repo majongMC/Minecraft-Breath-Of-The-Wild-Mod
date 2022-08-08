@@ -45,8 +45,8 @@ public class BlewHornGoal extends Goal{
 	}
 	@Override
 	public void tick() {
-		if(attackprocess<50) {
-			if(attackprocess%10==1)
+		if(attackprocess<25) {
+			if(attackprocess%5==1)
 				attacker.swing(InteractionHand.OFF_HAND);
 			 attackprocess++;
 		}else {

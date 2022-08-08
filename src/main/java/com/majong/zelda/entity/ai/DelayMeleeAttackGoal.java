@@ -28,7 +28,7 @@ public class DelayMeleeAttackGoal extends Goal{
 	   private int failedPathFindingPenalty = 0;
 	   private boolean canPenalize = false;
 	   private int delay=-1;
-	   private boolean reverse=true;
+	   //private boolean reverse=true;
 	   private int delaytime=0;
 	   public DelayMeleeAttackGoal(PathfinderMob p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_,int delaytime) {
 	      this.mob = p_i1636_1_;
@@ -83,7 +83,9 @@ public class DelayMeleeAttackGoal extends Goal{
 	         return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player)livingentity).isCreative();
 	      }
 	   }
-
+	   public boolean requiresUpdateEveryTick() {
+	        return true;
+	     }
 	   public void start() {
 	      this.mob.getNavigation().moveTo(this.path, this.speedModifier);
 	      this.mob.setAggressive(true);
@@ -144,31 +146,37 @@ public class DelayMeleeAttackGoal extends Goal{
 	         this.resetAttackCooldown();
 	         this.mob.swing(InteractionHand.MAIN_HAND);
 	         delay=delaytime;
-	         if(Math.random()>0.5)
-	        	reverse=true;
-	         else
-	        	reverse=false;
+	         if(this.mob instanceof RockGiantEntity) {
+		    	  RockGiantEntity rockgiant=(RockGiantEntity) this.mob;
+		    	  rockgiant.getEntityData().set(RockGiantEntity.ATTACK, true);
+		    	  
+	         }
 	      }
-	      if(delay>=0&&this.mob instanceof RockGiantEntity) {
+	      /*if(delay>=0&&this.mob instanceof RockGiantEntity) {
 	    	  RockGiantEntity entity=(RockGiantEntity) this.mob;
 	    	  if(reverse)
 	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, 10-delay);
 	    	  else
 	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, delay-10);
-	      }
-	      if(delay==0&&p_190102_2_ <= d0) {
+	      }*/
+	      if(delay==0) {
+	    	  if(this.mob instanceof RockGiantEntity) {
+		    	  RockGiantEntity rockgiant=(RockGiantEntity) this.mob;
+		    	  rockgiant.getEntityData().set(RockGiantEntity.ATTACK, false);
+	         }
+	    	  if(p_190102_2_ <= d0)
 	    	  if(this.mob instanceof YigaTeamMemberEntity)
 	    		  ((YigaTeamMemberEntity)this.mob).yigadamage(p_190102_1_);
 	    	  else
 	    		  this.mob.doHurtTarget(p_190102_1_);
 	      }
-	      if(this.mob instanceof RockGiantEntity&&delay>=-delaytime&&delay<0) {
+	      /*if(this.mob instanceof RockGiantEntity&&delay>=-delaytime&&delay<0) {
 	    	  RockGiantEntity entity=(RockGiantEntity) this.mob;
 	    	  if(reverse)
 	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, 10+delay);
 	    	  else
 	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, -delay-10);
-	      }
+	      }*/
 	      delay--;
 	   }
 

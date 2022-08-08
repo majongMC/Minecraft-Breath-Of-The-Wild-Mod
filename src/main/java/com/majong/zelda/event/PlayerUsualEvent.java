@@ -11,6 +11,7 @@ import com.majong.zelda.sound.SoundLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -65,8 +66,9 @@ public class PlayerUsualEvent {
 	public static void onPlayerDestroyBlock(HarvestCheck event) {
 		if(!event.getEntity().level.isClientSide&&event.canHarvest()) {
 			Player player=event.getEntity();
+			//player.sendSystemMessage(Component.translatable("triggered"));
 			if(player.level.dimension().location().equals(Level.OVERWORLD.location())&&player.getY()<40) {
-				if(Math.random()<0.0005*ZeldaConfig.ROCKGIANT.get()) {
+				if(Math.random()<0.001*ZeldaConfig.ROCKGIANT.get()) {
 					RockGiantEntity entity=new RockGiantEntity(EntityLoader.ROCK_GIANT.get(),event.getEntity().level);
 					BlockPos pos=new BlockPos(player.getX()+randomint(), player.getY(), player.getZ()+randomint());
 					int count=0;
