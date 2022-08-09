@@ -5,8 +5,11 @@ import java.util.List;
 
 import com.majong.zelda.api.effects.CameraShakeApi;
 import com.majong.zelda.entity.RockGiantEntity;
+import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -15,6 +18,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
 
 public class RockGiantDestroyBlockGoal extends Goal{
 	private RockGiantEntity owner;
@@ -56,6 +60,7 @@ public class RockGiantDestroyBlockGoal extends Goal{
 		if(attackprocess==10) {
 			this.destroy();
 			this.owner.getEntityData().set(RockGiantEntity.KNOCK,false);
+			owner.level.playSound(null,owner.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.BLOCKS, 10f, 1f);
 			List<Player> playerlist=this.owner.level.getEntitiesOfClass(Player.class, this.owner.getBoundingBox().inflate(12));
 			Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {

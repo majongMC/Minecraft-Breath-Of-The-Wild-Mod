@@ -36,14 +36,14 @@ public class EntityDead {
 		if(entity instanceof Player&&!entity.level.isClientSide) {
 			Player player=(Player) entity;
 			if(DataManager.data.get(player).intemple>0&&!ZeldaConfig.CANDEATHINTEMPLE.get()) {
-				player.setHealth(((Player)event.getEntity()).getMaxHealth());
+				player.setHealth(player.getMaxHealth());
 				event.setCanceled(true);
 				TempleDimensionData.ExitTemple(player.level, player);
 				player.sendSystemMessage(Component.translatable("msg.zelda.temple_failed"));
 				return;
 			}
 			if(DataManager.data.get(player).unlocked[0]&&DataManager.data.get(player).skill[0]>0) {
-				player.setHealth(((Player)event.getEntity()).getMaxHealth());
+				player.setHealth(player.getMaxHealth());
 				player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION,1200,2));
 				event.setCanceled(true);
 				DataManager.data.get(player).skill[0]=0;

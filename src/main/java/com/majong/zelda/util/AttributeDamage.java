@@ -58,9 +58,9 @@ public class AttributeDamage {
     			player.drop(player.getMainHandItem(), true, true);
     			player.drop(player.getOffhandItem(), true, true);
     			if(!player.getMainHandItem().isEmpty())
-    				player.sendSystemMessage(Component.translatable(player.getMainHandItem().getItem().getDescription().getString()+"掉落"));
+    				player.sendSystemMessage(Component.translatable(Component.translatable(player.getMainHandItem().getItem().getDescriptionId()).getString()+"掉落"));
     			if(!player.getOffhandItem().isEmpty())
-        			player.sendSystemMessage(Component.translatable(player.getOffhandItem().getItem().getDescription().getString()+"掉落"));
+        			player.sendSystemMessage(Component.translatable(Component.translatable(player.getOffhandItem().getItem().getDescriptionId()).getString()+"掉落"));
     			living.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
     			living.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
     		}

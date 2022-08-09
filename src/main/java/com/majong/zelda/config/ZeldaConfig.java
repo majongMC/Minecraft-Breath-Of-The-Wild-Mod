@@ -8,7 +8,7 @@ public class ZeldaConfig {
     public static ForgeConfigSpec.IntValue SHIELD,LINKTIME;
     public static ForgeConfigSpec.BooleanValue DISPLAYTIME;
     public static ForgeConfigSpec.DoubleValue GUARDIAN,WALKING_GUARDIAN,MOLLYBRIN,ROCKGIANT,BOKOBRIN,YIGATEAM;
-    public static ForgeConfigSpec.BooleanValue ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
+    public static ForgeConfigSpec.BooleanValue NPCONLY,ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
     public static ForgeConfigSpec.DoubleValue ELECTRICITY;
     public static ForgeConfigSpec.BooleanValue WEATHER_CHANGE;
     public static ForgeConfigSpec.DoubleValue WEATHER_CHANGE_CHANCE;
@@ -33,6 +33,7 @@ public class ZeldaConfig {
         BOKOBRIN= COMMON_BUILDER.comment("Boko Brin Spawn Chance 波克布林生成几率").defineInRange("bokobrin", 1, 0, Double.POSITIVE_INFINITY);
         ROCKGIANT = COMMON_BUILDER.comment("Rock Giant Spawn Chance 岩石巨人生成几率").defineInRange("rockgiant", 1, 0, Double.POSITIVE_INFINITY);
         YIGATEAM = COMMON_BUILDER.comment("Yiga Team Member Spawn Chance 依盖队成员生成几率").defineInRange("yigateam", 1, 0, Double.POSITIVE_INFINITY);
+        NPCONLY=COMMON_BUILDER.comment("Made Yiga Team Member NPC Only 将依盖队成员用做NPC，设置为true后右键依盖队成员不再被激活（一般搭配自定义对话内容使用）").define("npc_only",false);
         COMMON_BUILDER.pop();
         COMMON_BUILDER.comment("Item 物品").push("item");
         ATTRIBUTE = COMMON_BUILDER.comment("Enable Attribute Restraint 允许属性克制").define("attribute", true);

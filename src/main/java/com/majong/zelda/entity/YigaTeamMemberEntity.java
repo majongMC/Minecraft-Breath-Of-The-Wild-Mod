@@ -1,5 +1,6 @@
 package com.majong.zelda.entity;
 
+import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.event.PlayerHurtEvent;
@@ -37,6 +38,7 @@ public class YigaTeamMemberEntity extends Monster{
 		// TODO �Զ����ɵĹ��캯�����
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 0.0F));
+		if(!ZeldaConfig.NPCONLY.get())
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));

@@ -11,7 +11,6 @@ import com.majong.zelda.sound.SoundLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -44,8 +43,9 @@ public class PlayerUsualEvent {
 		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
 		{
 			if(event.getLevel().isClientSide) {
-				new OpenDialogBox((int) (Math.random()*3));
+				new OpenDialogBox();
 			}else {
+				if(!ZeldaConfig.NPCONLY.get())
 				((YigaTeamMemberEntity)event.getTarget()).activate();
 			}
 		}
