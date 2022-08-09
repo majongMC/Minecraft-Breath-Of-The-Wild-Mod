@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class DestroyBlockGoal extends Goal{
@@ -16,6 +17,8 @@ public class DestroyBlockGoal extends Goal{
 	@Override
 	public boolean canUse() {
 		// TODO 自动生成的方法存根
+		if(!owner.getServer().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))
+			return false;
 		if(owner.level.getGameTime()%20!=5)
 			return false;
 		int X=(int) owner.getX();

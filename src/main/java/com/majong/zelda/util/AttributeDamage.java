@@ -29,6 +29,7 @@ public class AttributeDamage {
 	public static final ResourceLocation FIRE_RESTRAINTED=new ResourceLocation(Utils.MOD_ID,"fire_restrainted");
 	public static final ResourceLocation ICE_RESTRAINTED=new ResourceLocation(Utils.MOD_ID,"ice_restrainted");
 	public static final ResourceLocation ANCIENT_RESTRAINTED=new ResourceLocation(Utils.MOD_ID,"ancient_restrainted");
+	public static final ResourceLocation ELECTRICITY_INVULNERABLE=new ResourceLocation(Utils.MOD_ID,"electricity_invulnerable");
 	public static void firedamage(LivingEntity living,Entity attacker) {
 		Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.FIRE_RESTRAINTED.iterator();
     	while(it.hasNext())
@@ -53,15 +54,15 @@ public class AttributeDamage {
     		living.hurt(new EntityDamageSource("arrow",attacker),32767);
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
-    	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()) {
+    	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()&&!living.getType().getTags().contains(ELECTRICITY_INVULNERABLE)) {
     		if(living instanceof PlayerEntity) {
     			PlayerEntity player=(PlayerEntity) living;
     			player.drop(player.getMainHandItem(), true, true);
     			player.drop(player.getOffhandItem(), true, true);
     			if(!player.getMainHandItem().isEmpty())
-    				player.sendMessage(new TranslationTextComponent(player.getMainHandItem().getItem().getDescription().getString()+"µôÂä"), UUID.randomUUID());
+    				player.sendMessage(new TranslationTextComponent(new TranslationTextComponent(player.getMainHandItem().getItem().getDescriptionId()).getString()+"µôÂä"), UUID.randomUUID());
     			if(!player.getOffhandItem().isEmpty())
-        			player.sendMessage(new TranslationTextComponent(player.getOffhandItem().getItem().getDescription().getString()+"µôÂä"), UUID.randomUUID());
+        			player.sendMessage(new TranslationTextComponent(new TranslationTextComponent(player.getOffhandItem().getItem().getDescriptionId()).getString()+"µôÂä"), UUID.randomUUID());
     			living.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
     			living.setItemInHand(Hand.OFF_HAND, ItemStack.EMPTY);
     		}

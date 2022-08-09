@@ -77,7 +77,7 @@ public class TempleDimensionData extends WorldSavedData{
 		for(int i=2;i<allocated;i++) {
 			int[] templepos=data.getCompound(Integer.toString(i)).getIntArray("startpoint");
 			//LogManager.getLogger().info(templepos[0]+","+templepos[2]);
-			if(Math.abs(templepos[0]-posX)<64&&Math.abs(templepos[2]-posZ)<64)
+			if(Math.abs(templepos[0]-posX)<80&&Math.abs(templepos[2]-posZ)<80)
 				return true;
 		}
 		return false;

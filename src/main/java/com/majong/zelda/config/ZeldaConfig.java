@@ -8,11 +8,11 @@ public class ZeldaConfig {
     public static ForgeConfigSpec.IntValue SHIELD,LINKTIME;
     public static ForgeConfigSpec.BooleanValue DISPLAYTIME;
     public static ForgeConfigSpec.DoubleValue GUARDIAN,WALKING_GUARDIAN,MOLLYBRIN,ROCKGIANT,POKBRIN,YIGATEAM;
-    public static ForgeConfigSpec.BooleanValue ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
+    public static ForgeConfigSpec.BooleanValue NPCONLY,ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
     public static ForgeConfigSpec.DoubleValue ELECTRICITY;
     public static ForgeConfigSpec.BooleanValue WEATHER_CHANGE;
     public static ForgeConfigSpec.DoubleValue WEATHER_CHANGE_CHANCE;
-    public static ForgeConfigSpec.BooleanValue WINDBOMB,REDENVELOPE;
+    public static ForgeConfigSpec.BooleanValue WINDBOMB,REDENVELOPE,CANDEATHINTEMPLE;
     static {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
         COMMON_BUILDER.comment("Skill 技能").push("skill");
@@ -33,6 +33,7 @@ public class ZeldaConfig {
         POKBRIN= COMMON_BUILDER.comment("Pok Brin Spawn Chance 波克布林生成几率").defineInRange("pokbrin", 1, 0, Double.POSITIVE_INFINITY);
         ROCKGIANT = COMMON_BUILDER.comment("Rock Giant Spawn Chance 岩石巨人生成几率").defineInRange("rockgiant", 1, 0, Double.POSITIVE_INFINITY);
         YIGATEAM = COMMON_BUILDER.comment("Yiga Team Member Spawn Chance 依盖队成员生成几率").defineInRange("yigateam", 1, 0, Double.POSITIVE_INFINITY);
+        NPCONLY=COMMON_BUILDER.comment("Made Yiga Team Member NPC Only 将依盖队成员用做NPC，设置为true后右键依盖队成员不再被激活（一般搭配自定义对话内容使用）").define("npc_only",false);
         COMMON_BUILDER.pop();
         COMMON_BUILDER.comment("Item 物品").push("item");
         ATTRIBUTE = COMMON_BUILDER.comment("Enable Attribute Restraint 允许属性克制").define("attribute", true);
@@ -51,6 +52,7 @@ public class ZeldaConfig {
         WINDBOMB = COMMON_BUILDER.comment("Enable Wind Bomb 允许使用风弹").define("windbomb", true);
         COMMON_BUILDER.pop();
         COMMON_BUILDER.comment("Others 其他").push("others");
+        CANDEATHINTEMPLE=COMMON_BUILDER.comment("Can Death In Temple 玩家会在神庙内死亡,关闭后当玩家在神庙内受到致命伤害时会被强制传送出神庙而不是直接死亡（可以防止玩家在神庙内丢失物品）").define("can_death_in_temple", false);
         REDENVELOPE = COMMON_BUILDER.comment("Enable Red Envelope 允许新年红包").define("redenvelope", true);
         COMMON_BUILDER.pop();
         COMMON_CONFIG = COMMON_BUILDER.build();

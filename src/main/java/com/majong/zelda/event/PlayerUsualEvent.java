@@ -43,9 +43,10 @@ public class PlayerUsualEvent {
 		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
 		{
 			if(event.getWorld().isClientSide) {
-				new OpenDialogBox((int) (Math.random()*3));
+				new OpenDialogBox();
 			}else {
-				((YigaTeamMemberEntity)event.getTarget()).activate();
+				if(!ZeldaConfig.NPCONLY.get())
+					((YigaTeamMemberEntity)event.getTarget()).activate();
 			}
 		}
 		PlayerEntity player=event.getPlayer();

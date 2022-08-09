@@ -3,6 +3,7 @@ package com.majong.zelda.event;
 import com.majong.zelda.config.ZeldaConfig;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
@@ -15,7 +16,7 @@ public class ServerTick {
 	public static MinecraftServer server;
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		if(server==null||!ZeldaConfig.WEATHER_CHANGE.get())
+		if(server==null||!ZeldaConfig.WEATHER_CHANGE.get()||!server.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE))
 			return;
 		World world=server.overworld();
 		//World world=Minecraft.getInstance().getSingleplayerServer().getLevel(World.OVERWORLD);

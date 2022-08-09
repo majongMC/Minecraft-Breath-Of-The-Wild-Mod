@@ -40,6 +40,7 @@
 "msg.zelda.blocksavedfailed":"Block Save Failed",
 "msg.zelda.blockfound":"Block Found",
 "msg.zelda.blockfoundfailed":"Block Find Failed",
+"msg.zelda.temple_failed":"Temple Challenge Failed",
 "biome.zelda.temple":"Trial Temple",
 "dimension.zelda.temple":"Trial Temple",
 "tooltip.zelda.temple":"Temple",
