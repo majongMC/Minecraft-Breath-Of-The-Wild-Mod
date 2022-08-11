@@ -26,6 +26,7 @@ public class Zelda {
 		BlockLoader.BLOCKS.register(bus);
 		TileEntityLoader.TILE_ENTITIES.register(bus);
 		SoundLoader.SOUNDS.register(bus);
+		Utils.BIOME_MODIFIER_SERIALIZERS.register(bus);
 		//ModStructures.register(bus);
 		//BiomeInit.BIOMES.register(bus);
         //BiomeInit.registerBiomes();

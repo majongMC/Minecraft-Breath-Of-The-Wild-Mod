@@ -7,7 +7,7 @@ public class ZeldaConfig {
     public static ForgeConfigSpec.IntValue WATER,WIND,FIRE,THUNDER;
     public static ForgeConfigSpec.IntValue SHIELD,LINKTIME;
     public static ForgeConfigSpec.BooleanValue DISPLAYTIME;
-    public static ForgeConfigSpec.DoubleValue GUARDIAN,WALKING_GUARDIAN,MOLLYBRIN,ROCKGIANT,BOKOBRIN,YIGATEAM;
+    public static ForgeConfigSpec.DoubleValue ROCKGIANT,YIGATEAM;
     public static ForgeConfigSpec.BooleanValue NPCONLY,ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
     public static ForgeConfigSpec.DoubleValue ELECTRICITY;
     public static ForgeConfigSpec.BooleanValue WEATHER_CHANGE;
@@ -26,11 +26,7 @@ public class ZeldaConfig {
         DISPLAYTIME = COMMON_BUILDER.comment("Display React Time 显示反应时间").define("displaytime", true);
         LINKTIME = COMMON_BUILDER.comment("Max Link Time 最大林克时间").defineInRange("linktime", 100, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
-        COMMON_BUILDER.comment("Entity 生物").push("entity");
-        GUARDIAN = COMMON_BUILDER.comment("Guardian Spawn Chance 守护者生成几率").defineInRange("guardian", 1, 0, Double.POSITIVE_INFINITY);
-        WALKING_GUARDIAN = COMMON_BUILDER.comment("Walking Guardian Spawn Chance 行走的守护者生成几率").defineInRange("walking_guardian", 1, 0, Double.POSITIVE_INFINITY);
-        MOLLYBRIN = COMMON_BUILDER.comment("Molly Brin Spawn Chance 莫利布林生成几率").defineInRange("mollybrin", 1, 0, Double.POSITIVE_INFINITY);
-        BOKOBRIN= COMMON_BUILDER.comment("Boko Brin Spawn Chance 波克布林生成几率").defineInRange("bokobrin", 1, 0, Double.POSITIVE_INFINITY);
+        COMMON_BUILDER.comment("Entity 生物(守护者，行走的守护者，莫力布林，波克布林的刷怪参数请通过数据包修改)").push("entity");
         ROCKGIANT = COMMON_BUILDER.comment("Rock Giant Spawn Chance 岩石巨人生成几率").defineInRange("rockgiant", 1, 0, Double.POSITIVE_INFINITY);
         YIGATEAM = COMMON_BUILDER.comment("Yiga Team Member Spawn Chance 依盖队成员生成几率").defineInRange("yigateam", 1, 0, Double.POSITIVE_INFINITY);
         NPCONLY=COMMON_BUILDER.comment("Made Yiga Team Member NPC Only 将依盖队成员用做NPC，设置为true后右键依盖队成员不再被激活（一般搭配自定义对话内容使用）").define("npc_only",false);
