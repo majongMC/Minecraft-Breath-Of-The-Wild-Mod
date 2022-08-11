@@ -23,7 +23,7 @@ public class PlayerHurtEvent {
 	public static boolean TryReflect(PlayerEntity player,Entity source,float amount) {
 		long respondtime=player.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
-			if(source==null||!(source instanceof LivingEntity)||source==player)
+			if(source==null||!(source instanceof LivingEntity)||source instanceof PlayerEntity)
 				return false;
 			float amountback=0;
 			float maxhealth=((LivingEntity)source).getMaxHealth();

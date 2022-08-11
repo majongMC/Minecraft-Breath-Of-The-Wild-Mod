@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public class MollyBrinEntity extends SkeletonEntity{
@@ -40,6 +41,7 @@ public class MollyBrinEntity extends SkeletonEntity{
 	@Override
 	public void onAddedToWorld() {
 		super.onAddedToWorld();
+		setItemInHand(Hand.MAIN_HAND,new ItemStack(Items.BOW,1));
 		type=(int)(Math.random()*3);
 	}
 	@Override
