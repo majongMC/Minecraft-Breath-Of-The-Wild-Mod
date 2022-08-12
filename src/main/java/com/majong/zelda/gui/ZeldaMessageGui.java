@@ -36,7 +36,7 @@ public class ZeldaMessageGui extends Screen{
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, BACK);
 		//this.minecraft.getTextureManager().bind(BACK);
-		blit(PoseStack, (int)(0.3*w), (int)(0.3*h), 0, 0, (int)(0.4*w),(int)(0.4*h),16,16);
+		blit(PoseStack, (int)(0.3*w), (int)(0.3*h), 0, 0, (int)(0.4*w),(int)(0.4*h),(int)(0.4*w),(int)(0.4*h));
 		//this.minecraft.getTextureManager().bind(ICONS);
 		RenderSystem.setShaderTexture(0, ICONS);
 		int heart,halfheart;

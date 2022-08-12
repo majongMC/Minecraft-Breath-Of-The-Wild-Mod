@@ -12,8 +12,12 @@ import net.minecraftforge.network.PacketDistributor;
 public class ZeldaHealthBarApi {
 	//该方法不推荐使用，给实体类型添加zelda:has_healthbar标签即可实现相同功能
 	@Deprecated
+	public static void DisplayHealthBarClient(double percentage,Component name,String at) {
+			RenderOverlays.DisplayHealthBar(percentage, name,at);
+	}
+	@Deprecated
 	public static void DisplayHealthBarClient(double percentage,Component name) {
-			RenderOverlays.DisplayHealthBar(percentage, name);
+			RenderOverlays.DisplayHealthBar(percentage, name,"");
 	}
 	//该方法不推荐使用，给实体类型添加zelda:has_healthbar标签即可实现相同功能
 	@Deprecated

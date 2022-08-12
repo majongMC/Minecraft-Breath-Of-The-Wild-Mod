@@ -22,10 +22,13 @@ public class HealthBar extends GuiComponent{
         //this.minecraft = Minecraft.getInstance();
         this.PoseStack = PoseStack;
 	}
-	public void render(double percentage,double delay,Component name) {
+	public void render(double percentage,double delay,Component name,String at) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    	drawCenteredString(PoseStack,Minecraft.getInstance().font, name,(int)(0.5*w),(int)(0.05*h),16777215);
+		PoseStack.scale(2.0F, 2.0F, 2.0F);
+    	drawCenteredString(PoseStack,Minecraft.getInstance().font, name,(int)(0.25*w),(int)(0.025*h),16777215);
+    	PoseStack.scale(0.5F, 0.5F, 0.5F);
+    	drawCenteredString(PoseStack,Minecraft.getInstance().font, at,(int)(0.5*w),(int)(0.01*h),16777215);
     	this.BARR=new ResourceLocation(Utils.MOD_ID, "textures/gui/bar.png");
 		RenderSystem.setShaderTexture(0, this.BARR);
     	//this.minecraft.getTextureManager().bindForSetup(this.BARR);

@@ -28,7 +28,7 @@ public class HealthBarPack {
     @SuppressWarnings("deprecation")
 	public void handler(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-        	RenderOverlays.DisplayHealthBar(DATA, NAME);
+        	RenderOverlays.DisplayHealthBar(DATA, NAME,"");
         });
         ctx.get().setPacketHandled(true);
     }

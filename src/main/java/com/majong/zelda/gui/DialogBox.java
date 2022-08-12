@@ -54,7 +54,7 @@ public class DialogBox extends Screen{
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, DIALOG_BOX);
 		//this.minecraft.getTextureManager().bindForSetup(DIALOG_BOX);
-		this.blit(PoseStack, (int)(this.width*0.1), (int)(this.height*0.6), 0, 0,(int)(this.width*0.8),(int)(this.height*0.3), 16, 16);
+		blit(PoseStack, (int)(this.width*0.1), (int)(this.height*0.6), 0, 0,(int)(this.width*0.8),(int)(this.height*0.3), (int)(this.width*0.8), (int)(this.height*0.3));
 		int speed=5;
 		if((int)((currentframe)/speed)<content[page].length())
 			drawCenteredString(PoseStack, this.font,content[page].substring(0, (int)((currentframe)/speed)), (int)(this.width*0.5),(int)(this.height*0.7), 16777215);

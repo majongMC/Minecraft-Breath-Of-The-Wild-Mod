@@ -13,6 +13,7 @@ import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.tag.EntityTypeTag;
+import com.majong.zelda.util.BiomeUtil;
 import com.majong.zelda.util.ConductiveItem;
 
 import net.minecraft.core.BlockPos;
@@ -106,7 +107,7 @@ public class EntityTick {
 		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.HAS_HEALTH_BAR))&&event.getEntity().level.isClientSide) {
 			LivingEntity entity=(LivingEntity) event.getEntity();
 			if(entity.blockPosition().getY()>=-64)
-				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName());
+				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()).get(),entity.level)+"的");
 		}
 		if(event.getEntity() instanceof Player&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)
