@@ -33,7 +33,7 @@ public class ZeldaMessageGui extends Screen{
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bind(BACK);
-		blit(matrixStack, (int)(0.3*w), (int)(0.3*h), 0, 0, (int)(0.4*w),(int)(0.4*h),16,16);
+		blit(matrixStack, (int)(0.3*w), (int)(0.3*h), 0, 0, (int)(0.4*w),(int)(0.4*h),(int)(0.4*w),(int)(0.4*h));
 		this.minecraft.getTextureManager().bind(ICONS);
 		int heart,halfheart;
 		heart=heal/2;

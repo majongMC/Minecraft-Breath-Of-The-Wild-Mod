@@ -2,7 +2,9 @@ package com.majong.zelda.network;
 
 import java.util.function.Supplier;
 
+import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.overlays.RenderOverlays;
+import com.majong.zelda.util.BiomeUtil;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
@@ -29,7 +31,7 @@ public class HealthBarPack {
     @SuppressWarnings("deprecation")
 	public void handler(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-        	RenderOverlays.DisplayBloodBar(DATA, NAME);
+        	RenderOverlays.DisplayBloodBar(DATA, NAME,BiomeUtil.getBiomeName(ClientUtils.GetClientLevel().getBiome(ClientUtils.GetClientPlayer().blockPosition()), ClientUtils.GetClientLevel())+"µÄ");
         });
         ctx.get().setPacketHandled(true);
     }

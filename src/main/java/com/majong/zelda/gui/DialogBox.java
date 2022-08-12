@@ -52,7 +52,7 @@ public class DialogBox extends Screen{
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bind(DIALOG_BOX);
-		this.blit(matrixStack, (int)(this.width*0.1), (int)(this.height*0.6), 0, 0,(int)(this.width*0.8),(int)(this.height*0.3), 16, 16);
+		this.blit(matrixStack, (int)(this.width*0.1), (int)(this.height*0.6), 0, 0,(int)(this.width*0.8),(int)(this.height*0.3), (int)(this.width*0.8), (int)(this.height*0.3));
 		int speed=5;
 		if((int)((currentframe)/speed)<content[page].length())
 			drawCenteredString(matrixStack, this.font,content[page].substring(0, (int)((currentframe)/speed)), (int)(this.width*0.5),(int)(this.height*0.7), 16777215);

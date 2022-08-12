@@ -1,11 +1,12 @@
 package com.majong.zelda.util;
 
-import com.github.alexthe666.iceandfire.entity.EntityCyclops;
-
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 
 public class Linkage {
+	private static final String HINOX="iceandfire:cyclops";
 	public static boolean isHinox(Entity entity) {
-		return entity instanceof EntityCyclops;
+		entity.getType();
+		return EntityType.getKey(entity.getType()).toString().equals(HINOX);
 	}
 }

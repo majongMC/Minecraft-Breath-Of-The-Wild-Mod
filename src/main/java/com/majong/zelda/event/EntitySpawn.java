@@ -1,6 +1,5 @@
 package com.majong.zelda.event;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.majong.zelda.config.ZeldaConfig;
@@ -12,7 +11,6 @@ import net.minecraft.world.biome.MobSpawnInfo.Spawners;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
 
 @Mod.EventBusSubscriber()
 public class EntitySpawn {

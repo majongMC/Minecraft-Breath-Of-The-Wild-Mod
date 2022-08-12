@@ -13,6 +13,7 @@ import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
+import com.majong.zelda.util.BiomeUtil;
 import com.majong.zelda.util.ConductiveItem;
 
 import net.minecraft.entity.Entity;
@@ -107,7 +108,7 @@ public class EntityTick {
 		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().contains(ROCK_GIANT)&&event.getEntity().level.isClientSide) {
 			LivingEntity entity=(LivingEntity) event.getEntity();
 			if(entity.blockPosition().getY()>=0)
-				ZeldaBloodBarApi.DisplayBloodBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName());
+				ZeldaBloodBarApi.DisplayBloodBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()),entity.level)+"µÄ");
 		}
 		if(event.getEntity() instanceof PlayerEntity&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)

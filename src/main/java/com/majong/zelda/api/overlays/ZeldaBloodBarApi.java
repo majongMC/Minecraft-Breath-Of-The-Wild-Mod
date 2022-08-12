@@ -18,7 +18,11 @@ public class ZeldaBloodBarApi {
 	//客户端上调用此方法
 	@Deprecated
 	public static void DisplayBloodBarClient(double percentage,ITextComponent name) {
-			RenderOverlays.DisplayBloodBar(percentage, name);
+			RenderOverlays.DisplayBloodBar(percentage, name,"");
+	}
+	@Deprecated
+	public static void DisplayBloodBarClient(double percentage,ITextComponent name,String at) {
+			RenderOverlays.DisplayBloodBar(percentage, name,at);
 	}
 	//该方法不推荐使用，给实体类型添加zelda:has_healthbar标签即可实现
 	//服务端上调用此方法

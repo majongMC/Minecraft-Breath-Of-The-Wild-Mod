@@ -21,9 +21,12 @@ public class BloodBar extends AbstractGui{
         this.minecraft = Minecraft.getInstance();
         this.matrixStack = matrixStack;
 	}
-	public void render(double percentage,double delay,ITextComponent name) {
+	public void render(double percentage,double delay,ITextComponent name,String at) {
     	RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	drawCenteredString(matrixStack,Minecraft.getInstance().font, name,(int)(0.5*w),(int)(0.05*h),16777215);
+    	matrixStack.scale(2.0F, 2.0F, 2.0F);
+    	drawCenteredString(matrixStack,Minecraft.getInstance().font, name,(int)(0.25*w),(int)(0.025*h),16777215);
+    	matrixStack.scale(0.5F, 0.5F, 0.5F);
+    	drawCenteredString(matrixStack,Minecraft.getInstance().font, at,(int)(0.5*w),(int)(0.01*h),16777215);
     	this.BARR=new ResourceLocation(Utils.MOD_ID, "textures/gui/bar.png");
     	this.minecraft.getTextureManager().bind(this.BARR);
     	blit(matrixStack, (int)(this.w*0.35), (int)(this.h*0.1), 0, 4,(int)(this.w*0.3),2, 16, 16);
