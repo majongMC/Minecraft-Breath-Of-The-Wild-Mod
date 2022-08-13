@@ -47,7 +47,7 @@ public class BlewHornGoal extends Goal{
 	public void tick() {
 		if(attackprocess<50) {
 			if(attackprocess%10==1)
-				attacker.swing(Hand.MAIN_HAND);
+				attacker.swing(Hand.OFF_HAND);
 			 attackprocess++;
 		}else {
 			HornItem.AwakeOthers(targetentity, attacker);

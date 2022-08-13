@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.majong.zelda.Utils;
 import com.majong.zelda.api.overlays.ZeldaBloodBarApi;
 import com.majong.zelda.config.ZeldaConfig;
@@ -15,6 +17,7 @@ import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.util.BiomeUtil;
 import com.majong.zelda.util.ConductiveItem;
+import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -28,6 +31,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,6 +42,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class EntityTick {
 	public static final Map<PlayerEntity,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	public static final Map<PlayerEntity,BlockPos> LAST_STAND_POS=new HashMap<>();
+	public static final Map<PlayerEntity,Long> ENTER_TEMPLE_TIME=new HashMap<>();
 	public static final ResourceLocation ROCK_GIANT=new ResourceLocation(Utils.MOD_ID,"has_healthbar");
 	@SubscribeEvent
 	public static void onEntityTick(LivingUpdateEvent event) {
@@ -45,6 +50,17 @@ public class EntityTick {
 			PlayerEntity player=(PlayerEntity) event.getEntity();
 			ZeldaPlayerData playerdata=DataManager.data.get(player);
 			if(playerdata.intemple>1) {
+				if(ENTER_TEMPLE_TIME.containsKey(player)) {
+					int waittime=(int) (player.level.getServer().getLevel(World.OVERWORLD).getGameTime()-ENTER_TEMPLE_TIME.get(player));
+					if(waittime>100) {
+						LogManager.getLogger().error("神庙传送超时，若该问题屡次发生，请检查数据包中是否存在非法或过大的神庙结构");
+						int[] position={(int) player.getX(),-100,(int) player.getZ()};
+						TempleDimensionData.getTempleData(player.level, playerdata.intemple).putIntArray("startpoint", position);
+						TempleDimensionData.get(player.level).setDirty();
+						ENTER_TEMPLE_TIME.remove(player);
+						TempleDimensionData.ExitTemple(player.level, player);
+					}
+				}
 				if(player.isOnGround()&&!player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isAir())
 					LAST_STAND_POS.put(player, player.blockPosition());
 				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {

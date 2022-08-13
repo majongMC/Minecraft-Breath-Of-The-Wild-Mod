@@ -21,6 +21,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
@@ -107,8 +108,15 @@ public class LaserEntity extends ThrowableEntity{
 	}
 	private void trysheldreflect(PlayerEntity player) {
 		long respondtime=this.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
-		if(ZeldaConfig.DISPLAYTIME.get())
-			player.sendMessage(new TranslationTextComponent("反应时间"+respondtime), UUID.randomUUID());
+		if(ZeldaConfig.DISPLAYTIME.get()) {
+			if(respondtime>100)
+				player.sendMessage(new TranslationTextComponent("反应时间"+respondtime+"(过晚)").withStyle(TextFormatting.RED), UUID.randomUUID());
+			else if(respondtime>ZeldaConfig.SHIELD.get()) {
+				player.sendMessage(new TranslationTextComponent("反应时间"+respondtime+"(过早)").withStyle(TextFormatting.RED), UUID.randomUUID());
+			}else {
+				player.sendMessage(new TranslationTextComponent("反应时间"+respondtime).withStyle(TextFormatting.GREEN), UUID.randomUUID());
+			}
+		}
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
 			reflect(player);
 		}

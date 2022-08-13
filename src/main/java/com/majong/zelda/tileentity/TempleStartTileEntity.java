@@ -1,6 +1,7 @@
 package com.majong.zelda.tileentity;
 
 import com.majong.zelda.data.DataManager;
+import com.majong.zelda.event.EntityTick;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.block.BlockState;
@@ -50,6 +51,7 @@ public class TempleStartTileEntity extends TileEntity implements ITickableTileEn
 							int[] startpoint= {search.getX(), search.getY(), search.getZ()};
 							TempleDimensionData.getTempleData(level, templeID).putIntArray("startpoint", startpoint);
 							TempleDimensionData.get(level).setDirty();
+							EntityTick.ENTER_TEMPLE_TIME.remove(player);
 							player.setDeltaMovement(Vector3d.ZERO);
 							TempleDimensionData.occupied=false;
 							return;
@@ -59,6 +61,7 @@ public class TempleStartTileEntity extends TileEntity implements ITickableTileEn
 				int[] startpoint= {pos.getX(), pos.getY(), pos.getZ()};
 				TempleDimensionData.getTempleData(level, templeID).putIntArray("startpoint", startpoint);
 				TempleDimensionData.get(level).setDirty();
+				EntityTick.ENTER_TEMPLE_TIME.remove(player);
 				player.setDeltaMovement(Vector3d.ZERO);
 				TempleDimensionData.occupied=false;
 			}

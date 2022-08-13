@@ -21,6 +21,7 @@ public class ZeldaOverlays extends AbstractGui{
     private MatrixStack matrixStack;
     private final Minecraft minecraft;
 	private ResourceLocation texture=new ResourceLocation(Utils.MOD_ID, "textures/gui/hud.png");
+	private ResourceLocation BARR=new ResourceLocation(Utils.MOD_ID, "textures/gui/bar.png");
 	public ZeldaOverlays(MatrixStack matrixStack) {
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
@@ -60,9 +61,18 @@ public class ZeldaOverlays extends AbstractGui{
 			drawCenteredString(matrixStack,Minecraft.getInstance().font,"x"+playerdata.skill[2],(int)(0.05*w)+24,(int)(0.4*h)+12,16777215);
 		if(playerdata.unlocked[3])
 			drawCenteredString(matrixStack,Minecraft.getInstance().font,"x"+playerdata.skill[3],(int)(0.05*w)+24,(int)(0.5*h)+12,16777215);
-		if(player.getMainHandItem().getItem()==ItemLoader.SHIKA_STONE.get()&&ZeldaConfigClient.DISPLAY_ANGLE.get()) {
+		if(player.getMainHandItem().getItem()==ItemLoader.SHIKA_STONE.get()) {
 			drawCenteredString(matrixStack,Minecraft.getInstance().font,ShikaStone.name,(int)(0.9*w),(int)(0.85*h),16777215);
-			drawCenteredString(matrixStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);
+			if(ZeldaConfigClient.DISPLAY_ANGLE.get())
+			{
+				this.minecraft.getTextureManager().bind(BARR);
+				double display=ShikaStone.delta;
+				if(display>180)
+				display=360-display;
+				blit(matrixStack, (int)(this.w*0.9-32), (int)(this.h*0.9), 0, 4,64,2, 16, 16);
+				blit(matrixStack, (int)(this.w*0.9-32), (int)(this.h*0.9), 0, 12,(int) (64*(180-display)/180),2, 16, 16);
+			}else
+				drawCenteredString(matrixStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);
 		}
 	}
 }

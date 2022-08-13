@@ -75,10 +75,11 @@ public class TempleDimensionData extends WorldSavedData{
 		int posZ=pos.getZ();
 		//LogManager.getLogger().info(posX+","+posZ);
 		for(int i=2;i<allocated;i++) {
+			if(data.getCompound(Integer.toString(i)).contains("startpoint")) {
 			int[] templepos=data.getCompound(Integer.toString(i)).getIntArray("startpoint");
-			//LogManager.getLogger().info(templepos[0]+","+templepos[2]);
 			if(Math.abs(templepos[0]-posX)<80&&Math.abs(templepos[2]-posZ)<80)
 				return true;
+			}
 		}
 		return false;
 	}
@@ -87,6 +88,8 @@ public class TempleDimensionData extends WorldSavedData{
 		return data.getCompound(Integer.toString(templeID));
 	}
 	public static void ExitTemple(World worldIn,PlayerEntity player){
+		player.setHealth(player.getMaxHealth());
+		TempleDimensionData.occupied=false;
 		player.setGameMode(GameType.SURVIVAL);
 		DataManager.AdjustAllSkills(player, true);
 		int templeID=DataManager.data.get(player).intemple;
