@@ -5,6 +5,7 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.PlayerUseShield;
 import com.majong.zelda.item.ItemLoader;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -104,8 +105,15 @@ public class LaserEntity extends ThrowableProjectile{
 	}
 	private void trysheldreflect(Player player) {
 		long respondtime=this.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
-		if(ZeldaConfig.DISPLAYTIME.get())
-			player.sendSystemMessage(Component.translatable("反应时间："+respondtime));
+		if(ZeldaConfig.DISPLAYTIME.get()) {
+		if(respondtime>100)
+			player.sendSystemMessage(Component.translatable("反应时间"+respondtime+"(过晚)").withStyle(ChatFormatting.RED));
+		else if(respondtime>ZeldaConfig.SHIELD.get()) {
+			player.sendSystemMessage(Component.translatable("反应时间"+respondtime+"(过早)").withStyle(ChatFormatting.RED));
+		}else {
+			player.sendSystemMessage(Component.translatable("反应时间"+respondtime).withStyle(ChatFormatting.GREEN));
+		}
+		}
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
 			reflect(player);
 		}

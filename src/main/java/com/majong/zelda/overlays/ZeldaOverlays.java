@@ -2,6 +2,7 @@ package com.majong.zelda.overlays;
 
 import com.majong.zelda.Utils;
 import com.majong.zelda.config.ZeldaConfig;
+import com.majong.zelda.config.ZeldaConfigClient;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.data.ZeldaPlayerData;
 import com.majong.zelda.item.ItemLoader;
@@ -21,6 +22,7 @@ public class ZeldaOverlays extends GuiComponent{
     private PoseStack PoseStack;
     //private final Minecraft minecraft;
 	private ResourceLocation texture=new ResourceLocation(Utils.MOD_ID, "textures/gui/hud.png");
+	private ResourceLocation BARR=new ResourceLocation(Utils.MOD_ID, "textures/gui/bar.png");
 	public ZeldaOverlays(PoseStack PoseStack) {
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
@@ -64,7 +66,16 @@ public class ZeldaOverlays extends GuiComponent{
 			drawCenteredString(PoseStack,Minecraft.getInstance().font,"x"+playerdata.skill[3],(int)(0.05*w)+24,(int)(0.5*h)+12,16777215);
 		if(player.getMainHandItem().getItem()==ItemLoader.SHIKA_STONE.get()) {
 			drawCenteredString(PoseStack,Minecraft.getInstance().font,ShikaStone.name,(int)(0.9*w),(int)(0.85*h),16777215);
-			drawCenteredString(PoseStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);
+			if(ZeldaConfigClient.DISPLAY_ANGLE.get())
+			{
+				RenderSystem.setShaderTexture(0, BARR);
+				double display=ShikaStone.delta;
+				if(display>180)
+				display=360-display;
+				blit(PoseStack, (int)(this.w*0.9-32), (int)(this.h*0.9), 0, 4,64,2, 16, 16);
+				blit(PoseStack, (int)(this.w*0.9-32), (int)(this.h*0.9), 0, 12,(int) (64*(180-display)/180),2, 16, 16);
+			}else
+				drawCenteredString(PoseStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);
 		}
 	}
 }

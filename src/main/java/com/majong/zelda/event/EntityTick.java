@@ -15,6 +15,8 @@ import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.tag.EntityTypeTag;
 import com.majong.zelda.util.BiomeUtil;
 import com.majong.zelda.util.ConductiveItem;
+import com.majong.zelda.world.dimension.TempleDimensionData;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +30,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,12 +41,24 @@ import net.minecraftforge.network.PacketDistributor;
 public class EntityTick {
 	public static final Map<Player,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	public static final Map<Player,BlockPos> LAST_STAND_POS=new HashMap<>();
+	public static final Map<Player,Long> ENTER_TEMPLE_TIME=new HashMap<>();
 	@SubscribeEvent
 	public static void onEntityTick(LivingTickEvent event) {
 		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
 			Player player=(Player) event.getEntity();
 			ZeldaPlayerData playerdata=DataManager.data.get(player);
 			if(playerdata.intemple>1) {
+				if(ENTER_TEMPLE_TIME.containsKey(player)) {
+					int waittime=(int) (player.level.getServer().getLevel(Level.OVERWORLD).getGameTime()-ENTER_TEMPLE_TIME.get(player));
+					if(waittime>100) {
+						LogUtils.getLogger().error("神庙传送超时，若该问题屡次发生，请检查数据包中是否存在非法或过大的神庙结构");
+						int[] position={(int) player.getX(),-100,(int) player.getZ()};
+						TempleDimensionData.getTempleData(player.level, playerdata.intemple).putIntArray("startpoint", position);
+						TempleDimensionData.get(player.level).setDirty();
+						ENTER_TEMPLE_TIME.remove(player);
+						TempleDimensionData.ExitTemple(player.level, player);
+					}
+				}
 				if(player.isOnGround()&&!player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isAir())
 					LAST_STAND_POS.put(player, player.blockPosition());
 				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {

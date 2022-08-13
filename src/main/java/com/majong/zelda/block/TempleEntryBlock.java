@@ -3,6 +3,7 @@ package com.majong.zelda.block;
 import javax.annotation.Nullable;
 
 import com.majong.zelda.data.DataManager;
+import com.majong.zelda.event.EntityTick;
 import com.majong.zelda.tileentity.HasTempleIDTileEntity;
 import com.majong.zelda.tileentity.HasTempleIDTileEntity.TempleEntryTileEntity;
 import com.majong.zelda.world.dimension.DimensionInit;
@@ -84,13 +85,14 @@ public class TempleEntryBlock extends BaseEntityBlock{
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if(!worldIn.isClientSide) {
 			if(TempleDimensionData.occupied) {
-				player.sendSystemMessage(Component.translatable("��������æ�����Ժ�����"));
+				player.sendSystemMessage(Component.translatable("服务器繁忙，请稍后再试"));
 				return InteractionResult.SUCCESS;
 			}
 			HasTempleIDTileEntity tile=(HasTempleIDTileEntity) worldIn.getBlockEntity(pos);
 			CompoundTag data=TempleDimensionData.get(worldIn).DATA;
 			if(tile.getID()<=1) {
 				TempleDimensionData.occupied=true;
+				EntityTick.ENTER_TEMPLE_TIME.put(player, worldIn.getServer().getLevel(Level.OVERWORLD).getGameTime());
 				int templeID=TempleDimensionData.AllocateNewTemple(worldIn);
 				tile.setID(templeID);
 				int[] position={pos.getX(),pos.getY(),pos.getZ()};
@@ -102,7 +104,7 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				ServerLevel temple=worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION);
 				BlockPos searchpos=player.blockPosition();
 				player.changeDimension(temple,new TempleTeleporter());
-				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
+				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,100,8));
 				BlockPos templepos;
 				while(true) {
 				templepos = temple.findNearestMapStructure(ModStructures.TEMPLES, searchpos, 100, false);
@@ -115,6 +117,7 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				player.teleportTo(templepos.getX(),80,templepos.getZ());
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 			}else {
+				if(data.getCompound(Integer.toString(tile.getID())).contains("startpoint")&&data.getCompound(Integer.toString(tile.getID())).getIntArray("startpoint")[1]!=-100) {
 				((ServerPlayer)player).setGameMode(GameType.ADVENTURE);
 				DataManager.AdjustAllSkills(player, false);
 				DataManager.data.get(player).intemple=tile.getID();
@@ -122,6 +125,9 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 				int[] templepos=data.getCompound(Integer.toString(tile.getID())).getIntArray("startpoint");
 				player.teleportTo(templepos[0]+0.5, templepos[1]+2, templepos[2]+0.5);
+			}else {
+				player.sendSystemMessage(Component.translatable("此神庙异常，请寻找其他神庙"));
+			}
 			}
 		}
 		return InteractionResult.SUCCESS;

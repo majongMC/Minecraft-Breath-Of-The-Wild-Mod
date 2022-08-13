@@ -16,7 +16,7 @@ public class ZeldaConfigClient {
         ROCK_GIANT =CLIENT_BUILDER.comment("Rock Giant Misic Length 岩石巨人音乐长度").defineInRange("rock_giant", 1200, 0, Integer.MAX_VALUE);
         CLIENT_BUILDER.pop();
         CLIENT_BUILDER.comment("Display 显示").push("display");
-        DISPLAY_ANGLE =CLIENT_BUILDER.comment("手持希卡之石时显示目标与视线之间的夹角").define("displayangle", true);
+        DISPLAY_ANGLE =CLIENT_BUILDER.comment("以图形形式显示视线与目标之间的夹角（设置为false时）会以数字形式显示").define("displayangle", true);
         CAMERA_SHAKE=CLIENT_BUILDER.comment("Enable Camera Shake 允许相机抖动").define("camera_shake", true);
         CLIENT_BUILDER.pop();
         CLIENT_CONFIG=CLIENT_BUILDER.build();

@@ -73,8 +73,15 @@ public class ShikaStone extends Item{
 				double deltay=entity.getY()+1.5-nbt.getInt("posY");
 				double targetpitch=Math.atan(deltay/Math.sqrt(rx*rx+rz*rz))*180/Math.PI;
 				double vertical=Math.tan(Math.PI*Math.abs(targetpitch-pitch)/180);
-				double horizontal=Math.tan(Math.PI*Math.abs(yaw-targetyaw)/180);
-				delta=Math.atan(Math.sqrt(vertical*vertical+horizontal*horizontal))*180/Math.PI;
+				if(Math.cos(Math.PI*Math.abs(yaw-targetyaw)/180)>0) {
+					double horizontal=Math.tan(Math.PI*Math.abs(yaw-targetyaw)/180);
+					delta=Math.atan(Math.sqrt(vertical*vertical+horizontal*horizontal))*180/Math.PI;
+				}else if(Math.cos(Math.PI*Math.abs(yaw-targetyaw)/180)<0) {
+					double horizontal=Math.tan(Math.PI*Math.abs(yaw-targetyaw)/180);
+					delta=180-Math.atan(Math.sqrt(vertical*vertical+horizontal*horizontal))*180/Math.PI;
+				}else {
+					delta=90;
+				}
 			}
 			if(delta<90||delta>270) {
 				if(delta<5||delta>355) {
