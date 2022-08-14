@@ -139,6 +139,16 @@
       }
     ]
   },
+  "temple": {
+    "subtitle": "sound.zelda.temple",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:temple",
+        "stream": true
+      }
+    ]
+  },
   "walking_guardian": {
     "subtitle": "sound.zelda.walking_guardian",
     "replace": "true",

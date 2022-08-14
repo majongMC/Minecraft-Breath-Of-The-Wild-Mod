@@ -1,7 +1,9 @@
 package com.majong.zelda.event;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.majong.zelda.config.ZeldaConfig;
 
@@ -18,6 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber()
 public class LinkTime {
+	public static final Map<Player,Integer> LINK_TIME=new HashMap<>();
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
 		if(!event.getLevel().isClientSide) {
@@ -28,26 +31,13 @@ public class LinkTime {
 				player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,120,3));
 				player.setNoGravity(true);
 				slownearmonsters(player,false);
-				Thread t=new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO �Զ����ɵķ������
-						Player player=event.getEntity();
-						for(int i=0;i<ZeldaConfig.LINKTIME.get();i++) {
-						try {Thread.sleep(50);} catch (InterruptedException e) {break;}
-						if(player==null||!player.isNoGravity())
-							break;
-						}
-						if(!(player==null))
-						event.getEntity().setNoGravity(false);
-					}});
-				t.start();
+				LINK_TIME.put(player,ZeldaConfig.LINKTIME.get());
 			}
 			else {
 				player.removeEffect(MobEffects.SLOW_FALLING);
 				player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 				player.setNoGravity(false);
+				LINK_TIME.put(player,-1);
 			}
 		}
 	}
@@ -59,6 +49,7 @@ public class LinkTime {
 			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
 			slownearmonsters(player,true);
+			LINK_TIME.put(player,-1);
 		}
 	}
 	private static void slownearmonsters(Player player,boolean remove) {

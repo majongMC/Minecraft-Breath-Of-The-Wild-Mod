@@ -47,12 +47,19 @@ public class EntityTick {
 		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
 			Player player=(Player) event.getEntity();
 			ZeldaPlayerData playerdata=DataManager.data.get(player);
+			if(LinkTime.LINK_TIME.containsKey(player)) {
+				int time=LinkTime.LINK_TIME.get(player);
+				if(time==0) {
+					player.setNoGravity(false);
+				}
+				LinkTime.LINK_TIME.put(player,time-1);
+			}
 			if(playerdata.intemple>1) {
 				if(ENTER_TEMPLE_TIME.containsKey(player)) {
 					int waittime=(int) (player.level.getServer().getLevel(Level.OVERWORLD).getGameTime()-ENTER_TEMPLE_TIME.get(player));
 					if(waittime>100) {
-						LogUtils.getLogger().error("神庙传送超时，若该问题屡次发生，请检查数据包中是否存在非法或过大的神庙结构");
 						int[] position={(int) player.getX(),-100,(int) player.getZ()};
+						LogUtils.getLogger().error("神庙传送超时，若该问题屡次发生，请检查数据包中是否存在非法或过大的神庙结构(出现问题的神庙位于"+position[0]+","+position[2]+")");
 						TempleDimensionData.getTempleData(player.level, playerdata.intemple).putIntArray("startpoint", position);
 						TempleDimensionData.get(player.level).setDirty();
 						ENTER_TEMPLE_TIME.remove(player);
@@ -64,7 +71,7 @@ public class EntityTick {
 				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {
 					BlockPos pos=LAST_STAND_POS.get(player);
 					player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
-					player.teleportTo(pos.getX(),pos.getY(), pos.getZ());
+					player.teleportTo(pos.getX(),pos.getY()+3, pos.getZ());
 					player.hurt(DamageSource.OUT_OF_WORLD,2);
 				}
 			}

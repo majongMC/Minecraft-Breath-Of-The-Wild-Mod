@@ -1,12 +1,15 @@
 package com.majong.zelda.event;
 
+import com.majong.zelda.api.overlays.ZeldaHealthBarApi;
 import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.GuardianEntity;
 import com.majong.zelda.entity.MollyBrinEntity;
 import com.majong.zelda.entity.WalkingGuardianEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
+import com.majong.zelda.network.HealthBarPack;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.util.Linkage;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -59,18 +62,18 @@ public class EntitySpottedEvent {
 			                    new SoundPack(4,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
 				}
 			}
-			/*if(Utils.ICE_AND_FIRE_LOADED&&entity instanceof EntityCyclops) {
-				EntityCyclops cyclops=(EntityCyclops) entity;
+			if(Linkage.isHinox(entity)) {
+				LivingEntity cyclops=(LivingEntity) entity;
 				Player player=(Player) target;
-				ZeldaBloodBarApi.DisplayBloodBarServer(cyclops.getHealth()/cyclops.getMaxHealth(), BloodBarPack.SINOX, player);
+				ZeldaHealthBarApi.DisplayHealthBarServer(cyclops.getHealth()/cyclops.getMaxHealth(), HealthBarPack.HINOX, player);
 				if(entity.level.getGameTime()%20==9) {
 					Networking.SOUND.send(
 				      PacketDistributor.PLAYER.with(
-				                            () -> (ServerPlayerEntity) target
+				                            () -> (ServerPlayer) target
 				             ),
 				             new SoundPack(9,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
 					}
-				}*/
+				}
 		}
 	}
 }

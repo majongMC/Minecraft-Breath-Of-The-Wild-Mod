@@ -1,5 +1,6 @@
 package com.majong.zelda.tileentity;
 
+import com.majong.zelda.block.TempleEntryBlock;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.EntityTick;
 import com.majong.zelda.world.dimension.TempleDimensionData;
@@ -54,6 +55,7 @@ public class TempleStartTileEntity extends BlockEntity{
 							TempleDimensionData.get(level).setDirty();
 							EntityTick.ENTER_TEMPLE_TIME.remove(player);
 							player.setDeltaMovement(Vec3.ZERO);
+							TempleEntryBlock.PlayTempleSound(player);
 							TempleDimensionData.occupied=false;
 							return;
 						}
@@ -64,6 +66,7 @@ public class TempleStartTileEntity extends BlockEntity{
 				TempleDimensionData.get(level).setDirty();
 				EntityTick.ENTER_TEMPLE_TIME.remove(player);
 				player.setDeltaMovement(Vec3.ZERO);
+				TempleEntryBlock.PlayTempleSound(player);
 				TempleDimensionData.occupied=false;
 			}
 		}

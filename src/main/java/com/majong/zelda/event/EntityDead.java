@@ -12,6 +12,7 @@ import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.util.Linkage;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.core.BlockPos;
@@ -76,7 +77,7 @@ public class EntityDead {
                     ),
                     new SoundPack(1,new BlockPos(player.getX(),player.getY(),player.getZ())));
 		}
-		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof BokoBrinEntity||entity instanceof YigaTeamMemberEntity)) {
+		if(!entity.level.isClientSide&&(entity instanceof GuardianEntity||entity instanceof MollyBrinEntity||entity instanceof BokoBrinEntity||entity instanceof YigaTeamMemberEntity)||Linkage.isHinox(entity)) {
 			List<Player> playerlist= entity.level.getEntitiesOfClass(Player.class,entity.getBoundingBox().inflate(64, 32, 64));
     		Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {

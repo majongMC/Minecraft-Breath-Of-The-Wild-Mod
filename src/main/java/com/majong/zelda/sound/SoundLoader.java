@@ -25,4 +25,5 @@ public class SoundLoader {
 	public static final RegistryObject<SoundEvent> RED_ENVELOPE = SOUNDS.register("red_envelope", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "red_envelope")));
 	public static final RegistryObject<SoundEvent> RADAR = SOUNDS.register("radar", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "radar")));
 	public static final RegistryObject<SoundEvent> MIPHA = SOUNDS.register("mipha", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "mipha")));
+	public static final RegistryObject<SoundEvent> TEMPLE = SOUNDS.register("temple", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "temple")));
 }

@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.EntityTick;
+import com.majong.zelda.network.Networking;
+import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.tileentity.HasTempleIDTileEntity;
 import com.majong.zelda.tileentity.HasTempleIDTileEntity.TempleEntryTileEntity;
 import com.majong.zelda.world.dimension.DimensionInit;
@@ -38,6 +40,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.PacketDistributor;
 
 public class TempleEntryBlock extends BaseEntityBlock{
 	private static DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -125,11 +128,19 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 				int[] templepos=data.getCompound(Integer.toString(tile.getID())).getIntArray("startpoint");
 				player.teleportTo(templepos[0]+0.5, templepos[1]+2, templepos[2]+0.5);
+				PlayTempleSound(player);
 			}else {
 				player.sendSystemMessage(Component.translatable("此神庙异常，请寻找其他神庙"));
 			}
 			}
 		}
 		return InteractionResult.SUCCESS;
+	}
+	public static void PlayTempleSound(Player player) {
+		Networking.SOUND.send(
+                PacketDistributor.PLAYER.with(
+                        () -> (ServerPlayer) player
+                ),
+                new SoundPack(12,new BlockPos(player.getX(),player.getY(),player.getZ())));
 	}
 }
