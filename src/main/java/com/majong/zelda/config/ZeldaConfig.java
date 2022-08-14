@@ -6,7 +6,7 @@ public class ZeldaConfig {
 	public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec.IntValue WATER,WIND,FIRE,THUNDER;
     public static ForgeConfigSpec.IntValue SHIELD,LINKTIME;
-    public static ForgeConfigSpec.BooleanValue DISPLAYTIME;
+    public static ForgeConfigSpec.BooleanValue DISPLAYTIME,DELAY_ATTACK;
     public static ForgeConfigSpec.DoubleValue ROCKGIANT,YIGATEAM;
     public static ForgeConfigSpec.BooleanValue NPCONLY,ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
     public static ForgeConfigSpec.DoubleValue ELECTRICITY;
@@ -25,6 +25,7 @@ public class ZeldaConfig {
         SHIELD = COMMON_BUILDER.comment("Shield Reflect Error(tick) 盾反允许误差(tick)").defineInRange("shield", 5, 0, Integer.MAX_VALUE);
         DISPLAYTIME = COMMON_BUILDER.comment("Display React Time 显示反应时间").define("displaytime", true);
         LINKTIME = COMMON_BUILDER.comment("Max Link Time 最大林克时间").defineInRange("linktime", 100, 0, Integer.MAX_VALUE);
+        DELAY_ATTACK = COMMON_BUILDER.comment("Enable Delay Attack 允许延时攻击，开启后怪物在攻击时会提前挥手，这有利于盾反，如果觉得不舒服的话可以关闭").define("delay_attack", true);
         COMMON_BUILDER.pop();
         COMMON_BUILDER.comment("Entity 生物(守护者，行走的守护者，莫力布林，波克布林的刷怪参数请通过数据包修改)").push("entity");
         ROCKGIANT = COMMON_BUILDER.comment("Rock Giant Spawn Chance 岩石巨人生成几率").defineInRange("rockgiant", 1, 0, Double.POSITIVE_INFINITY);

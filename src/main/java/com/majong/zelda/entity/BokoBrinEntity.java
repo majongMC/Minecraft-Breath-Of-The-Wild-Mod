@@ -1,5 +1,6 @@
 package com.majong.zelda.entity;
 
+import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.ai.BlewHornGoal;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.item.ItemLoader;
@@ -27,7 +28,10 @@ public class BokoBrinEntity extends Monster{
 		super(type, worldIn);
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new BlewHornGoal(this));
-		this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,8));
+		if(ZeldaConfig.DELAY_ATTACK.get())
+			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,8));
+		else
+			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,0));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 0.0F));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
