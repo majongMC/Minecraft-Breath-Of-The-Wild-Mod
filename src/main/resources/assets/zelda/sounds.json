@@ -30,7 +30,7 @@
     ]
   },
   "mifa": {
-    "subtitle": "mifa",
+    "subtitle": "mipha",
     "replace": "true",
     "sounds": [
       {
@@ -135,6 +135,16 @@
     "sounds": [
       {
         "name": "zelda:radar",
+        "stream": true
+      }
+    ]
+  },
+  "temple": {
+    "subtitle": "temple",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:temple",
         "stream": true
       }
     ]

@@ -49,12 +49,19 @@ public class EntityTick {
 		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) event.getEntity();
 			ZeldaPlayerData playerdata=DataManager.data.get(player);
+			if(LinkTime.LINK_TIME.containsKey(player)) {
+				int time=LinkTime.LINK_TIME.get(player);
+				if(time==0) {
+					player.setNoGravity(false);
+				}
+				LinkTime.LINK_TIME.put(player,time-1);
+			}
 			if(playerdata.intemple>1) {
 				if(ENTER_TEMPLE_TIME.containsKey(player)) {
 					int waittime=(int) (player.level.getServer().getLevel(World.OVERWORLD).getGameTime()-ENTER_TEMPLE_TIME.get(player));
 					if(waittime>100) {
-						LogManager.getLogger().error("神庙传送超时，若该问题屡次发生，请检查数据包中是否存在非法或过大的神庙结构");
 						int[] position={(int) player.getX(),-100,(int) player.getZ()};
+						LogManager.getLogger().error("神庙传送超时，若该问题屡次发生，请检查数据包中是否存在非法或过大的神庙结构(出现问题的神庙位于"+position[0]+","+position[2]+")");
 						TempleDimensionData.getTempleData(player.level, playerdata.intemple).putIntArray("startpoint", position);
 						TempleDimensionData.get(player.level).setDirty();
 						ENTER_TEMPLE_TIME.remove(player);

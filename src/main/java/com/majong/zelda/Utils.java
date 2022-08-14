@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 
 public class Utils {
 	public static final String MOD_ID="zelda";
-	public static final boolean ICE_AND_FIRE_LOADED=ClassExist.isClassExist("com.github.alexthe666.iceandfire.IceAndFire");
 	public static final boolean DRACONIC_EVOLUTION_LOADED=ClassExist.isClassExist("com.brandon3055.draconicevolution.DraconicEvolution");
 	public static final ItemGroup ZELDA_CREATIVE_TAB = new ItemGroup("Zelda") {
 		@Override

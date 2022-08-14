@@ -1,6 +1,5 @@
 package com.majong.zelda.event;
 
-import com.majong.zelda.Utils;
 import com.majong.zelda.api.overlays.ZeldaBloodBarApi;
 import com.majong.zelda.entity.GuardianEntity;
 import com.majong.zelda.entity.MollyBrinEntity;
@@ -63,7 +62,7 @@ public class EntitySpottedEvent {
 			                    new SoundPack(4,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
 				}
 			}
-			if(Utils.ICE_AND_FIRE_LOADED&&Linkage.isHinox(entity)) {
+			if(Linkage.isHinox(entity)) {
 				LivingEntity cyclops=(LivingEntity) entity;
 				PlayerEntity player=(PlayerEntity) target;
 				ZeldaBloodBarApi.DisplayBloodBarServer(cyclops.getHealth()/cyclops.getMaxHealth(), HealthBarPack.SINOX, player);

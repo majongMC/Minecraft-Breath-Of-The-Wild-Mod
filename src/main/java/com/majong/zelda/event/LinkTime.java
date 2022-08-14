@@ -1,8 +1,9 @@
 package com.majong.zelda.event;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map;
 
 import com.majong.zelda.config.ZeldaConfig;
 
@@ -19,6 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber()
 public class LinkTime {
+	public static final Map<PlayerEntity,Integer> LINK_TIME=new HashMap<>();
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
 		if(!event.getWorld().isClientSide) {
@@ -29,26 +31,13 @@ public class LinkTime {
 				player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,120,3));
 				player.setNoGravity(true);
 				slownearmonsters(player,false);
-				Thread t=new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO 自动生成的方法存根
-						PlayerEntity player=event.getPlayer();
-						for(int i=0;i<ZeldaConfig.LINKTIME.get();i++) {
-						try {Thread.sleep(50);} catch (InterruptedException e) {break;}
-						if(player==null||!player.isNoGravity())
-							break;
-						}
-						if(!(player==null))
-						event.getPlayer().setNoGravity(false);
-					}});
-				t.start();
+				LINK_TIME.put(player,ZeldaConfig.LINKTIME.get());
 			}
 			else {
 				player.removeEffect(Effects.SLOW_FALLING);
 				player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
 				player.setNoGravity(false);
+				LINK_TIME.put(player,-1);
 			}
 		}
 	}
@@ -60,17 +49,14 @@ public class LinkTime {
 			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
 			slownearmonsters(player,true);
+			LINK_TIME.put(player,-1);
 		}
 	}
 	private static void slownearmonsters(PlayerEntity player,boolean remove) {
 		World world=player.level;
-		List<LivingEntity> entitylist= world.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,new Predicate<Object>() {
-
-			@Override
-			public boolean test(Object t) {
-				// TODO 自动生成的方法存根
+		List<LivingEntity> entitylist= world.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,(LivingEntity t)->{
 				return t instanceof LivingEntity&&!(t instanceof PlayerEntity);
-			}});
+			});
 		Iterator<LivingEntity> it=entitylist.iterator();
 		while(it.hasNext()) {
 			LivingEntity entity=it.next();

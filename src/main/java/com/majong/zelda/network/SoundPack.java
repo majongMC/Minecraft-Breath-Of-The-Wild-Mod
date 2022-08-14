@@ -48,6 +48,7 @@ public class SoundPack {
         	case 9:if(EntitySpottedEvent.SoundRemainTime==0) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.SINOX.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.HINOX.get();}break;
         	case 10:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.MIFA.get(), SoundCategory.AMBIENT, 10f, 1f);break;
         	case 11:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundEvents.GENERIC_HURT, SoundCategory.AMBIENT, 10f, 1f);break;
+        	case 12:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.TEMPLE.get(), SoundCategory.AMBIENT, 10f, 1f);break;
         	}
         });
         ctx.get().setPacketHandled(true);

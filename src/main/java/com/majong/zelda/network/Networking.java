@@ -8,7 +8,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class Networking {
 	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKTOSERVER,FOODMESSAGEPACK,BAR;
-    public static final String VERSION = "165.1.4.0";
+    public static final String VERSION = "165.1.4.5";
     private static int ID = 0;
 
     public static int nextID() {
