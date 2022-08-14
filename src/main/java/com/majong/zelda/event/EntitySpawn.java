@@ -19,7 +19,7 @@ public class EntitySpawn {
 		addEntityToAllOverworldBiomes(event,EntityLoader.GUARDIAN.get(),(int) (8*ZeldaConfig.GUARDIAN.get()),1,2);
 		addEntityToAllOverworldBiomes(event,EntityLoader.WALKING_GUARDIAN.get(),(int) (4*ZeldaConfig.WALKING_GUARDIAN.get()),1,2);
 		addEntityToAllOverworldBiomes(event,EntityLoader.MOLLY_BRIN.get(),(int) (10*ZeldaConfig.MOLLYBRIN.get()),1,2);
-		addEntityNether(event,EntityLoader.POK_BRIN.get(),(int) (1*ZeldaConfig.POKBRIN.get()),1,2);
+		addEntityNether(event,EntityLoader.POK_BRIN.get(),(int) (1*ZeldaConfig.POKBRIN.get()),1,1);
 		addEntityToAllOverworldBiomes(event,EntityLoader.POK_BRIN.get(),(int) (8*ZeldaConfig.POKBRIN.get()),1,2);
     }
 	private static void addEntityToAllOverworldBiomes(BiomeLoadingEvent event, EntityType<?> type,

@@ -92,7 +92,10 @@ public class YigaTeamMemberEntity extends MonsterEntity{
 	}
 	public void activate() {
 		this.entityData.set(ACTIVATED, true);
-		this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,8));
+		if(ZeldaConfig.DELAY_ATTACK.get())
+			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,8));
+		else
+			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,0));
 		this.setCustomName(new TranslationTextComponent("name.yiga.activated"));
 	}
 	public boolean isactivated() {
