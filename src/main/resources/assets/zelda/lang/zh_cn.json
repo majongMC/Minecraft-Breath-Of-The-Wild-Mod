@@ -1,7 +1,7 @@
 {
 "entity.zelda.guardian":"守护者",
 "entity.zelda.walking_guardian":"行走的守护者",
-"entity.zelda.molly_brin":"莫利布林",
+"entity.zelda.molly_brin":"骷髅莫利布林",
 "entity.zelda.rock_giant":"岩石巨人",
 "entity.zelda.boko_brin":"波克布林",
 "entity.zelda.yiga_team_member":"村民",
@@ -27,7 +27,7 @@
 "item.zelda.ancient_horn": "远古号角",
 "item.zelda.guardian_spawn_egg": "守护者刷怪蛋",
 "item.zelda.walking_guardian_spawn_egg": "行走的守护者刷怪蛋",
-"item.zelda.molly_brin_spawn_egg": "莫利布林刷怪蛋",
+"item.zelda.molly_brin_spawn_egg": "骷髅莫利布林刷怪蛋",
 "item.zelda.boko_brin_spawn_egg": "波克布林刷怪蛋",
 "item.zelda.rock_giant_spawn_egg": "岩石巨人刷怪蛋",
 "item.zelda.yiga_team_member_spawn_egg": "依盖队成员刷怪蛋",

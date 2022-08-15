@@ -2,10 +2,13 @@ package com.majong.zelda.entity.ai;
 
 import java.util.EnumSet;
 
+import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.RockGiantEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
 
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -144,13 +147,31 @@ public class DelayMeleeAttackGoal extends Goal{
 	      double d0 = this.getAttackReachSqr(p_190102_1_);
 	      if (p_190102_2_ <= d0 && this.ticksUntilNextAttack <= 0) {
 	         this.resetAttackCooldown();
-	         this.mob.swing(InteractionHand.MAIN_HAND);
 	         delay=delaytime;
 	         if(this.mob instanceof RockGiantEntity) {
 		    	  RockGiantEntity rockgiant=(RockGiantEntity) this.mob;
 		    	  rockgiant.getEntityData().set(RockGiantEntity.ATTACK, true);
 		    	  
 	         }
+	         if(this.mob instanceof BokoBrinEntity) {
+	        	 BokoBrinEntity bokobrin=(BokoBrinEntity) this.mob;
+	        	 bokobrin.getEntityData().set(BokoBrinEntity.ATTACK, true);
+	        	 bokobrin.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,24,9));
+	         }else
+	        	 this.mob.swing(InteractionHand.MAIN_HAND);
+	      }
+	      if(delay==8&&this.mob instanceof BokoBrinEntity) {
+	    	  BokoBrinEntity bokobrin=(BokoBrinEntity) this.mob;
+	        	 bokobrin.getEntityData().set(BokoBrinEntity.ATTACK, false);
+	        	 if(p_190102_2_ <= d0) {
+	        	 this.mob.doHurtTarget(p_190102_1_);
+	        	 p_190102_1_.invulnerableTime=0;
+	        	 }
+	        	 float yaw=mob.yHeadRot;
+		 		float f = 1F;
+		 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
+		 		double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
+		 		mob.setDeltaMovement(mob.getDeltaMovement().add(mx,0, mz));
 	      }
 	      /*if(delay>=0&&this.mob instanceof RockGiantEntity) {
 	    	  RockGiantEntity entity=(RockGiantEntity) this.mob;

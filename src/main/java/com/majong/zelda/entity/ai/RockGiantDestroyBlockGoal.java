@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.majong.zelda.api.effects.CameraShakeApi;
 import com.majong.zelda.entity.RockGiantEntity;
-import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
 
 public class RockGiantDestroyBlockGoal extends Goal{
 	private RockGiantEntity owner;
