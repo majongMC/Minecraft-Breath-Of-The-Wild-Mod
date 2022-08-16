@@ -116,6 +116,9 @@ public class RockGiantEntity extends Monster{
 			if(animremaintime>-1) {
 				animremaintime--;
 			}
+		}else {
+			if(this.getTarget()==null||this.getTarget().isDeadOrDying())
+				this.getEntityData().set(RockGiantEntity.ATTACK, false);
 		}
 	}
 	private void stopallanim() {

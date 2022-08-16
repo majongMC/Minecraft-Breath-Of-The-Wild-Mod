@@ -83,6 +83,11 @@ public class BokoBrinEntity extends Monster{
 			if(animremaintime>-1) {
 				animremaintime--;
 			}
+		}else {
+			if(this.getTarget()==null||this.getTarget().isDeadOrDying()) {
+				this.getEntityData().set(ATTACK, false);
+				this.getEntityData().set(BLEW_HORN, false);
+			}
 		}
 	}
 	private void stopallanim() {

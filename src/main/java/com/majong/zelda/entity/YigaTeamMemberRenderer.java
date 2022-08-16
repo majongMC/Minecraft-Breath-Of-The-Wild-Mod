@@ -4,36 +4,46 @@ import com.majong.zelda.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.VillagerModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 
 public class YigaTeamMemberRenderer extends MobRenderer{
-	//public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Utils.MOD_ID, "yiga_team_member"), "main");
-	//public static final ModelLayerLocation VILLAGER_LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("minecraft", "villager"), "main");
-	private EntityModel<YigaTeamMemberEntity> VillagerModel,PlayerModel;
-	public YigaTeamMemberRenderer(EntityRendererProvider.Context renderManagerIn, GuardianModel entityModelIn, float shadowSizeIn) {
+	public static final ModelLayerLocation INNER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "player_slim"), "inner_armor");
+	public static final ModelLayerLocation OUTER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "player_slim"), "outer_armor");
+	//public static final ModelLayerLocation INNER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "piglin"), "inner_armor");
+	//public static final ModelLayerLocation OUTER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "piglin"), "outer_armor");
+	private EntityModel<YigaTeamMemberEntity> VillagerModel,YGTModel;
+	public YigaTeamMemberRenderer(EntityRendererProvider.Context renderManagerIn, EntityModel entityModelIn, float shadowSizeIn) {
 		super(renderManagerIn, entityModelIn, shadowSizeIn);
-		VillagerModel=this.model;
-		PlayerModel=new PlayerModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(ModelLayers.PLAYER),true);
+		VillagerModel=new VillagerModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(ModelLayers.VILLAGER));
+		YGTModel=this.model;
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(INNER_ARMOR)), new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(OUTER_ARMOR))));
+		this.addLayer(new ItemInHandLayer<>(this, renderManagerIn.getItemInHandRenderer()));
 		// TODO �Զ����ɵĹ��캯�����
 	}
 	public YigaTeamMemberRenderer(EntityRendererProvider.Context renderManagerIn) {
-		super(renderManagerIn, new VillagerModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(ModelLayers.VILLAGER)),0.7F);
-		VillagerModel=this.model;
-		PlayerModel=new PlayerModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(ModelLayers.PLAYER),true);
+		super(renderManagerIn,new YigaTeamMemberModel(renderManagerIn.bakeLayer(ModelLayers.PLAYER),true) ,0.7F);
+		VillagerModel=new VillagerModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(ModelLayers.VILLAGER));
+		YGTModel=this.model;
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(INNER_ARMOR)), new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(OUTER_ARMOR))));
+		this.addLayer(new ItemInHandLayer<>(this, renderManagerIn.getItemInHandRenderer()));
 		// TODO �Զ����ɵĹ��캯�����
 	}
 	@Override
     public void render(Mob entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-		if(((YigaTeamMemberEntity)entityIn).isactivated())
-			this.model=PlayerModel;
+		if(((YigaTeamMemberEntity)entityIn).isactivated()) {
+			this.model=YGTModel;
+		}
 		else
 			this.model=VillagerModel;
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);

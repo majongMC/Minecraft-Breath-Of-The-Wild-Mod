@@ -4,6 +4,7 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.event.PlayerHurtEvent;
+import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 
@@ -16,7 +17,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -33,6 +36,9 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class YigaTeamMemberEntity extends Monster{
 	public static final EntityDataAccessor<Boolean> ACTIVATED = SynchedEntityData.defineId(YigaTeamMemberEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> ATTACK = SynchedEntityData.defineId(YigaTeamMemberEntity.class, EntityDataSerializers.BOOLEAN);
+	public AnimationState attackstate = new AnimationState();
+	private int animremaintime=-1;
 	public YigaTeamMemberEntity(EntityType<? extends Monster> p_i48553_1_, Level p_i48553_2_) {
 		super(p_i48553_1_, p_i48553_2_);
 		// TODO �Զ����ɵĹ��캯�����
@@ -44,10 +50,30 @@ public class YigaTeamMemberEntity extends Monster{
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 	@Override
+	public void tick() {
+		super.tick();
+		if(this.level.isClientSide) {
+			if(this.getEntityData().get(ATTACK)&&!isPlayingAnim()) {
+				this.attackstate.start(this.tickCount);
+				this.animremaintime=42;
+			}
+			if(animremaintime==0) {
+				this.stopallanim();
+			}
+			if(animremaintime>-1) {
+				animremaintime--;
+			}
+		}else {
+			if(this.getTarget()==null||this.getTarget().isDeadOrDying())
+				this.getEntityData().set(ATTACK, false);
+		}
+	}
+	@Override
 	protected void defineSynchedData() {
 		// TODO �Զ����ɵķ������
 		super.defineSynchedData();
 		this.entityData.define(ACTIVATED, false);
+		this.entityData.define(ATTACK, false);
 	}
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
@@ -92,10 +118,8 @@ public class YigaTeamMemberEntity extends Monster{
 	}
 	public void activate() {
 		this.entityData.set(ACTIVATED, true);
-		if(ZeldaConfig.DELAY_ATTACK.get())
-			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,8));
-		else
-			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,0));
+		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemLoader.CHOPPING_WIND_BLADE.get(),1));
+		this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,30));
 		this.setCustomName(Component.translatable("name.yiga.activated"));
 	}
 	public boolean isactivated() {
@@ -105,6 +129,9 @@ public class YigaTeamMemberEntity extends Monster{
 		int damage=7;
 		if(entity.level.getServer().isSingleplayer())
 			damage=10;
+		if(entity.invulnerableTime>10)
+			return;
+		entity.invulnerableTime=20;
 		if(entity instanceof Player) {
 			if(PlayerHurtEvent.TryReflect((Player) entity, this, damage))
 				return;
@@ -131,5 +158,11 @@ public class YigaTeamMemberEntity extends Monster{
 			}else
 				entity.kill();
 		}
+	}
+	private void stopallanim() {
+		attackstate.stop();
+	}
+	public boolean isPlayingAnim() {
+		return animremaintime>0;
 	}
 }

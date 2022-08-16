@@ -90,9 +90,9 @@ public class BokoBrinAnimation {
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.2F, KeyframeAnimations.degreeVec(23.3171F, -14.3704F, 97.3135F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.4F, KeyframeAnimations.degreeVec(23.3171F, -14.3704F, 97.3135F), AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.6F, KeyframeAnimations.degreeVec(-138.601F, -8.2521F, 121.0965F), AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(0.8F, KeyframeAnimations.degreeVec(-142.7619F, 21.1787F, 86.4274F), AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(1.0F, KeyframeAnimations.degreeVec(15.5327F, -26.1062F, 37.6108F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(0.6F, KeyframeAnimations.degreeVec(-138.601F, -8.2521F, 121.0965F), AnimationChannel.Interpolations.LINEAR),
+					new Keyframe(0.8F, KeyframeAnimations.degreeVec(-142.7619F, 21.1787F, 86.4274F), AnimationChannel.Interpolations.LINEAR),
+					new Keyframe(1.0F, KeyframeAnimations.degreeVec(15.5327F, -26.1062F, 37.6108F), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(1.2F, KeyframeAnimations.degreeVec(0.0F, 0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
 					))
 			.addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.POSITION, 

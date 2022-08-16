@@ -81,6 +81,7 @@ public class ItemLoader {
 	public static final RegistryObject<Item> RED_ENVELOPE = ITEMS.register("red_envelope", RedEnvelope::new);
 	public static final RegistryObject<Item> SPIRIT_ORB = ITEMS.register("spirit_orb", BasicItem::new);
 	public static final RegistryObject<Item> ANCIENT_HORN = ITEMS.register("ancient_horn", AncientHorn::new);
+	public static final RegistryObject<Item> CHOPPING_WIND_BLADE = ITEMS.register("chopping_wind_blade", ChoppingWindBladeItem::new);
 	public static final RegistryObject<Item> GUARDIAN_SPAWN_EGG = ITEMS.register("guardian_spawn_egg", 
             () -> new SpawnEggItem(EntityLoader.GUARDIAN.get(), 3515354, 920940, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> WALKING_GUARDIAN_SPAWN_EGG = ITEMS.register("walking_guardian_spawn_egg", 
