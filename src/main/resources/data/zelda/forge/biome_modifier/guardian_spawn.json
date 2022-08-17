@@ -4,8 +4,8 @@
     "spawners":
     {
         "type": "zelda:guardian", 
-        "weight": 8, 
+        "weight": 6, 
         "minCount": 1, 
-        "maxCount": 2 
+        "maxCount": 1 
     }
   }
