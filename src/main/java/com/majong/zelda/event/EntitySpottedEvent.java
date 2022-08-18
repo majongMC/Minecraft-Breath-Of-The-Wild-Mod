@@ -12,6 +12,7 @@ import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.util.Linkage;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +37,7 @@ public class EntitySpottedEvent {
 		}
 		if(target instanceof Player&&!target.level.isClientSide) {
 			if(entity instanceof GuardianEntity) {
-				if(entity.level.getGameTime()%20==7) {
+				if(entity.level.getGameTime()%20==7||entity.level.getGameTime()%20==6) {
 					if(entity instanceof WalkingGuardianEntity) {
 						Networking.SOUND.send(
 		                    PacketDistributor.PLAYER.with(
@@ -54,7 +55,7 @@ public class EntitySpottedEvent {
 				}
 			}
 			if(entity instanceof MollyBrinEntity||entity instanceof BokoBrinEntity) {
-				if(entity.level.getGameTime()%20==8) {
+				if(entity.level.getGameTime()%20==8||entity.level.getGameTime()%20==9) {
 						Networking.SOUND.send(
 			                    PacketDistributor.PLAYER.with(
 			                            () -> (ServerPlayer) target
@@ -66,7 +67,7 @@ public class EntitySpottedEvent {
 				LivingEntity cyclops=(LivingEntity) entity;
 				Player player=(Player) target;
 				ZeldaHealthBarApi.DisplayHealthBarServer(cyclops.getHealth()/cyclops.getMaxHealth(), HealthBarPack.HINOX, player);
-				if(entity.level.getGameTime()%20==9) {
+				if(entity.level.getGameTime()%20==9||entity.level.getGameTime()%20==10) {
 					Networking.SOUND.send(
 				      PacketDistributor.PLAYER.with(
 				                            () -> (ServerPlayer) target

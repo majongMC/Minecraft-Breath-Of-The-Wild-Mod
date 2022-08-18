@@ -88,6 +88,9 @@ public class BokoBrinEntity extends Monster{
 				this.getEntityData().set(ATTACK, false);
 				this.getEntityData().set(BLEW_HORN, false);
 			}
+			if(this.getHealth()<this.getMaxHealth()) {
+				this.getEntityData().set(BLEW_HORN, false);
+			}
 		}
 	}
 	private void stopallanim() {
