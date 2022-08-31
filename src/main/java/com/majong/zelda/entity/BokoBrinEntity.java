@@ -45,7 +45,6 @@ public class BokoBrinEntity extends Monster{
 		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WOODEN_SWORD,1));
 		this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(ItemLoader.HORN.get(),1));
-		// TODO �Զ����ɵĹ��캯�����
 	}
 	@Override
 	public void defineSynchedData() {

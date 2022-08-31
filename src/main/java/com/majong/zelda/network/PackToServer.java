@@ -11,6 +11,7 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.util.EntityFreezer;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.core.BlockPos;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -142,17 +144,17 @@ public class PackToServer {
     }
     private void detonate(Player player) {
     	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	List<Mob> moblist= player.level.getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(32, 32, 32) ,(Mob t)->true);
+    	Iterator<Mob> it1=moblist.iterator();
+    	while(it1.hasNext()) {
+			Mob mob=it1.next();
+			EntityFreezer.unFreezeMob(mob);
+		}
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
 			return;
 		}
-    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,new Predicate<Object>() {
-
-			@Override
-			public boolean test(Object t) {
-				// TODO �Զ����ɵķ������
-				return t instanceof BombEntity&&((BombEntity)t).owner==player;
-			}});
+    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,(LivingEntity t)->t instanceof BombEntity&&((BombEntity)t).owner==player);
 		Iterator<LivingEntity> it=bomblist.iterator();
 		boolean iswindbomb=iswindbomb(player);
 		if(iswindbomb) {
@@ -177,12 +179,7 @@ public class PackToServer {
     private boolean iswindbomb(Player player) {
     	if(!player.isNoGravity()||!ZeldaConfig.WINDBOMB.get())
     		return false;
-    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(5, 5, 5) ,new Predicate<Object>() {
-			@Override
-			public boolean test(Object t) {
-				// TODO �Զ����ɵķ������
-				return t instanceof BombEntity&&((BombEntity)t).owner==player;
-			}});
+    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(5, 5, 5) ,(LivingEntity t)->t instanceof BombEntity&&((BombEntity)t).owner==player);
     	if(bomblist.size()!=2)
     		return false;
 		Iterator<LivingEntity> it=bomblist.iterator();
@@ -199,12 +196,7 @@ public class PackToServer {
     	double x=player.getX();
     	double y=player.getY();
     	double z=player.getZ();
-    	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
-			@Override
-			public boolean test(Object t) {
-				// TODO �Զ����ɵķ������
-				return t instanceof ItemEntity;
-			}});
+    	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,(ItemEntity t)->t instanceof ItemEntity);
     	Iterator<ItemEntity> it=itemlist.iterator();
 		while(it.hasNext()) {
 			ItemEntity item=it.next();

@@ -12,7 +12,6 @@ import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.util.Linkage;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

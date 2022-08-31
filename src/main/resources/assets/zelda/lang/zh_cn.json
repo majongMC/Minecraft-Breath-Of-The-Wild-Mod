@@ -84,6 +84,6 @@
 "tooltip.zelda.conductive":"导电",
 "death.attack.yigadamage":"%1$s 被依盖队成员杀死了",
 "key.category.zelda":"旷野之息",
-"key.detonate":"引爆炸弹",
+"key.detonate":"引爆炸弹/解除时停",
 "key.skill":"使用技能"
 }

@@ -30,6 +30,6 @@ public class BombEntity extends PathfinderMob{
 			else
 				this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3, BlockInteraction.NONE);
 		}
-		this.kill();
+		this.discard();
 	}
 }

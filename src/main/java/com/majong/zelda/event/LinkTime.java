@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.majong.zelda.config.ZeldaConfig;
+import com.majong.zelda.util.EntityFreezer;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -54,16 +55,14 @@ public class LinkTime {
 	}
 	private static void slownearmonsters(Player player,boolean remove) {
 		Level Level=player.level;
-		List<LivingEntity> entitylist= Level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,(LivingEntity t)->{
-				return t instanceof LivingEntity&&!(t instanceof Player);
-			});
-		Iterator<LivingEntity> it=entitylist.iterator();
+		List<Mob> entitylist= Level.getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(24, 24, 24) ,(Mob t)->true);
+		Iterator<Mob> it=entitylist.iterator();
 		while(it.hasNext()) {
-			LivingEntity entity=it.next();
+			Mob mob=it.next();
 			if(remove) {
-				entity.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+				EntityFreezer.unFreezeMob(mob);
 			}else {
-				entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,9));
+				EntityFreezer.FreezeMob(mob,100);
 			}
 		}
 	}
