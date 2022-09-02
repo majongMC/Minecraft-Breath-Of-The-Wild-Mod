@@ -29,6 +29,6 @@ public class BombEntity extends CreatureEntity{
 			else
 				this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3, Mode.NONE);
 		}
-		this.kill();
+		this.remove();
 	}
 }

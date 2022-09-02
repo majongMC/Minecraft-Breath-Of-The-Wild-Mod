@@ -10,6 +10,7 @@ import com.majong.zelda.config.ZeldaConfig;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,7 +44,10 @@ public class AttributeDamage {
 	}
     public static void icedamage(LivingEntity living,Entity attacker) {
     	Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.ICE_RESTRAINTED.iterator();
-    	living.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,200,9));
+    	if(living instanceof MobEntity)
+    		EntityFreezer.FreezeMobEntity((MobEntity) living, 200);
+    	else
+    		living.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,200,9));
     	while(it.hasNext())
 		{
     		Class<? extends LivingEntity> restrainted=it.next();

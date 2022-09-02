@@ -23,7 +23,7 @@ public class ServerTick {
 		if(world==null)
 			return;
 		long time=world.getGameTime();
-		if(time%1200==0&&Math.random()<0.05*ZeldaConfig.WEATHER_CHANGE_CHANCE.get()) {
+		if(time%1200==0&&Math.random()<0.02*ZeldaConfig.WEATHER_CHANGE_CHANCE.get()) {
 			if(world.isRaining()) {
 				world.getLevelData().setRaining(false);
 				((ServerWorldInfo) ((ServerWorld)world).getLevelData()).setThundering(false);

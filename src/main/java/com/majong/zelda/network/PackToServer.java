@@ -12,6 +12,7 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.util.EntityFreezer;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.block.Blocks;
@@ -19,6 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -147,17 +149,17 @@ public class PackToServer {
     }
     private void detonate(PlayerEntity player) {
     	//PlayerEntity player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	List<MobEntity> moblist= player.level.getEntitiesOfClass(MobEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,(MobEntity t)->true);
+    	Iterator<MobEntity> it1=moblist.iterator();
+    	while(it1.hasNext()) {
+			MobEntity mob=it1.next();
+			EntityFreezer.unFreezeMobEntity(mob);
+		}
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
 			return;
 		}
-    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,new Predicate<Object>() {
-
-			@Override
-			public boolean test(Object t) {
-				// TODO 自动生成的方法存根
-				return t instanceof BombEntity&&((BombEntity)t).owner==player;
-			}});
+    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,(LivingEntity t)->t instanceof BombEntity&&((BombEntity)t).owner==player);
 		Iterator<LivingEntity> it=bomblist.iterator();
 		boolean iswindbomb=iswindbomb(player);
 		if(iswindbomb) {
@@ -182,12 +184,7 @@ public class PackToServer {
     private boolean iswindbomb(PlayerEntity player) {
     	if(!player.isNoGravity()||!ZeldaConfig.WINDBOMB.get())
     		return false;
-    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(5, 5, 5) ,new Predicate<Object>() {
-			@Override
-			public boolean test(Object t) {
-				// TODO 自动生成的方法存根
-				return t instanceof BombEntity&&((BombEntity)t).owner==player;
-			}});
+    	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(5, 5, 5) ,(LivingEntity t)->t instanceof BombEntity&&((BombEntity)t).owner==player);
     	if(bomblist.size()!=2)
     		return false;
 		Iterator<LivingEntity> it=bomblist.iterator();
@@ -204,12 +201,7 @@ public class PackToServer {
     	double x=player.getX();
     	double y=player.getY();
     	double z=player.getZ();
-    	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,new Predicate<Object>() {
-			@Override
-			public boolean test(Object t) {
-				// TODO 自动生成的方法存根
-				return t instanceof ItemEntity;
-			}});
+    	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,(ItemEntity t)->true);
     	Iterator<ItemEntity> it=itemlist.iterator();
 		while(it.hasNext()) {
 			ItemEntity item=it.next();

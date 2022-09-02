@@ -8,15 +8,14 @@ import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.gui.OpenDialogBox;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
+import com.majong.zelda.util.EntityFreezer;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -56,8 +55,8 @@ public class PlayerUsualEvent {
 	    		return;
 	    	CompoundNBT nbt = stack.getOrCreateTagElement("static");
 	    	Entity target=event.getTarget();
-	    	if(nbt.contains("activated")&&nbt.getBoolean("activated")&&target instanceof LivingEntity) {
-	    		((LivingEntity)target).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,200,9));
+	    	if(nbt.contains("activated")&&nbt.getBoolean("activated")&&target instanceof MobEntity) {
+	    		EntityFreezer.FreezeMobEntity((MobEntity) target, 200);
 	    		nbt.putBoolean("activated", false);
 	    	}
 		}
