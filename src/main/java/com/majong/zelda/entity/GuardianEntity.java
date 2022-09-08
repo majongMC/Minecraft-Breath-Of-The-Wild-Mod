@@ -16,7 +16,6 @@ public class GuardianEntity extends Monster{
 
 	public GuardianEntity(EntityType<? extends Monster> type, Level worldIn) {
 		super(type, worldIn);
-		// TODO �Զ����ɵĹ��캯�����
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2,new GuardianAi(this));
 		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 50.0F));
@@ -26,16 +25,4 @@ public class GuardianEntity extends Monster{
 		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 	}
-	/*@Override
-	public void die(DamageSource cause) {
-		super.die(cause);
-		if(cause.getEntity() instanceof Player) {
-		if(Math.random()<0.2)
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_CORE.get(),1));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_GEAR.get(),(int) (Math.random()*3)));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SHAFT.get(),(int) (Math.random()*4)));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SPRING.get(),(int) (Math.random()*4)));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SCREW.get(),(int) (Math.random()*4)));
-		}
-	}*/
 }

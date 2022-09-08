@@ -12,8 +12,10 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class CameraShake {
+	public static long frame=0;
 	@SubscribeEvent
     public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
+		frame++;
 		if(CameraShakeApi.shakeframe>0) {
 			Player player=Minecraft.getInstance().player;
 			float yaw=player.yHeadRot;

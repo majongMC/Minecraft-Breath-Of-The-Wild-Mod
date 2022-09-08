@@ -48,9 +48,9 @@ public class YigaTeamMemberAnimation {
 			.addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION, 
 					new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
 					new Keyframe(0.5F, KeyframeAnimations.degreeVec(-177.6852F, 8.7949F, 120.2168F), AnimationChannel.Interpolations.CATMULLROM),
-					new Keyframe(1F, KeyframeAnimations.degreeVec(-195.1852F, 8.7949F, 120.2168F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(1F, KeyframeAnimations.degreeVec(-195.1852F, 8.7949F, 120.2168F), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(1.16F, KeyframeAnimations.degreeVec(-77.6852F, 8.7949F, 120.2168F), AnimationChannel.Interpolations.LINEAR),
-					new Keyframe(1.5F, KeyframeAnimations.degreeVec(-40.19F, 8.7949F, 120.2168F), AnimationChannel.Interpolations.CATMULLROM),
+					new Keyframe(1.5F, KeyframeAnimations.degreeVec(-40.19F, 8.7949F, 120.2168F), AnimationChannel.Interpolations.LINEAR),
 					new Keyframe(2F, KeyframeAnimations.degreeVec(0F, 0F, 0F), AnimationChannel.Interpolations.CATMULLROM)
 					))
 			.addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.POSITION, 

@@ -1,5 +1,6 @@
 package com.majong.zelda.overlays;
 
+import com.majong.zelda.event.CameraShake;
 import com.majong.zelda.util.ConductiveItem;
 
 import net.minecraft.ChatFormatting;
@@ -20,11 +21,15 @@ public class RenderOverlays {
 	public static boolean rendering=false;
 	private static Component name=Component.translatable("");
 	private static String at="";
+	private static long lastframe=0;
 	@SubscribeEvent
 	public static void onOverlayRender(RenderGuiOverlayEvent.Post event) {
 		/*if (event.getType() != RenderGuiOverlayEvent.ElementType.ALL) {
 	           return;
 	       }*/
+		if(lastframe==CameraShake.frame)
+			return;
+		lastframe=CameraShake.frame;
 		if (Minecraft.getInstance().player == null) {
 	           return;
 	       }
@@ -41,7 +46,7 @@ public class RenderOverlays {
 				last=percentage;
 			}
 			if(Minecraft.getInstance().level.getGameTime()-lastattack>10&&percentage<delay) {
-				delay=delay-0.0005;
+				delay=delay-0.004;
 			}
 			HealthBar bar=new HealthBar(event.getPoseStack());
 			bar.render(percentage, delay,name,at);

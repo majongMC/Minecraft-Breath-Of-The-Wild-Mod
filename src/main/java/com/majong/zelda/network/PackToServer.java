@@ -196,7 +196,7 @@ public class PackToServer {
     	double x=player.getX();
     	double y=player.getY();
     	double z=player.getZ();
-    	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,(ItemEntity t)->t instanceof ItemEntity);
+    	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,(ItemEntity t)->true);
     	Iterator<ItemEntity> it=itemlist.iterator();
 		while(it.hasNext()) {
 			ItemEntity item=it.next();
