@@ -16,7 +16,6 @@ public class GuardianEntity extends MonsterEntity{
 
 	public GuardianEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
 		super(type, worldIn);
-		// TODO 自动生成的构造函数存根
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(2,new GuardianAi(this));
 		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 50.0F));
@@ -26,16 +25,4 @@ public class GuardianEntity extends MonsterEntity{
 		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 	}
-	/*@Override
-	public void die(DamageSource cause) {
-		super.die(cause);
-		if(cause.getEntity() instanceof PlayerEntity) {
-		if(Math.random()<0.2)
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_CORE.get(),1));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_GEAR.get(),(int) (Math.random()*3)));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SHAFT.get(),(int) (Math.random()*4)));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SPRING.get(),(int) (Math.random()*4)));
-		this.spawnAtLocation(new ItemStack(ItemLoader.ANCIENT_SCREW.get(),(int) (Math.random()*4)));
-		}
-	}*/
 }

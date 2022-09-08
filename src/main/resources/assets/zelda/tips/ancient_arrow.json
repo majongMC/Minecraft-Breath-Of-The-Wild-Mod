@@ -1,0 +1,11 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "draconicevolution"
+    }
+  ],
+  "tip": {
+    "text": "古代兵装·箭对混沌能量有着天生的亲和力，在混沌能量的加持下，哪怕是凋灵，也将变得不堪一击"
+  }
+}

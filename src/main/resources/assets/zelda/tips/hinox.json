@@ -1,0 +1,11 @@
+{
+    "conditions": [
+      {
+        "type": "forge:mod_loaded",
+        "modid": "iceandfire"
+      }
+    ],
+    "tip": {
+      "text": "西诺克斯看上去很强大，但它的眼睛是致命的弱点"
+    }
+  }

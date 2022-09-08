@@ -39,6 +39,10 @@ public class EntityDead {
 		if(entity instanceof PlayerEntity&&!entity.level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) entity;
 			if(DataManager.data.get(player).intemple>0&&!ZeldaConfig.CANDEATHINTEMPLE.get()) {
+				if(Linkage.isIgnis(event.getSource().getEntity())) {
+					((ServerPlayerEntity)player).setGameMode(GameType.SURVIVAL);
+					return;
+				}
 				player.setHealth(player.getMaxHealth());
 				event.setCanceled(true);
 				TempleDimensionData.ExitTemple(player.level, player);
