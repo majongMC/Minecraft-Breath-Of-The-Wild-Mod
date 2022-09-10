@@ -4,16 +4,45 @@ import java.util.List;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.EntityLoader;
+import com.majong.zelda.entity.GuardianEntity;
+import com.majong.zelda.entity.MollyBrinEntity;
+import com.majong.zelda.entity.PokBrinEntity;
 
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo.Spawners;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber()
 public class EntitySpawn {
+	@SubscribeEvent
+	public static void onLivingSpawn(CheckSpawn event) {
+		if(!event.getWorld().isClientSide()) {
+			if(isZeldaMobs(event.getEntityLiving())&&isInAir(event.getWorld(),(int)(event.getX()),(int)(event.getY()),(int)(event.getZ()))) {
+				event.setResult(Result.DENY);
+			}
+		}
+	}
+	private static boolean isZeldaMobs(LivingEntity entity) {
+		return entity instanceof GuardianEntity||entity instanceof PokBrinEntity||entity instanceof MollyBrinEntity;
+	}
+	private static boolean isInAir(IWorld world,int x,int y,int z) {
+		for(int i=y;i>y-5;i--) {
+			Block block=world.getBlockState(new BlockPos(x,i,z)).getBlock();
+			if(!(block instanceof AirBlock))
+				return false;
+		}
+		return true;
+	}
 	@SubscribeEvent
     public static void biomeLoadingEvent(BiomeLoadingEvent event) {
 		addEntityToAllOverworldBiomes(event,EntityLoader.GUARDIAN.get(),(int) (8*ZeldaConfig.GUARDIAN.get()),1,2);
