@@ -1,5 +1,7 @@
 package com.majong.zelda.gui;
 
+import java.util.UUID;
+
 import com.majong.zelda.Utils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.network.Networking;
@@ -11,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class ShikaStoneGui extends Screen{
@@ -21,7 +23,7 @@ public class ShikaStoneGui extends Screen{
     //private ItemStack shikastone;
     private final ResourceLocation ICONS=new ResourceLocation(Utils.MOD_ID, "textures/gui/shikastonegui.png");
 	public ShikaStoneGui() {
-		super(Component.translatable(""));
+		super(new TranslatableComponent(""));
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
         //this.shikastone=shikastone;
@@ -29,17 +31,17 @@ public class ShikaStoneGui extends Screen{
 	}
 	@Override
 	protected void init() {
-		this.bomb1 = new Button((int)(0.5*w-96), (int)(0.3*h), 32, 32, Component.translatable("ը��1"), (button) -> {placebomb(true);});
-		this.bomb2 = new Button((int)(0.5*w-64), (int)(0.3*h), 32, 32, Component.translatable("ը��2"), (button) -> {placebomb(true);});
+		this.bomb1 = new Button((int)(0.5*w-96), (int)(0.3*h), 32, 32, new TranslatableComponent("ը��1"), (button) -> {placebomb(true);});
+		this.bomb2 = new Button((int)(0.5*w-64), (int)(0.3*h), 32, 32, new TranslatableComponent("ը��2"), (button) -> {placebomb(true);});
 		this.addRenderableWidget(bomb1);
 		this.addRenderableWidget(bomb2);
-		this.magnet= new Button((int)(0.5*w-32), (int)(0.3*h), 32, 32, Component.translatable("����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(5));this.onClose();});
+		this.magnet= new Button((int)(0.5*w-32), (int)(0.3*h), 32, 32, new TranslatableComponent("����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(5));this.onClose();});
 		this.addRenderableWidget(magnet);
-		this.Static= new Button((int)(0.5*w), (int)(0.3*h), 32, 32,Component.translatable("��ֹ��"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(6));this.onClose();});
+		this.Static= new Button((int)(0.5*w), (int)(0.3*h), 32, 32,new TranslatableComponent("��ֹ��"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(6));this.onClose();});
 		this.addRenderableWidget(Static);
-		this.ice= new Button((int)(0.5*w+32), (int)(0.3*h), 32, 32, Component.translatable("�Ʊ���"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(7));this.onClose();});
+		this.ice= new Button((int)(0.5*w+32), (int)(0.3*h), 32, 32, new TranslatableComponent("�Ʊ���"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(7));this.onClose();});
 		this.addRenderableWidget(ice);
-		this.camera= new Button((int)(0.5*w+64), (int)(0.3*h), 32, 32, Component.translatable("�����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(8));this.onClose();});
+		this.camera= new Button((int)(0.5*w+64), (int)(0.3*h), 32, 32, new TranslatableComponent("�����"), (button) -> {Networking.PACKWITHUUID.sendToServer(new PackToServer(8));this.onClose();});
 		this.addRenderableWidget(camera);
 		super.init();
 	}
@@ -61,7 +63,7 @@ public class ShikaStoneGui extends Screen{
 	private void placebomb(boolean round) {
 		this.onClose();
 		if(!ZeldaConfig.BOMB.get()) {
-			Minecraft.getInstance().player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
+			Minecraft.getInstance().player.sendMessage(new TranslatableComponent("msg.bombprohibited"),UUID.randomUUID());
 			return;
 		}
 		if(round)

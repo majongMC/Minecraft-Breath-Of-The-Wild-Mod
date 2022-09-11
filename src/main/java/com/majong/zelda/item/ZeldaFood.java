@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.majong.zelda.Utils;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
@@ -31,8 +32,8 @@ public class ZeldaFood extends Item{
 		if(stack.getTag()!=null) {
 		int hunger=stack.getTag().getInt("hunger");
 		float heal=stack.getTag().getFloat("heal");
-		tooltip.add(Component.translatable("回复饱食度："+hunger));
-		tooltip.add(Component.translatable("回复生命值："+heal));
+		tooltip.add(new TranslatableComponent("回复饱食度："+hunger));
+		tooltip.add(new TranslatableComponent("回复生命值："+heal));
 		}
 	}
 	@Override

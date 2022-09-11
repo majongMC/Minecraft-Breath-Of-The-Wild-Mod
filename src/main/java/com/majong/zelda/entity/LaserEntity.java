@@ -1,5 +1,7 @@
 package com.majong.zelda.entity;
 
+import java.util.UUID;
+
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.PlayerUseShield;
@@ -8,7 +10,7 @@ import com.majong.zelda.item.ItemLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -107,11 +109,11 @@ public class LaserEntity extends ThrowableProjectile{
 		long respondtime=this.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 		if(ZeldaConfig.DISPLAYTIME.get()) {
 		if(respondtime>100)
-			player.sendSystemMessage(Component.translatable("反应时间"+respondtime+"(过晚)").withStyle(ChatFormatting.RED));
+			player.sendMessage(new TranslatableComponent("反应时间"+respondtime+"(过晚)").withStyle(ChatFormatting.RED), UUID.randomUUID());
 		else if(respondtime>ZeldaConfig.SHIELD.get()) {
-			player.sendSystemMessage(Component.translatable("反应时间"+respondtime+"(过早)").withStyle(ChatFormatting.RED));
+			player.sendMessage(new TranslatableComponent("反应时间"+respondtime+"(过早)").withStyle(ChatFormatting.RED), UUID.randomUUID());
 		}else {
-			player.sendSystemMessage(Component.translatable("反应时间"+respondtime).withStyle(ChatFormatting.GREEN));
+			player.sendMessage(new TranslatableComponent("反应时间"+respondtime).withStyle(ChatFormatting.GREEN), UUID.randomUUID());
 		}
 		}
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {

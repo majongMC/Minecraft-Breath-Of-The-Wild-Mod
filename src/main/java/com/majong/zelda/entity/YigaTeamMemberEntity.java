@@ -7,10 +7,11 @@ import com.majong.zelda.event.PlayerHurtEvent;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.util.animation.AnimationState;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,7 +20,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -120,7 +120,7 @@ public class YigaTeamMemberEntity extends Monster{
 		this.entityData.set(ACTIVATED, true);
 		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemLoader.CHOPPING_WIND_BLADE.get(),1));
 		this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,30));
-		this.setCustomName(Component.translatable("name.yiga.activated"));
+		this.setCustomName(new TranslatableComponent("name.yiga.activated"));
 	}
 	public boolean isactivated() {
 		return this.entityData.get(ACTIVATED);

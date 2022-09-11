@@ -2,6 +2,7 @@ package com.majong.zelda.event;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
@@ -16,7 +17,7 @@ import com.majong.zelda.util.Linkage;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -44,7 +45,7 @@ public class EntityDead {
 				player.setHealth(player.getMaxHealth());
 				event.setCanceled(true);
 				TempleDimensionData.ExitTemple(player.level, player);
-				player.sendSystemMessage(Component.translatable("msg.zelda.temple_failed"));
+				player.sendMessage(new TranslatableComponent("msg.zelda.temple_failed"), UUID.randomUUID());
 				return;
 			}
 			if(DataManager.data.get(player).unlocked[0]&&DataManager.data.get(player).skill[0]>0) {

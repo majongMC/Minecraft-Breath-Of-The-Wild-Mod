@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[41,)" 
+loaderVersion="[40,)" 
 license="MIT"
 [[mods]] 
 modId="zelda" 

@@ -41,14 +41,14 @@ public class PlayerUsualEvent {
 	public static void onPlayerRightClickEntity(EntityInteract event) {
 		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
 		{
-			if(event.getLevel().isClientSide) {
+			if(event.getWorld().isClientSide) {
 				new OpenDialogBox();
 			}else {
 				if(!ZeldaConfig.NPCONLY.get())
 				((YigaTeamMemberEntity)event.getTarget()).activate();
 			}
 		}
-		Player player=event.getEntity();
+		Player player=event.getPlayer();
 		if(player!=null&&!player.level.isClientSide) {
 			ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
 			if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
@@ -64,7 +64,7 @@ public class PlayerUsualEvent {
 	@SubscribeEvent
 	public static void onPlayerDestroyBlock(HarvestCheck event) {
 		if(!event.getEntity().level.isClientSide&&event.canHarvest()) {
-			Player player=event.getEntity();
+			Player player=event.getPlayer();
 			if(player.level.dimension().location().equals(Level.OVERWORLD.location())&&player.getY()<40) {
 				if(Math.random()<0.001*ZeldaConfig.ROCKGIANT.get()) {
 					RockGiantEntity entity=new RockGiantEntity(EntityLoader.ROCK_GIANT.get(),event.getEntity().level);

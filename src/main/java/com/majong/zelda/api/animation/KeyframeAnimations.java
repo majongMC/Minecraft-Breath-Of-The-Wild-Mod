@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.majong.zelda.util.animation.AnimationChannel;
+import com.majong.zelda.util.animation.AnimationDefinition;
+import com.majong.zelda.util.animation.Keyframe;
+import com.majong.zelda.util.animation.ModelPartAdditions;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.animation.AnimationChannel;
-import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -42,7 +43,7 @@ public class KeyframeAnimations {
 	   }
 	private static Optional<ModelPart> getAnyDescendantWithName(ModelPart root,String p_233394_) {
 	      return root.getAllParts().filter((p_233400_) -> {
-	         return p_233400_.hasChild(p_233394_);
+	         return ModelPartAdditions.hasChild(p_233400_,p_233394_);
 	      }).findFirst().map((p_233397_) -> {
 	         return p_233397_.getChild(p_233394_);
 	      });

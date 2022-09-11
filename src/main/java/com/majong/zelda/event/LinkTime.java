@@ -24,8 +24,8 @@ public class LinkTime {
 	public static final Map<Player,Integer> LINK_TIME=new HashMap<>();
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
-		if(!event.getLevel().isClientSide) {
-			Player player=event.getEntity();
+		if(!event.getWorld().isClientSide) {
+			Player player=event.getPlayer();
 			if(!player.isOnGround()&&!player.isFallFlying()) {
 				player.setDeltaMovement(Vec3.ZERO);
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,120,8));
@@ -44,8 +44,8 @@ public class LinkTime {
 	}
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerLooseArrow(ArrowLooseEvent event) {
-		if(!event.getLevel().isClientSide) {
-			Player player=event.getEntity();
+		if(!event.getWorld().isClientSide) {
+			Player player=event.getPlayer();
 			player.removeEffect(MobEffects.SLOW_FALLING);
 			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);

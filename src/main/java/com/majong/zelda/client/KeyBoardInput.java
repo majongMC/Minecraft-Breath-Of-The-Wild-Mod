@@ -33,7 +33,7 @@ public class KeyBoardInput {
             "key.category." + Utils.MOD_ID);
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
-    public static void onKeyboardInput(InputEvent.Key event) {
+    public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
 		if(SKILL_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
 			Networking.PACKWITHUUID.sendToServer(new PackToServer(0));
 		}

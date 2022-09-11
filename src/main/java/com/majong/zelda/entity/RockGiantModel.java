@@ -1,6 +1,7 @@
 package com.majong.zelda.entity;
 
 import com.majong.zelda.Utils;
+import com.majong.zelda.api.animation.AnimatePlayer;
 import com.majong.zelda.entity.animation.RockGiantAnimation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -52,10 +53,10 @@ public class RockGiantModel extends HierarchicalModel<RockGiantEntity> {
 		bone.xRot=0;
 		hand.xRot=0;
 		this.animateWalk(limbSwing, limbSwingAmount);
-		this.animate(entity.knockaAnimationState,RockGiantAnimation.ROCKGIANT_KNOCK_A,ageInTicks);
-		this.animate(entity.knockbAnimationState,RockGiantAnimation.ROCKGIANT_KNOCK_B,ageInTicks);
-		this.animate(entity.attackaAnimationState,RockGiantAnimation.ROCKGIANT_ATTACK_A,ageInTicks);
-		this.animate(entity.attackbAnimationState,RockGiantAnimation.ROCKGIANT_ATTACK_B,ageInTicks);
+		AnimatePlayer.animate(this, root,entity.knockaAnimationState,RockGiantAnimation.ROCKGIANT_KNOCK_A,ageInTicks);
+		AnimatePlayer.animate(this, root,entity.knockbAnimationState,RockGiantAnimation.ROCKGIANT_KNOCK_B,ageInTicks);
+		AnimatePlayer.animate(this, root,entity.attackaAnimationState,RockGiantAnimation.ROCKGIANT_ATTACK_A,ageInTicks);
+		AnimatePlayer.animate(this, root,entity.attackbAnimationState,RockGiantAnimation.ROCKGIANT_ATTACK_B,ageInTicks);
 		//ZeldaOverlays.y=netHeadYaw;
 		//ZeldaOverlays.p=headPitch;
 	}

@@ -2,6 +2,7 @@ package com.majong.zelda.util;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.UUID;
 
 import com.majong.zelda.api.util.AttributeDamageApi;
 import com.majong.zelda.config.ZeldaConfig;
@@ -9,7 +10,7 @@ import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.tag.EntityTypeTag;
 
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +22,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
@@ -62,9 +62,9 @@ public class AttributeDamage {
     			player.drop(player.getMainHandItem(), true, true);
     			player.drop(player.getOffhandItem(), true, true);
     			if(!player.getMainHandItem().isEmpty())
-    				player.sendSystemMessage(Component.translatable(Component.translatable(player.getMainHandItem().getItem().getDescriptionId()).getString()+"掉落"));
+    				player.sendMessage(new TranslatableComponent(new TranslatableComponent(player.getMainHandItem().getItem().getDescriptionId()).getString()+"掉落"),UUID.randomUUID());
     			if(!player.getOffhandItem().isEmpty())
-        			player.sendSystemMessage(Component.translatable(Component.translatable(player.getOffhandItem().getItem().getDescriptionId()).getString()+"掉落"));
+        			player.sendMessage(new TranslatableComponent(new TranslatableComponent(player.getOffhandItem().getItem().getDescriptionId()).getString()+"掉落"),UUID.randomUUID());
     			living.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
     			living.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
     		}
@@ -91,7 +91,7 @@ public class AttributeDamage {
 			}
 	    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ANCIENT_RESTRAINTED)))
 	    		{living.hurt(new EntityDamageSource("arrow",attacker),32767);return;}
-	    	if((living.getMaxHealth()<=20&&!(living instanceof Player))||living instanceof Warden) {
+	    	if((living.getMaxHealth()<=20&&!(living instanceof Player))) {
 	    		living.teleportTo(living.getX(), -80, living.getZ());
 	    		if(attacker instanceof Player) {
 	    			Networking.SOUND.send(

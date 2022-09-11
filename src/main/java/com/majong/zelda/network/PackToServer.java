@@ -3,7 +3,7 @@ package com.majong.zelda.network;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.majong.zelda.config.ZeldaConfig;
@@ -17,7 +17,7 @@ import com.majong.zelda.world.dimension.TempleDimensionData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -134,7 +134,7 @@ public class PackToServer {
     private void placebomb(Player player,boolean round) {
     	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
-			player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
+			player.sendMessage(new TranslatableComponent("msg.bombprohibited"),UUID.randomUUID());
 			return;
 		}
     	BombEntity bomb=new BombEntity(EntityLoader.BOMB.get(),player.level);
@@ -151,7 +151,7 @@ public class PackToServer {
 			EntityFreezer.unFreezeMob(mob);
 		}
     	if(!ZeldaConfig.BOMB.get()) {
-			player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
+			player.sendMessage(new TranslatableComponent("msg.bombprohibited"),UUID.randomUUID());
 			return;
 		}
     	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,(LivingEntity t)->t instanceof BombEntity&&((BombEntity)t).owner==player);
@@ -210,7 +210,7 @@ public class PackToServer {
     		return;
     	CompoundTag nbt = stack.getOrCreateTagElement("static");
     	nbt.putBoolean("activated", true);
-    	player.sendSystemMessage(Component.translatable("msg.zelda.staticactivated"));
+    	player.sendMessage(new TranslatableComponent("msg.zelda.staticactivated"),UUID.randomUUID());
     }
     private void useice(Player player) {
     	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
@@ -233,6 +233,6 @@ public class PackToServer {
     		return;
     	CompoundTag nbt = stack.getOrCreateTagElement("camera");
     	nbt.putBoolean("activated", true);
-    	player.sendSystemMessage(Component.translatable("msg.zelda.cameraactivated"));
+    	player.sendMessage(new TranslatableComponent("msg.zelda.cameraactivated"),UUID.randomUUID());
     }
 }

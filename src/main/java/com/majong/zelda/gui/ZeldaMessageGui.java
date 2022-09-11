@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class ZeldaMessageGui extends Screen{
@@ -22,7 +22,7 @@ public class ZeldaMessageGui extends Screen{
 	private final ResourceLocation SPIRIT_ORB=new ResourceLocation(Utils.MOD_ID, "textures/gui/spirit_orb.png");
 	private final ResourceLocation BACK=new ResourceLocation(Utils.MOD_ID, "textures/gui/background.png");
 	public ZeldaMessageGui(int type,int heal,int hunger) {
-		super(Component.translatable(""));
+		super(new TranslatableComponent(""));
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
         this.heal=heal;
@@ -72,9 +72,9 @@ public class ZeldaMessageGui extends Screen{
 		int a=(int) (0.4*h);
 		blit(PoseStack, (int)(0.3*w), (int)(0.3*h), 0, 0, a, a, a, a);
 		switch(type) {
-		case 0:drawCenteredString(PoseStack,this.font,Component.translatable("item.zelda.food"),(int)(0.55*w),(int)(0.4*h),16777215);break;
-		case 1:drawCenteredString(PoseStack,this.font,Component.translatable("item.zelda.hard_food"),(int)(0.55*w),(int)(0.4*h),16777215);break;
-		case 2:drawCenteredString(PoseStack,this.font,Component.translatable("item.zelda.spirit_orb"),(int)(0.55*w),(int)(0.4*h),16777215);break;
+		case 0:drawCenteredString(PoseStack,this.font,new TranslatableComponent("item.zelda.food"),(int)(0.55*w),(int)(0.4*h),16777215);break;
+		case 1:drawCenteredString(PoseStack,this.font,new TranslatableComponent("item.zelda.hard_food"),(int)(0.55*w),(int)(0.4*h),16777215);break;
+		case 2:drawCenteredString(PoseStack,this.font,new TranslatableComponent("item.zelda.spirit_orb"),(int)(0.55*w),(int)(0.4*h),16777215);break;
 		}
 	}
 	@Override

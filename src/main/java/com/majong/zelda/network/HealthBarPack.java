@@ -8,12 +8,13 @@ import com.majong.zelda.util.BiomeUtil;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.network.NetworkEvent;
 
 public class HealthBarPack {
 	private final double DATA;
 	private final Component NAME;
-	public static final Component HINOX=Component.translatable("boss.hinox.bar");
+	public static final Component HINOX=new TranslatableComponent("boss.hinox.bar");
 	public HealthBarPack(FriendlyByteBuf buffer) {
 		DATA=buffer.readDouble();
 		NAME=buffer.readComponent();
@@ -30,7 +31,7 @@ public class HealthBarPack {
     @SuppressWarnings("deprecation")
 	public void handler(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-        	RenderOverlays.DisplayHealthBar(DATA, NAME,BiomeUtil.getBiomeName(ClientUtils.GetClientLevel().getBiome(ClientUtils.GetClientPlayer().blockPosition()).get(), ClientUtils.GetClientLevel())+"的");
+        	RenderOverlays.DisplayHealthBar(DATA, NAME,BiomeUtil.getBiomeName(ClientUtils.GetClientLevel().getBiome(ClientUtils.GetClientPlayer().blockPosition()).value(), ClientUtils.GetClientLevel())+"的");
         });
         ctx.get().setPacketHandled(true);
     }

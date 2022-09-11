@@ -1,5 +1,7 @@
 package com.majong.zelda.block;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.majong.zelda.data.DataManager;
@@ -16,7 +18,7 @@ import com.majong.zelda.world.structure.ModStructures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -88,7 +90,7 @@ public class TempleEntryBlock extends BaseEntityBlock{
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if(!worldIn.isClientSide) {
 			if(TempleDimensionData.occupied) {
-				player.sendSystemMessage(Component.translatable("服务器繁忙，请稍后再试"));
+				player.sendMessage(new TranslatableComponent("服务器繁忙，请稍后再试"),UUID.randomUUID());
 				return InteractionResult.SUCCESS;
 			}
 			HasTempleIDTileEntity tile=(HasTempleIDTileEntity) worldIn.getBlockEntity(pos);
@@ -110,14 +112,14 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,100,8));
 				BlockPos templepos;
 				while(true) {
-				templepos = temple.findNearestMapStructure(ModStructures.TEMPLES, searchpos, 100, false);
+				templepos = temple.findNearestMapFeature(ModStructures.TEMPLES, searchpos, 100, false);
 				//boolean out=TempleDimensionData.isAllocated(worldIn, templepos);
 				//LogManager.getLogger().info("allocated"+out);
 				if(!TempleDimensionData.isAllocated(worldIn, templepos))
 					break;
 				searchpos=searchpos.offset(1000, 0, 0);
 				}
-				player.teleportTo(templepos.getX(),80,templepos.getZ());
+				player.teleportTo(templepos.getX(),40,templepos.getZ());
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 			}else {
 				if(data.getCompound(Integer.toString(tile.getID())).contains("startpoint")&&data.getCompound(Integer.toString(tile.getID())).getIntArray("startpoint")[1]!=-100) {
@@ -130,7 +132,7 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				player.teleportTo(templepos[0]+0.5, templepos[1]+2, templepos[2]+0.5);
 				PlayTempleSound(player);
 			}else {
-				player.sendSystemMessage(Component.translatable("此神庙异常，请寻找其他神庙"));
+				player.sendMessage(new TranslatableComponent("此神庙异常，请寻找其他神庙"),UUID.randomUUID());
 			}
 			}
 		}

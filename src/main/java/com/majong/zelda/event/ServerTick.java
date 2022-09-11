@@ -2,6 +2,7 @@ package com.majong.zelda.event;
 
 import com.majong.zelda.config.ZeldaConfig;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -12,11 +13,12 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber()
 public class ServerTick {
+	public static MinecraftServer server;
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		Level level=event.getServer().overworld();
-		if(!ZeldaConfig.WEATHER_CHANGE.get()||!event.getServer().getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE))
+		if(server==null||!ZeldaConfig.WEATHER_CHANGE.get()||!server.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE))
 			return;
+		Level level=server.overworld();
 		//Level level=Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD);
 		if(level==null)
 			return;

@@ -1,6 +1,7 @@
 package com.majong.zelda.item;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -13,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -33,7 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ShikaStone extends Item{
 	private int soundremaintime=0;
 	public static double delta=180;
-	public static Component name=Component.translatable("tooltip.zelda.temple");
+	public static Component name=new TranslatableComponent("tooltip.zelda.temple");
 	private boolean twice=false;
 	public ShikaStone() {
 		super(new Properties().tab(Utils.ZELDA_CREATIVE_TAB).stacksTo(1));
@@ -48,7 +50,7 @@ public class ShikaStone extends Item{
 				Block block=Registry.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
 				name=block.getName();
 			}else {
-				name=Component.translatable("tooltip.zelda.temple");
+				name=new TranslatableComponent("tooltip.zelda.temple");
 			}
 			float yaw=((Player)entity).yHeadRot;
 			float pitch=((Player)entity).xRotO;
@@ -118,9 +120,9 @@ public class ShikaStone extends Item{
 	        	  Block block=world.getBlockState(blockpos).getBlock();
 	        	  if(block!=null) {
 	        		camera.putString("target_block", Registry.BLOCK.getKey(block).toString());
-	        	  	p_195939_1_.getPlayer().sendSystemMessage(Component.translatable("msg.zelda.blocksaved"));
+	        	  	p_195939_1_.getPlayer().sendMessage(new TranslatableComponent("msg.zelda.blocksaved"), UUID.randomUUID());
 	        	  }else {
-	        		  p_195939_1_.getPlayer().sendSystemMessage(Component.translatable("msg.zelda.blocksavedfailed"));
+	        		  p_195939_1_.getPlayer().sendMessage(new TranslatableComponent("msg.zelda.blocksavedfailed"), UUID.randomUUID());
 	        	  }
 	        	  camera.putBoolean("activated", false);
 	        	  return InteractionResult.SUCCESS;
@@ -141,18 +143,19 @@ public class ShikaStone extends Item{
             	Block block=Registry.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
             	BlockPos pos=LocateTargetBlock(worldIn,playerIn.blockPosition(),block);
             	if(pos!=null) {
-            		playerIn.sendSystemMessage(Component.translatable("msg.zelda.blockfound"));
+            		playerIn.sendMessage(new TranslatableComponent("msg.zelda.blockfound"), UUID.randomUUID());
             		CompoundTag nbt = itemStack.getOrCreateTagElement("target_location");
             		nbt.putInt("posX", pos.getX());
                     nbt.putInt("posY", pos.getY());
                     nbt.putInt("posZ", pos.getZ());
             	}else {
-            		playerIn.sendSystemMessage(Component.translatable("msg.zelda.blockfoundfailed"));
+            		playerIn.sendMessage(new TranslatableComponent("msg.zelda.blockfoundfailed"), UUID.randomUUID());
             	}
             	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
             }
             CompoundTag nbt = itemStack.getOrCreateTagElement("target_location");
-                BlockPos blockpos = ((ServerLevel) worldIn).findNearestMapStructure(ModStructures.ZELDA_TEMPLE, playerIn.blockPosition(), 100, false);
+                BlockPos blockpos = ((ServerLevel) worldIn).findNearestMapFeature(ModStructures.ZELDA_TEMPLE, playerIn.blockPosition(), 100, false);
+                
                 if(blockpos!=null){
                     nbt.putInt("posX", blockpos.getX());
                     nbt.putInt("posY", -1);
@@ -169,10 +172,10 @@ public class ShikaStone extends Item{
 		super.appendHoverText(stack, worldIn, tooltip, flag);
 		CompoundTag camera =stack.getOrCreateTagElement("camera");
 		if(camera.contains("target_block")) {
-			tooltip.add(Component.translatable("tooltip.shikastone.researchtarget"));
+			tooltip.add(new TranslatableComponent("tooltip.shikastone.researchtarget"));
 			Block block=Registry.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
 			tooltip.add(block.getName());
-			tooltip.add(Component.translatable("tooltip.shikastone.clear"));
+			tooltip.add(new TranslatableComponent("tooltip.shikastone.clear"));
 		}
 	}
 	private BlockPos LocateTargetBlock(Level worldIn,BlockPos basepos,Block targetblock) {

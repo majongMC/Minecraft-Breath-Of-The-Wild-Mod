@@ -1,5 +1,7 @@
 package com.majong.zelda.block;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.majong.zelda.data.DataManager;
@@ -10,7 +12,7 @@ import com.majong.zelda.tileentity.HasTempleIDTileEntity.TempleFinishTileEntity;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,7 +42,7 @@ public class TempleFinishBlock extends TempleStartBlock{
 				return InteractionResult.SUCCESS;
 			}
 			if(!player.addItem(new ItemStack(ItemLoader.SPIRIT_ORB.get(),1))) {
-				player.sendSystemMessage(Component.translatable("msg.zelda.inventoryfull"));
+				player.sendMessage(new TranslatableComponent("msg.zelda.inventoryfull"),UUID.randomUUID());
 				return InteractionResult.SUCCESS;
 			}
 			tile.addConqueredPlayer(player);

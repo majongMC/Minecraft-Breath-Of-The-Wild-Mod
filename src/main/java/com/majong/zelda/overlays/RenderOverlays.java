@@ -6,9 +6,10 @@ import com.majong.zelda.util.ConductiveItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,11 +20,11 @@ public class RenderOverlays {
 	private static long lastattack=0;
 	private static double percentage=1,last=1,delay=1;
 	public static boolean rendering=false;
-	private static Component name=Component.translatable("");
+	private static Component name=new TranslatableComponent("");
 	private static String at="";
 	private static long lastframe=0;
 	@SubscribeEvent
-	public static void onOverlayRender(RenderGuiOverlayEvent.Post event) {
+	public static void onOverlayRender(RenderGameOverlayEvent event) {
 		/*if (event.getType() != RenderGuiOverlayEvent.ElementType.ALL) {
 	           return;
 	       }*/
@@ -33,7 +34,7 @@ public class RenderOverlays {
 		if (Minecraft.getInstance().player == null) {
 	           return;
 	       }
-		ZeldaOverlays zeldaoverlays=new ZeldaOverlays(event.getPoseStack());
+		ZeldaOverlays zeldaoverlays=new ZeldaOverlays(event.getMatrixStack());
 		zeldaoverlays.render(Minecraft.getInstance().player);
 		if(Minecraft.getInstance().level.getGameTime()-lastrecieve<20L) {
 			rendering=true;
@@ -48,7 +49,7 @@ public class RenderOverlays {
 			if(Minecraft.getInstance().level.getGameTime()-lastattack>10&&percentage<delay) {
 				delay=delay-0.004;
 			}
-			HealthBar bar=new HealthBar(event.getPoseStack());
+			HealthBar bar=new HealthBar(event.getMatrixStack());
 			bar.render(percentage, delay,name,at);
 		}
 		else
@@ -65,7 +66,7 @@ public class RenderOverlays {
 	public static void onTooltipRender(ItemTooltipEvent event) {
 		ItemStack stack=event.getItemStack();
 		if(ConductiveItem.isConductive(stack.getItem())) {
-			event.getToolTip().add(Component.translatable("tooltip.zelda.conductive").withStyle(ChatFormatting.YELLOW));
+			event.getToolTip().add(new TranslatableComponent("tooltip.zelda.conductive").withStyle(ChatFormatting.YELLOW));
 		}
 	}
 }

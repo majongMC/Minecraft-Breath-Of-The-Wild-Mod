@@ -1,0 +1,10 @@
+  {
+    "type": "minecraft:village",
+    "config": {
+      "start_pool": "zelda:zelda_temple/start_pool",
+      "size": 1
+    },
+    "biomes": "#zelda:has_structure/zelda_temple",
+    "adapt_noise": true,
+    "spawn_overrides": {}
+  }

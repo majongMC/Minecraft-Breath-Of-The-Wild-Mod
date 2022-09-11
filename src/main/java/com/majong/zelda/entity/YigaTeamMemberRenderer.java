@@ -28,7 +28,7 @@ public class YigaTeamMemberRenderer extends MobRenderer{
 		VillagerModel=new VillagerModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(ModelLayers.VILLAGER));
 		YGTModel=this.model;
 		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(INNER_ARMOR)), new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(OUTER_ARMOR))));
-		this.addLayer(new ItemInHandLayer<>(this, renderManagerIn.getItemInHandRenderer()));
+		this.addLayer(new ItemInHandLayer<>(this));
 		// TODO �Զ����ɵĹ��캯�����
 	}
 	public YigaTeamMemberRenderer(EntityRendererProvider.Context renderManagerIn) {
@@ -36,7 +36,7 @@ public class YigaTeamMemberRenderer extends MobRenderer{
 		VillagerModel=new VillagerModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(ModelLayers.VILLAGER));
 		YGTModel=this.model;
 		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(INNER_ARMOR)), new HumanoidModel<YigaTeamMemberEntity>(renderManagerIn.bakeLayer(OUTER_ARMOR))));
-		this.addLayer(new ItemInHandLayer<>(this, renderManagerIn.getItemInHandRenderer()));
+		this.addLayer(new ItemInHandLayer<>(this));
 		// TODO �Զ����ɵĹ��캯�����
 	}
 	@Override

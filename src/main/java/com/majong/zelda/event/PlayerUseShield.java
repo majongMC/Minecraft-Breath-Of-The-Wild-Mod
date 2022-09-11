@@ -15,12 +15,12 @@ public class PlayerUseShield {
 	public static final Map<Player,Long> PLAYER_LAST_USE_SHIELD=new HashMap<>();
 	@SubscribeEvent
 	public static void onPlayerUseSheild(RightClickItem event) {
-		if(!event.getLevel().isClientSide) {
+		if(!event.getWorld().isClientSide) {
 		Item mainhand,offhand;
-		mainhand=event.getEntity().getMainHandItem().getItem();
-		offhand=event.getEntity().getOffhandItem().getItem();
+		mainhand=event.getPlayer().getMainHandItem().getItem();
+		offhand=event.getPlayer().getOffhandItem().getItem();
 		if(mainhand instanceof ShieldItem||offhand instanceof ShieldItem) {
-			PLAYER_LAST_USE_SHIELD.put(event.getEntity(),event.getLevel().getGameTime());
+			PLAYER_LAST_USE_SHIELD.put(event.getPlayer(),event.getWorld().getGameTime());
 		}
 	}
 	}

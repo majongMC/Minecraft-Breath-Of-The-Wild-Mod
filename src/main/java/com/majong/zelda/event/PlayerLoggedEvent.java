@@ -1,6 +1,7 @@
 package com.majong.zelda.event;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
@@ -11,7 +12,7 @@ import com.majong.zelda.network.ZeldaNBTPack;
 import com.majong.zelda.util.Festival;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +26,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class PlayerLoggedEvent {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-		Player player=event.getEntity();
+		Player player=event.getPlayer();
 		CompoundTag entityData = player.getPersistentData();
 		DataManager.preventnull(player);
 		if(entityData.contains("zpd")) {
@@ -53,14 +54,14 @@ public class PlayerLoggedEvent {
                 new ZeldaNBTPack(2,cdpack));
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(player,0L);
 		if(Festival.isLunarSpringFestival(new Date())) {
-			player.sendSystemMessage(Component.translatable("msg.zelda.lunaryear"));
+			player.sendMessage(new TranslatableComponent("msg.zelda.lunaryear"),UUID.randomUUID());
 			if(ZeldaConfig.REDENVELOPE.get())
 				player.addItem(new ItemStack(ItemLoader.RED_ENVELOPE.get(),1));
 		}
 	}
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
-		Player player=event.getEntity();
+		Player player=event.getPlayer();
 		EntityTick.THUNDER_COUNT_TIME.remove(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(player);
 		CompoundTag entityData = player.getPersistentData();

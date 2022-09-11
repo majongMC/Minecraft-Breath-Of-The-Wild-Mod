@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "zelda:rock_giant",
-    "minecraft:warden"
+    "zelda:rock_giant"
   ]
 }

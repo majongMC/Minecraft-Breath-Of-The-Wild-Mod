@@ -40,7 +40,7 @@ public class HornItem extends BasicItem{
     }
 	@Override
 	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.TOOT_HORN;
+		return UseAnim.BOW;
 	}
 	public static void AwakeOthers(LivingEntity target,LivingEntity user) {
 		Level world=user.level;

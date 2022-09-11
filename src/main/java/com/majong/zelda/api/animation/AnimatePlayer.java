@@ -1,11 +1,11 @@
 package com.majong.zelda.api.animation;
 
+import com.majong.zelda.util.animation.AnimationDefinition;
+import com.majong.zelda.util.animation.AnimationState;
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)

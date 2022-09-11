@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 public class CameraShake {
 	public static long frame=0;
 	@SubscribeEvent
-    public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
+    public static void onSetupCamera(EntityViewRenderEvent.CameraSetup event) {
 		frame++;
 		if(CameraShakeApi.shakeframe>0) {
 			Player player=Minecraft.getInstance().player;

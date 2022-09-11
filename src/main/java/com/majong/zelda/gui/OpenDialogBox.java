@@ -3,7 +3,7 @@ package com.majong.zelda.gui;
 import com.majong.zelda.Utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class OpenDialogBox {
 	public OpenDialogBox() {
@@ -23,11 +23,11 @@ public class OpenDialogBox {
 			length++;
 		String[] dialog=new String[length];
 		for(int i=0;i<length;i++) {
-			dialog[i]=Component.translatable("yigateam.dialog."+select+"_"+i).getString();
+			dialog[i]=new TranslatableComponent("yigateam.dialog."+select+"_"+i).getString();
 		}
-		Minecraft.getInstance().setScreen(new DialogBox(Component.translatable(Utils.MOD_ID + ".dialog"),dialog));
+		Minecraft.getInstance().setScreen(new DialogBox(new TranslatableComponent(Utils.MOD_ID + ".dialog"),dialog));
 	}
 	private boolean hasvalue(String string) {
-		return !string.equals(Component.translatable(string).getString());
+		return !string.equals(new TranslatableComponent(string).getString());
 	}
 }

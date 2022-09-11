@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:bastion_remnant",
+    "config": {
+      "start_pool": "zelda:temples/start_pool",
+      "size": 1
+    },
+    "biomes": "#zelda:has_structure/temples",
+    "adapt_noise": false,
+    "spawn_overrides": {}
+  }

@@ -31,7 +31,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,7 +43,7 @@ public class EntityTick {
 	public static final Map<Player,BlockPos> LAST_STAND_POS=new HashMap<>();
 	public static final Map<Player,Long> ENTER_TEMPLE_TIME=new HashMap<>();
 	@SubscribeEvent
-	public static void onEntityTick(LivingTickEvent event) {
+	public static void onEntityTick(LivingUpdateEvent event) {
 		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
 			Player player=(Player) event.getEntity();
 			ZeldaPlayerData playerdata=DataManager.data.get(player);
@@ -129,7 +129,7 @@ public class EntityTick {
 		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.HAS_HEALTH_BAR))&&event.getEntity().level.isClientSide) {
 			LivingEntity entity=(LivingEntity) event.getEntity();
 			if(entity.blockPosition().getY()>=-64)
-				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()).get(),entity.level)+"的");
+				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()).value(),entity.level)+"的");
 		}
 		if(event.getEntity() instanceof Player&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)
@@ -147,12 +147,12 @@ public class EntityTick {
 	@SubscribeEvent
 	public static void onPlayerClone(Clone event) {
 		//DataManager.preventnull(event.getOriginal());
-		DataManager.preventnull(event.getEntity());
-		DataManager.writefromnbt(DataManager.readtonbt(event.getOriginal()), event.getEntity());
+		DataManager.preventnull(event.getPlayer());
+		DataManager.writefromnbt(DataManager.readtonbt(event.getOriginal()), event.getPlayer());
 		//DataManager.removedata(event.getOriginal());
-		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(event.getEntity(),0L);
+		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(event.getPlayer(),0L);
 		//PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(event.getOriginal());
-		EntityTick.THUNDER_COUNT_TIME.put(event.getEntity(), 100);
+		EntityTick.THUNDER_COUNT_TIME.put(event.getPlayer(), 100);
 		//PlayerTick.THUNDER_COUNT_TIME.remove(event.getOriginal());
 	}
 }

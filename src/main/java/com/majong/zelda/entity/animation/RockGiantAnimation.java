@@ -1,9 +1,10 @@
 package com.majong.zelda.entity.animation;
 
-import net.minecraft.client.animation.AnimationChannel;
-import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.Keyframe;
-import net.minecraft.client.animation.KeyframeAnimations;
+import com.majong.zelda.api.animation.KeyframeAnimations;
+import com.majong.zelda.util.animation.AnimationChannel;
+import com.majong.zelda.util.animation.AnimationDefinition;
+import com.majong.zelda.util.animation.Keyframe;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

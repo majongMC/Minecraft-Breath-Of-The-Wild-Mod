@@ -13,8 +13,8 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -80,18 +80,17 @@ public class ItemLoader {
 	public static final RegistryObject<Item> HORN = ITEMS.register("horn", HornItem::new);
 	public static final RegistryObject<Item> RED_ENVELOPE = ITEMS.register("red_envelope", RedEnvelope::new);
 	public static final RegistryObject<Item> SPIRIT_ORB = ITEMS.register("spirit_orb", BasicItem::new);
-	public static final RegistryObject<Item> ANCIENT_HORN = ITEMS.register("ancient_horn", AncientHorn::new);
 	public static final RegistryObject<Item> CHOPPING_WIND_BLADE = ITEMS.register("chopping_wind_blade", ChoppingWindBladeItem::new);
 	public static final RegistryObject<Item> GUARDIAN_SPAWN_EGG = ITEMS.register("guardian_spawn_egg", 
-            () -> new SpawnEggItem(EntityLoader.GUARDIAN.get(), 3515354, 920940, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+            () -> new ForgeSpawnEggItem(EntityLoader.GUARDIAN, 3515354, 920940, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> WALKING_GUARDIAN_SPAWN_EGG = ITEMS.register("walking_guardian_spawn_egg", 
-            () -> new SpawnEggItem(EntityLoader.WALKING_GUARDIAN.get(), 3515354, 920940, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+            () -> new ForgeSpawnEggItem(EntityLoader.WALKING_GUARDIAN, 3515354, 920940, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> MOLLY_BRIN_SPAWN_EGG = ITEMS.register("molly_brin_spawn_egg", 
-            () -> new SpawnEggItem(EntityLoader.MOLLY_BRIN.get(), 15000806, 4671303, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+            () -> new ForgeSpawnEggItem(EntityLoader.MOLLY_BRIN, 15000806, 4671303, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> BOKO_BRIN_SPAWN_EGG = ITEMS.register("boko_brin_spawn_egg", 
-            () -> new SpawnEggItem(EntityLoader.BOKO_BRIN.get(), 6912441, 12266, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+            () -> new ForgeSpawnEggItem(EntityLoader.BOKO_BRIN, 6912441, 12266, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> ROCK_GIANT_SPAWN_EGG = ITEMS.register("rock_giant_spawn_egg",
-            () -> new SpawnEggItem(EntityLoader.ROCK_GIANT.get(), 13948116, 7631988, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+            () -> new ForgeSpawnEggItem(EntityLoader.ROCK_GIANT, 13948116, 7631988, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> YIGA_TEAM_MEMBER_SPAWN_EGG = ITEMS.register("yiga_team_member_spawn_egg",
-            () -> new SpawnEggItem(EntityLoader.YIGA_TEAM_MEMBER.get(), 16299861, 14431027, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+            () -> new ForgeSpawnEggItem(EntityLoader.YIGA_TEAM_MEMBER, 16299861, 14431027, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 }

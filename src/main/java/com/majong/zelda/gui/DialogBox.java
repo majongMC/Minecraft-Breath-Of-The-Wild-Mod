@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 
@@ -28,7 +29,7 @@ public class DialogBox extends Screen{
 	}
 	@Override
 	protected void init() {
-		this.pagedown = new Button((int)(this.width*0.1), (int)(this.height*0.6),(int)(this.width*0.8),(int)(this.height*0.3), Component.translatable("gui." + Utils.MOD_ID + ".next"), (button) -> {onButtonActivated(button);});
+		this.pagedown = new Button((int)(this.width*0.1), (int)(this.height*0.6),(int)(this.width*0.8),(int)(this.height*0.3), new TranslatableComponent("gui." + Utils.MOD_ID + ".next"), (button) -> {onButtonActivated(button);});
 		  this.addRenderableWidget(pagedown);
 		  super.init();
 	}
