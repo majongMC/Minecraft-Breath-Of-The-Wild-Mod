@@ -7,8 +7,8 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Networking {
-	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKWITHUUID,FOODMESSAGEPACK,BAR;
-    public static final String VERSION = "19.1.5.1";
+	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKWITHUUID,FOODMESSAGEPACK,BAR,IDD;
+    public static final String VERSION = "182.1.5.1";
     private static int ID = 0;
 
     public static int nextID() {
@@ -81,6 +81,17 @@ public class Networking {
                 .encoder(HealthBarPack::toBytes)
                 .decoder(HealthBarPack::new)
                 .consumer(HealthBarPack::handler)
+                .add();
+        IDD = NetworkRegistry.newSimpleChannel(
+                new ResourceLocation(Utils.MOD_ID, "id_down"),
+                () -> VERSION,
+                (version) -> version.equals(VERSION),
+                (version) -> version.equals(VERSION)
+        );
+        IDD.messageBuilder(IDDownPack.class, nextID())
+                .encoder(IDDownPack::toBytes)
+                .decoder(IDDownPack::new)
+                .consumer(IDDownPack::handler)
                 .add();
     }
 }

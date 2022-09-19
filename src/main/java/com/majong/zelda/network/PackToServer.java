@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import org.apache.logging.log4j.LogManager;
+
+import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.util.EntityFreezer;
+import com.majong.zelda.util.FallingBlockAdjuster;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.core.BlockPos;
@@ -29,6 +33,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,21 +43,17 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.NetworkEvent;
 
 public class PackToServer {
-	//private final UUID uuid;
 	private final int type;
     public PackToServer(FriendlyByteBuf buffer) {
     	type=buffer.readInt();
-    	//uuid=buffer.readUUID();
     }
 
     public PackToServer(int type) {
     	this.type=type;
-    	//this.uuid=Minecraft.getInstance().player.getUUID();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
     	buf.writeInt(type);
-    	//buf.writeUUID(uuid);
     }
 
     public void handler(Supplier<NetworkEvent.Context> ctx) {
@@ -73,12 +74,9 @@ public class PackToServer {
         ctx.get().setPacketHandled(true);
     }
     private void teleporttooverworld(Player player) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	TempleDimensionData.ExitTemple(player.level, player);
     }
     private void useskill(Player player) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
-    	//DataManager.preventnull(player);
     	if(player.isShiftKeyDown()&&DataManager.data.get(player).unlocked[1]&&DataManager.data.get(player).skill[1]>0) {
     		player.addEffect(new MobEffectInstance(MobEffects.LEVITATION,60,10));
     		DataManager.data.get(player).skill[1]--;
@@ -88,7 +86,6 @@ public class PackToServer {
     		Level Level=player.level;
     		List<Entity> partentitylist=new ArrayList<>();
     		List<Entity> targrtlist= Level.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,(Entity t)-> {
-					// TODO �Զ����ɵķ������
 					if(t instanceof PartEntity) {
 						Entity parent=((PartEntity)t).getParent();
 						if(parent instanceof LivingEntity&&(parent.getClassification(false)==MobCategory.MONSTER||(!(parent instanceof Player)&&((LivingEntity) parent).getMaxHealth()>101))) {
@@ -132,23 +129,32 @@ public class PackToServer {
     	}
     }
     private void placebomb(Player player,boolean round) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslatableComponent("msg.bombprohibited"),UUID.randomUUID());
 			return;
 		}
+    	if(!HasShikaStone(player)) {
+    		player.sendMessage(new TranslatableComponent("msg.anticheat.warn"),UUID.randomUUID());
+    		LogManager.getLogger().warn("检测到疑似作弊行为，玩家名："+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		return;
+    	}
     	BombEntity bomb=new BombEntity(EntityLoader.BOMB.get(),player.level);
     	bomb.setPos(player.getX(), player.getY(), player.getZ());
     	bomb.setowner(player);
     	player.level.addFreshEntity(bomb);
     }
     private void detonate(Player player) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
     	List<Mob> moblist= player.level.getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(32, 32, 32) ,(Mob t)->true);
     	Iterator<Mob> it1=moblist.iterator();
     	while(it1.hasNext()) {
 			Mob mob=it1.next();
 			EntityFreezer.unFreezeMob(mob);
+		}
+    	List<FallingBlockEntity> list=player.level.getEntitiesOfClass(FallingBlockEntity.class,player.getBoundingBox().inflate(16));
+		Iterator<FallingBlockEntity> it2=list.iterator();
+		while(it2.hasNext()) {
+			FallingBlockEntity entity=it2.next();
+			FallingBlockAdjuster.loose(entity,player,false);
 		}
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslatableComponent("msg.bombprohibited"),UUID.randomUUID());
@@ -192,7 +198,19 @@ public class PackToServer {
 		return isoffground;
     }
     private void usemagnet(Player player) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	if(!HasShikaStone(player)) {
+    		player.sendMessage(new TranslatableComponent("msg.anticheat.warn"),UUID.randomUUID());
+    		LogManager.getLogger().warn("检测到疑似作弊行为，玩家名："+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		return;
+    	}
+    	if(!ZeldaConfig.USEFUL_MAGNET.get()) {
+    	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
+    	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
+    		return;
+    	CompoundTag nbt = stack.getOrCreateTagElement("magnet");
+    	nbt.putBoolean("activated", true);
+    	player.sendMessage(new TranslatableComponent("msg.zelda.magnetactivated"),UUID.randomUUID());
+    	}else {
     	double x=player.getX();
     	double y=player.getY();
     	double z=player.getZ();
@@ -202,9 +220,14 @@ public class PackToServer {
 			ItemEntity item=it.next();
 			item.teleportTo(x, y, z);
 		}
+    	}
     }
     private void useStatic(Player player) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	if(!HasShikaStone(player)) {
+    		player.sendMessage(new TranslatableComponent("msg.anticheat.warn"),UUID.randomUUID());
+    		LogManager.getLogger().warn("检测到疑似作弊行为，玩家名："+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		return;
+    	}
     	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;
@@ -213,7 +236,11 @@ public class PackToServer {
     	player.sendMessage(new TranslatableComponent("msg.zelda.staticactivated"),UUID.randomUUID());
     }
     private void useice(Player player) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	if(!HasShikaStone(player)) {
+    		player.sendMessage(new TranslatableComponent("msg.anticheat.warn"),UUID.randomUUID());
+    		LogManager.getLogger().warn("检测到疑似作弊行为，玩家名："+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		return;
+    	}
     	if(player.isInWater())
     		return;
     	BlockPos playerpos=player.blockPosition();
@@ -227,12 +254,19 @@ public class PackToServer {
     		}
     }
     private void usecamera(Player player) {
-    	//Player player=Minecraft.getInstance().getSingleplayerServer().getPlayerList().getPlayer(uuid);
+    	if(!HasShikaStone(player)) {
+    		player.sendMessage(new TranslatableComponent("msg.anticheat.warn"),UUID.randomUUID());
+    		LogManager.getLogger().warn("检测到疑似作弊行为，玩家名："+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		return;
+    	}
     	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;
     	CompoundTag nbt = stack.getOrCreateTagElement("camera");
     	nbt.putBoolean("activated", true);
     	player.sendMessage(new TranslatableComponent("msg.zelda.cameraactivated"),UUID.randomUUID());
+    }
+    private boolean HasShikaStone(Player player) {
+    	return player.getMainHandItem().getItem()==ItemLoader.SHIKA_STONE.get()||player.getOffhandItem().getItem()==ItemLoader.SHIKA_STONE.get();
     }
 }

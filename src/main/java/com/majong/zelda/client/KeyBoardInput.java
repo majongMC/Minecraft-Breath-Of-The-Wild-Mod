@@ -1,14 +1,19 @@
 package com.majong.zelda.client;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.majong.zelda.Utils;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.PackToServer;
+import com.majong.zelda.util.FallingBlockAdjuster;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
@@ -39,6 +44,12 @@ public class KeyBoardInput {
 		}
 		if(DETONATE_KEY.consumeClick()&&Minecraft.getInstance().player != null) {
 			Networking.PACKWITHUUID.sendToServer(new PackToServer(3));
+			List<FallingBlockEntity> list=ClientUtils.GetClientLevel().getEntitiesOfClass(FallingBlockEntity.class,ClientUtils.GetClientPlayer().getBoundingBox().inflate(16));
+			Iterator<FallingBlockEntity> it=list.iterator();
+			while(it.hasNext()) {
+				FallingBlockEntity entity=it.next();
+				FallingBlockAdjuster.loose(entity,ClientUtils.GetClientPlayer(),true);
+			}
 		}
 	}
 }

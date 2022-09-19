@@ -14,4 +14,14 @@ public class ClientUtils {
 	public static void ClientStopSound() {
 		Minecraft.getInstance().getSoundManager().stop();
 	}
+	/*8public static Entity GetClientEntityByUUID(UUID uuid) {
+		ClientLevel level=Minecraft.getInstance().level;
+		for(int i = 0; i < level.getEntityCount(); ++i) {
+	         Entity entity = level.getEntity(i);
+	         if (uuid.equals(entity.getUUID())) {
+	            return entity;
+	         }
+	      }
+		return null;
+	}*/
 }

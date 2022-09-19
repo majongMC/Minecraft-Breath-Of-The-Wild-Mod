@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.majong.zelda.Utils;
 import com.majong.zelda.gui.OpenShikaStoneGui;
 import com.majong.zelda.sound.SoundLoader;
+import com.majong.zelda.util.FallingBlockAdjuster;
 import com.majong.zelda.world.structure.ModStructures;
 
 import net.minecraft.core.BlockPos;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -111,6 +113,15 @@ public class ShikaStone extends Item{
 	public InteractionResult useOn(UseOnContext p_195939_1_) {
 		Level world = p_195939_1_.getLevel();
 	      if (world.isClientSide) {
+	    	  ItemStack itemStack = p_195939_1_.getItemInHand();
+	          CompoundTag camera =itemStack.getOrCreateTagElement("camera");
+	          if(camera.contains("activated")&&camera.getBoolean("activated")) {
+	        	  return InteractionResult.SUCCESS;
+			}
+	          CompoundTag magnet =itemStack.getOrCreateTagElement("magnet");
+	          if(magnet.contains("activated")&&magnet.getBoolean("activated")) {
+	        	  return InteractionResult.SUCCESS;
+			}
 	         return super.useOn(p_195939_1_);
 	      } else {
 	    	  ItemStack itemStack = p_195939_1_.getItemInHand();
@@ -125,6 +136,15 @@ public class ShikaStone extends Item{
 	        		  p_195939_1_.getPlayer().sendMessage(new TranslatableComponent("msg.zelda.blocksavedfailed"), UUID.randomUUID());
 	        	  }
 	        	  camera.putBoolean("activated", false);
+	        	  return InteractionResult.SUCCESS;
+			}
+	          CompoundTag magnet =itemStack.getOrCreateTagElement("magnet");
+	          if(magnet.contains("activated")&&magnet.getBoolean("activated")) {
+	        	  BlockPos blockpos = p_195939_1_.getClickedPos();
+	        	  BlockState blockstate=world.getBlockState(blockpos);
+	        	  Player player=p_195939_1_.getPlayer();
+	        	  FallingBlockAdjuster.fall(player, blockpos, blockstate);
+	        	  magnet.putBoolean("activated", false);
 	        	  return InteractionResult.SUCCESS;
 			}
 	    	  return super.useOn(p_195939_1_);
