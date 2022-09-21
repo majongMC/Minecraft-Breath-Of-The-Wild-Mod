@@ -17,7 +17,6 @@ public class RedEnvelope extends Item{
 		super(new Properties());
 		// TODO Auto-generated constructor stub
 	}
-
 	@Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if(!worldIn.isClientSide) {

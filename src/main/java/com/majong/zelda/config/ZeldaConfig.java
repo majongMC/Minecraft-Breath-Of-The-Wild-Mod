@@ -8,7 +8,7 @@ public class ZeldaConfig {
     public static ForgeConfigSpec.IntValue SHIELD,LINKTIME;
     public static ForgeConfigSpec.BooleanValue DISPLAYTIME;
     public static ForgeConfigSpec.DoubleValue ROCKGIANT,YIGATEAM;
-    public static ForgeConfigSpec.BooleanValue NPCONLY,ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY;
+    public static ForgeConfigSpec.BooleanValue NPCONLY,ATTRIBUTE,FIRE_ARROW,BOMB_ARROW_DESTROY,KILLWITHER,BOMB,BOMBDESTROY,USEFUL_MAGNET,CANMOVEBE;
     public static ForgeConfigSpec.DoubleValue ELECTRICITY;
     public static ForgeConfigSpec.BooleanValue WEATHER_CHANGE;
     public static ForgeConfigSpec.DoubleValue WEATHER_CHANGE_CHANCE;
@@ -39,6 +39,8 @@ public class ZeldaConfig {
         KILLWITHER = COMMON_BUILDER.comment("(由于龙之研究暂未更新到1.19版本，故该选项目前没有作用)Enable ancient arrow kill Wither which summoned by Chao Guardian. 允许古代箭秒杀混沌守卫召唤的凋灵").define("killwither", true);
         BOMB = COMMON_BUILDER.comment("Enable Bomb 允许使用炸弹").define("bomb", true);
         BOMBDESTROY = COMMON_BUILDER.comment("Enable Bomb Destroy Block 允许炸弹破坏方块").define("bombdestroy", true);
+        USEFUL_MAGNET = COMMON_BUILDER.comment("Useful Magnet 更实用的磁铁，开启后希卡之石的磁铁会像之前的版本一样吸收掉落物，而不是还原原作").define("useful_magnet", false);
+        CANMOVEBE = COMMON_BUILDER.comment("Can Move Block Entities 允许用磁力移动方块实体(移动方块实体会导致其数据丢失，请谨慎使用)").define("canmovebe", false);
         COMMON_BUILDER.pop();
         COMMON_BUILDER.comment("World 世界").push("world");
         WEATHER_CHANGE = COMMON_BUILDER.comment("Enable Mod Enfluence Weather 允许本模组影响天气").define("weatherchange", true);

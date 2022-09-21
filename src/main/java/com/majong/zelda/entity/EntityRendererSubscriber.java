@@ -28,6 +28,7 @@ public class EntityRendererSubscriber {
         event.registerEntityRenderer(EntityLoader.FIRE_ARROW.get(), TippableArrowRenderer::new);
         event.registerEntityRenderer(EntityLoader.MOLLY_BRIN.get(), MollyBrinRenderer::new);
         event.registerEntityRenderer(EntityLoader.BOMB.get(), BombRenderer::new);
+        event.registerEntityRenderer(EntityLoader.MOVING_BLOCK_CARRIER.get(), MovingBlockCarrierRenderer::new);
         event.registerEntityRenderer(EntityLoader.ROCK_GIANT.get(), RockGiantRenderer::new);
         event.registerEntityRenderer(EntityLoader.BOKO_BRIN.get(), BokoBrinRenderer::new);
         event.registerEntityRenderer(EntityLoader.YIGA_TEAM_MEMBER.get(), YigaTeamMemberRenderer::new);
