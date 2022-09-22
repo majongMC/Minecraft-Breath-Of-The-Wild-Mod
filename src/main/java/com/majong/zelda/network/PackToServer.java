@@ -8,14 +8,13 @@ import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 
-import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
 import com.majong.zelda.entity.EntityLoader;
+import com.majong.zelda.entity.MovingBlockCarrierEntity;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.util.EntityFreezer;
-import com.majong.zelda.util.FallingBlockAdjuster;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
 import net.minecraft.core.BlockPos;
@@ -33,7 +32,6 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -150,11 +148,11 @@ public class PackToServer {
 			Mob mob=it1.next();
 			EntityFreezer.unFreezeMob(mob);
 		}
-    	List<FallingBlockEntity> list=player.level.getEntitiesOfClass(FallingBlockEntity.class,player.getBoundingBox().inflate(16));
-		Iterator<FallingBlockEntity> it2=list.iterator();
+    	List<MovingBlockCarrierEntity> list=player.level.getEntitiesOfClass(MovingBlockCarrierEntity.class,player.getBoundingBox().inflate(16));
+		Iterator<MovingBlockCarrierEntity> it2=list.iterator();
 		while(it2.hasNext()) {
-			FallingBlockEntity entity=it2.next();
-			FallingBlockAdjuster.loose(entity,player,false);
+			MovingBlockCarrierEntity entity=it2.next();
+			entity.loose(player);
 		}
     	if(!ZeldaConfig.BOMB.get()) {
 			player.sendMessage(new TranslatableComponent("msg.bombprohibited"),UUID.randomUUID());

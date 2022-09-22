@@ -6,9 +6,9 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.majong.zelda.Utils;
+import com.majong.zelda.entity.MovingBlockCarrierEntity;
 import com.majong.zelda.gui.OpenShikaStoneGui;
 import com.majong.zelda.sound.SoundLoader;
-import com.majong.zelda.util.FallingBlockAdjuster;
 import com.majong.zelda.world.structure.ModStructures;
 
 import net.minecraft.core.BlockPos;
@@ -143,7 +143,7 @@ public class ShikaStone extends Item{
 	        	  BlockPos blockpos = p_195939_1_.getClickedPos();
 	        	  BlockState blockstate=world.getBlockState(blockpos);
 	        	  Player player=p_195939_1_.getPlayer();
-	        	  FallingBlockAdjuster.fall(player, blockpos, blockstate);
+	        	  MovingBlockCarrierEntity.MoveBlock(player, blockpos, blockstate);
 	        	  magnet.putBoolean("activated", false);
 	        	  return InteractionResult.SUCCESS;
 			}

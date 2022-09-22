@@ -8,7 +8,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+@OnlyIn(Dist.CLIENT)
 public class BokoBrinRenderer extends HumanoidMobRenderer<BokoBrinEntity,BokoBrinModel>{
 	public static final ModelLayerLocation INNER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "piglin"), "inner_armor");
 	public static final ModelLayerLocation OUTER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "piglin"), "outer_armor");

@@ -5,7 +5,9 @@ import com.majong.zelda.entity.animation.YigaTeamMemberAnimation;
 
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+@OnlyIn(Dist.CLIENT)
 public class YigaTeamMemberModel extends PlayerModel<YigaTeamMemberEntity>{
 	private ModelPart root;
 	public YigaTeamMemberModel(ModelPart p_170821_, boolean p_170822_) {

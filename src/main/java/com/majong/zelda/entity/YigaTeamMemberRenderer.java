@@ -16,7 +16,9 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+@OnlyIn(Dist.CLIENT)
 public class YigaTeamMemberRenderer extends MobRenderer{
 	public static final ModelLayerLocation INNER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "player_slim"), "inner_armor");
 	public static final ModelLayerLocation OUTER_ARMOR = new ModelLayerLocation(new ResourceLocation("minecraft", "player_slim"), "outer_armor");
