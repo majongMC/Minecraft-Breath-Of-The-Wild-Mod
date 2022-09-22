@@ -15,7 +15,7 @@ public class EntityFreezer extends Delayer<MobEntity>{
 	private double motionx=0,motionz=0;
 	private static final Map<MobEntity,EntityFreezer> FREEZED_ENTITY=new HashMap<>();
 	public EntityFreezer(int freezetime, MobEntity MobEntity) {
-		super(freezetime*2, MobEntity);
+		super(freezetime, MobEntity);
 	}
 
 	@Override

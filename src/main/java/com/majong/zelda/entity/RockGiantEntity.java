@@ -87,8 +87,7 @@ public class RockGiantEntity extends MonsterEntity{
 		if(this.level.isClientSide) {
 			lasty=currenty;
 			currenty=this.getEntityData().get(RockGiantEntity.HANDSWING);
-			//ZeldaBloodBarApi.DisplayBloodBarClient(this.getHealth()/this.getMaxHealth(),this.getName());
-			if(EntitySpottedEvent.SoundRemainTime==0&&!this.dead) {
+			if(EntitySpottedEvent.SoundRemainTime==0&&!ZeldaConfigClient.DISABLE_MUSIC.get()&&!this.dead) {
 				ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),this.blockPosition(), SoundLoader.ROCK_GIANT.get(), SoundCategory.AMBIENT, 10f, 1f);
 				EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.ROCK_GIANT.get();
 			}

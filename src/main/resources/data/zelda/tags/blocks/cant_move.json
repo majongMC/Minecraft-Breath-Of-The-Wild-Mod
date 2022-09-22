@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "#minecraft:tall_flowers", 
+        "minecraft:spawner",
+        "#minecraft:doors"
+    ]
+}

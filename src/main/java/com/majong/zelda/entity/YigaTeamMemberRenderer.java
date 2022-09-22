@@ -12,7 +12,9 @@ import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+@OnlyIn(Dist.CLIENT)
 public class YigaTeamMemberRenderer extends MobRenderer{
 	private EntityModel<YigaTeamMemberEntity> VillagerModel,PlayerModel;
 	public YigaTeamMemberRenderer(EntityRendererManager renderManagerIn, GuardianModel entityModelIn, float shadowSizeIn) {

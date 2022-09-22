@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import com.majong.zelda.api.tickutils.Delayer;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.GuardianEntity;
@@ -39,14 +40,23 @@ public class EntityDead {
 		if(entity instanceof PlayerEntity&&!entity.level.isClientSide) {
 			PlayerEntity player=(PlayerEntity) entity;
 			if(DataManager.data.get(player).intemple>0&&!ZeldaConfig.CANDEATHINTEMPLE.get()) {
-				if(Linkage.isIgnis(event.getSource().getEntity())) {
-					((ServerPlayerEntity)player).setGameMode(GameType.SURVIVAL);
-					return;
-				}
 				player.setHealth(player.getMaxHealth());
 				event.setCanceled(true);
-				TempleDimensionData.ExitTemple(player.level, player);
-				player.sendMessage(new TranslationTextComponent("msg.zelda.temple_failed"), UUID.randomUUID());
+				new Delayer<PlayerEntity>(1, player) {
+
+					@Override
+					public boolean isclientside() {
+						return false;
+					}
+
+					@Override
+					public void finish() {
+						PlayerEntity p=this.getParaments()[0];
+						if(p.isDeadOrDying())
+							return;
+						TempleDimensionData.ExitTemple(p.level, p);
+						p.sendMessage(new TranslationTextComponent("msg.zelda.temple_failed"), UUID.randomUUID());
+					}};
 				return;
 			}
 			if(DataManager.data.get(player).unlocked[0]&&DataManager.data.get(player).skill[0]==1) {

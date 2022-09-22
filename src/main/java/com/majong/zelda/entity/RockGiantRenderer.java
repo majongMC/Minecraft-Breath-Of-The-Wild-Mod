@@ -5,7 +5,9 @@ import com.majong.zelda.Utils;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+@OnlyIn(Dist.CLIENT)
 public class RockGiantRenderer extends MobRenderer<RockGiantEntity,RockGiantModel>{
 
 	public RockGiantRenderer(EntityRendererManager renderManagerIn, RockGiantModel entityModelIn, float shadowSizeIn) {

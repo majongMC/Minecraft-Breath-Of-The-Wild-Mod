@@ -38,17 +38,17 @@ public class SoundPack {
         	switch(type) {
         	case 0:ClientUtils.ClientStopSound();EntitySpottedEvent.SoundRemainTime=0;break;
         	case 1:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.DEAD.get(), SoundCategory.AMBIENT, 10f, 1f);break;
-        	case 2:if(EntitySpottedEvent.SoundRemainTime==0) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.WALKING_GUARDIAN.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.WALKING_GUARDIAN.get();}break;
-        	case 3:if(EntitySpottedEvent.SoundRemainTime==0) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.GUARDIAN.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.GUARDIAN.get();}break;
-        	case 4:if(EntitySpottedEvent.SoundRemainTime==0) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.FIGHT.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.FIGHT.get();}break;
+        	case 2:if(EntitySpottedEvent.SoundRemainTime==0&&!ZeldaConfigClient.DISABLE_MUSIC.get()) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.WALKING_GUARDIAN.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.WALKING_GUARDIAN.get();}break;
+        	case 3:if(EntitySpottedEvent.SoundRemainTime==0&&!ZeldaConfigClient.DISABLE_MUSIC.get()) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.GUARDIAN.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.GUARDIAN.get();}break;
+        	case 4:if(EntitySpottedEvent.SoundRemainTime==0&&!ZeldaConfigClient.DISABLE_MUSIC.get()) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.FIGHT.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.FIGHT.get();}break;
         	case 5:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.COOKING.get(), SoundCategory.AMBIENT, 10f, 1f);break;
         	case 6:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.OBTAIN.get(), SoundCategory.AMBIENT, 10f, 1f);break;
         	case 7:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.COOKING_FAILED.get(), SoundCategory.AMBIENT, 10f, 1f);break;
         	case 8:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.WAKE_UP.get(), SoundCategory.AMBIENT, 10f, 1f);break;
-        	case 9:if(EntitySpottedEvent.SoundRemainTime==0) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.SINOX.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.HINOX.get();}break;
+        	case 9:if(EntitySpottedEvent.SoundRemainTime==0&&!ZeldaConfigClient.DISABLE_MUSIC.get()) {ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.SINOX.get(), SoundCategory.AMBIENT, 10f, 1f);EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.HINOX.get();}break;
         	case 10:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.MIFA.get(), SoundCategory.AMBIENT, 10f, 1f);break;
         	case 11:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundEvents.GENERIC_HURT, SoundCategory.AMBIENT, 10f, 1f);break;
-        	case 12:ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.TEMPLE.get(), SoundCategory.AMBIENT, 10f, 1f);break;
+        	case 12:if(!ZeldaConfigClient.DISABLE_MUSIC.get()){ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),pos, SoundLoader.TEMPLE.get(), SoundCategory.AMBIENT, 10f, 1f);}break;
         	}
         });
         ctx.get().setPacketHandled(true);

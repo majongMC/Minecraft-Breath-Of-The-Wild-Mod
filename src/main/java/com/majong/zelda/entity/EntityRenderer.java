@@ -42,6 +42,9 @@ public class EntityRenderer {
 		RenderingRegistry.registerEntityRenderingHandler(EntityLoader.BOMB.get(), (EntityRendererManager manager) -> {
             return new BombRenderer(manager);
 	});
+		RenderingRegistry.registerEntityRenderingHandler(EntityLoader.MOVING_BLOCK_CARRIER.get(), (EntityRendererManager manager) -> {
+            return new MovingBlockCarrierRenderer(manager);
+	});
 		RenderingRegistry.registerEntityRenderingHandler(EntityLoader.ROCK_GIANT.get(), (EntityRendererManager manager) -> {
             return new RockGiantRenderer(manager);
 	});

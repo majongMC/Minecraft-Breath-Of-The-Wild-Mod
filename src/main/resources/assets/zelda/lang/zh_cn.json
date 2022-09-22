@@ -36,11 +36,13 @@
 "msg.zelda.inventoryfull":"物品栏已满！",
 "msg.zelda.staticactivated":"右键生物以使其静止",
 "msg.zelda.cameraactivated":"右键方块以保存",
+"msg.zelda.magnetactivated":"右键方块来移动它",
 "msg.zelda.blocksaved":"方块保存成功",
 "msg.zelda.blocksavedfailed":"方块保存失败",
 "msg.zelda.blockfound":"找到目标方块",
 "msg.zelda.blockfoundfailed":"方块寻找失败",
 "msg.zelda.temple_failed":"神庙挑战失败",
+"msg.anticheat.warn":"请不要尝试作弊",
 "yigateam.dialog.0_0":"呜呜...... 我们不会再见面了......",
 "yigateam.dialog.0_1":"纳命来！",
 "yigateam.dialog.1_0":"呜呜......",
@@ -60,6 +62,6 @@
 "tooltip.zelda.conductive":"导电",
 "death.attack.yigadamage":"%1$s 被依盖队成员杀死了",
 "key.category.zelda":"旷野之息",
-"key.detonate":"引爆炸弹/解除时停",
+"key.detonate":"引爆炸弹/解除时停/解除磁力",
 "key.skill":"使用技能"
 }

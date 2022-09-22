@@ -6,11 +6,13 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.majong.zelda.Utils;
+import com.majong.zelda.entity.MovingBlockCarrierEntity;
 import com.majong.zelda.gui.OpenShikaStoneGui;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.world.structure.ModStructures;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -110,7 +112,16 @@ public class ShikaStone extends Item{
 	@Override
 	public ActionResultType useOn(ItemUseContext p_195939_1_) {
 		World world = p_195939_1_.getLevel();
-	      if (!(world instanceof ServerWorld)) {
+	      if (world.isClientSide) {
+	    	  ItemStack itemStack = p_195939_1_.getItemInHand();
+	          CompoundNBT camera =itemStack.getOrCreateTagElement("camera");
+	          if(camera.contains("activated")&&camera.getBoolean("activated")) {
+	        	  return ActionResultType.SUCCESS;
+			}
+	          CompoundNBT magnet =itemStack.getOrCreateTagElement("magnet");
+	          if(magnet.contains("activated")&&magnet.getBoolean("activated")) {
+	        	  return ActionResultType.SUCCESS;
+			}
 	         return super.useOn(p_195939_1_);
 	      } else {
 	    	  ItemStack itemStack = p_195939_1_.getItemInHand();
@@ -119,12 +130,21 @@ public class ShikaStone extends Item{
 	        	  BlockPos blockpos = p_195939_1_.getClickedPos();
 	        	  Block block=world.getBlockState(blockpos).getBlock();
 	        	  if(block!=null) {
-	        		camera.putString("target_block", block.getRegistryName().toString());
+	        		camera.putString("target_block", Registry.BLOCK.getKey(block).toString());
 	        	  	p_195939_1_.getPlayer().sendMessage(new TranslationTextComponent("msg.zelda.blocksaved"), UUID.randomUUID());
 	        	  }else {
 	        		  p_195939_1_.getPlayer().sendMessage(new TranslationTextComponent("msg.zelda.blocksavedfailed"), UUID.randomUUID());
 	        	  }
 	        	  camera.putBoolean("activated", false);
+	        	  return ActionResultType.SUCCESS;
+			}
+	          CompoundNBT magnet =itemStack.getOrCreateTagElement("magnet");
+	          if(magnet.contains("activated")&&magnet.getBoolean("activated")) {
+	        	  BlockPos blockpos = p_195939_1_.getClickedPos();
+	        	  BlockState blockstate=world.getBlockState(blockpos);
+	        	  PlayerEntity player=p_195939_1_.getPlayer();
+	        	  MovingBlockCarrierEntity.MoveBlock(player, blockpos, blockstate);
+	        	  magnet.putBoolean("activated", false);
 	        	  return ActionResultType.SUCCESS;
 			}
 	    	  return super.useOn(p_195939_1_);

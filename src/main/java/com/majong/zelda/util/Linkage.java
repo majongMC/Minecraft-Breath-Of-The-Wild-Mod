@@ -9,9 +9,9 @@ public class Linkage {
 	public static boolean isHinox(Entity entity) {
 		return EntityType.getKey(entity.getType()).toString().equals(HINOX);
 	}
-	public static boolean isIgnis(Entity entity) {
+	/*public static boolean isIgnis(Entity entity) {
 		if(entity==null)
 			return false;
 		return EntityType.getKey(entity.getType()).toString().equals(IGNIS);
-	}
+	}*/
 }

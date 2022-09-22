@@ -43,7 +43,7 @@ public class EntityTick {
 	public static final Map<PlayerEntity,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	public static final Map<PlayerEntity,BlockPos> LAST_STAND_POS=new HashMap<>();
 	public static final Map<PlayerEntity,Long> ENTER_TEMPLE_TIME=new HashMap<>();
-	public static final ResourceLocation ROCK_GIANT=new ResourceLocation(Utils.MOD_ID,"has_healthbar");
+	public static final ResourceLocation HAS_HEALTHBAR=new ResourceLocation(Utils.MOD_ID,"has_healthbar");
 	@SubscribeEvent
 	public static void onEntityTick(LivingUpdateEvent event) {
 		if(event.getEntity() instanceof PlayerEntity&&!event.getEntity().level.isClientSide) {
@@ -128,7 +128,7 @@ public class EntityTick {
 			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
 			villager.level.addFreshEntity(entity);
 		}
-		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().contains(ROCK_GIANT)&&event.getEntity().level.isClientSide) {
+		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().contains(HAS_HEALTHBAR)&&event.getEntity().level.isClientSide) {
 			LivingEntity entity=(LivingEntity) event.getEntity();
 			if(entity.blockPosition().getY()>=0)
 				ZeldaBloodBarApi.DisplayBloodBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()),entity.level)+"µÄ");

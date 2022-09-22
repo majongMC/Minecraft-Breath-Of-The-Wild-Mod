@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+@OnlyIn(Dist.CLIENT)
 public class BombRenderer extends EntityRenderer<BombEntity>{
 	private EntityModel<BombEntity> BombModel;
 	protected BombRenderer(EntityRendererManager renderManager) {
