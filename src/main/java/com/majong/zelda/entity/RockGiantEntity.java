@@ -106,7 +106,7 @@ public class RockGiantEntity extends Monster{
 				this.animremaintime=40;
 			}
 			//ZeldaHealthBarApi.DisplayHealthBarClient(this.getHealth()/this.getMaxHealth(),this.getName());
-			if(EntitySpottedEvent.SoundRemainTime<=0&&!this.dead) {
+			if(EntitySpottedEvent.SoundRemainTime<=0&&!ZeldaConfigClient.DISABLE_MUSIC.get()&&!this.dead) {
 				ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),this.blockPosition(), SoundLoader.ROCK_GIANT.get(), SoundSource.AMBIENT, 10f, 1f);
 				EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.ROCK_GIANT.get();
 			}

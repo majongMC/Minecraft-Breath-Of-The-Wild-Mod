@@ -2,6 +2,7 @@ package com.majong.zelda.gui;
 
 import com.majong.zelda.Utils;
 import com.majong.zelda.config.ZeldaConfig;
+import com.majong.zelda.config.ZeldaConfigClient;
 import com.majong.zelda.event.EntitySpottedEvent;
 import com.majong.zelda.sound.SoundLoader;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -41,7 +42,7 @@ public class DialogBox extends Screen{
 	}
 	@Override
 	public void onClose() {
-		if(!ZeldaConfig.NPCONLY.get()) {
+		if(!ZeldaConfig.NPCONLY.get()&&!ZeldaConfigClient.DISABLE_MUSIC.get()) {
 		Minecraft.getInstance().getSoundManager().stop();
 		EntitySpottedEvent.SoundRemainTime=0;
 		Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,Minecraft.getInstance().player.blockPosition(), SoundLoader.FIGHT_ORIGINAL.get(), SoundSource.AMBIENT, 10f, 1f);

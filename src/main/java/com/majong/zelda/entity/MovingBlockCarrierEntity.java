@@ -63,7 +63,6 @@ public class MovingBlockCarrierEntity extends Mob{
 		if(!this.level.isClientSide) {
 		if((owner==null||owner.isDeadOrDying()||passenger==null||passenger.isRemoved())) {
 			loose(owner);
-			return;
 		}
 		if(loose) {
 			if(this.isOnGround())
@@ -71,12 +70,14 @@ public class MovingBlockCarrierEntity extends Mob{
 		}else
 			performmagneticforce();
 		doCollision();
-		if(passenger instanceof FallingBlockEntity) {
+		if(passenger!=null&&passenger instanceof FallingBlockEntity) {
 			((FallingBlockEntity)passenger).time=0;
 		}
 		}
 	}
 	private void performmagneticforce() {
+		if(owner==null)
+			return;
 		float yaw=owner.yHeadRot;
 		float pitch=owner.xRotO;
 		double sinyaw=Math.sin((yaw+90)*Math.PI/180);
