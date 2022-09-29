@@ -26,6 +26,7 @@ public class MovingBlockCarrierEntity extends Mob{
 	private Player owner;
 	private Entity passenger;
 	private double distance=0;
+	private boolean loose=false;
 	protected MovingBlockCarrierEntity(EntityType<? extends Mob> p_21368_, Level p_21369_) {
 		super(p_21368_, p_21369_);
 		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
@@ -52,7 +53,8 @@ public class MovingBlockCarrierEntity extends Mob{
 		if(this.owner!=null&&this.owner!=player)
 			return false;
 		else {
-			this.discard();
+			this.loose=true;
+			this.setNoGravity(false);
 			return true;
 		}
 	}
@@ -61,16 +63,21 @@ public class MovingBlockCarrierEntity extends Mob{
 		if(!this.level.isClientSide) {
 		if((owner==null||owner.isDeadOrDying()||passenger==null||passenger.isRemoved())) {
 			loose(owner);
-			return;
 		}
-		performmagneticforce();
+		if(loose) {
+			if(this.isOnGround())
+				this.discard();
+		}else
+			performmagneticforce();
 		doCollision();
-		if(passenger instanceof FallingBlockEntity) {
+		if(passenger!=null&&passenger instanceof FallingBlockEntity) {
 			((FallingBlockEntity)passenger).time=0;
 		}
 		}
 	}
 	private void performmagneticforce() {
+		if(owner==null)
+			return;
 		float yaw=owner.yHeadRot;
 		float pitch=owner.xRotO;
 		double sinyaw=Math.sin((yaw+90)*Math.PI/180);

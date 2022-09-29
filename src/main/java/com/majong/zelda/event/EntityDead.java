@@ -3,6 +3,7 @@ package com.majong.zelda.event;
 import java.util.Iterator;
 import java.util.List;
 
+import com.majong.zelda.api.tickutils.Delayer;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BokoBrinEntity;
@@ -37,14 +38,23 @@ public class EntityDead {
 		if(entity instanceof Player&&!entity.level.isClientSide) {
 			Player player=(Player) entity;
 			if(DataManager.data.get(player).intemple>0&&!ZeldaConfig.CANDEATHINTEMPLE.get()) {
-				if(Linkage.isIgnis(event.getSource().getEntity())) {
-					((ServerPlayer)player).setGameMode(GameType.SURVIVAL);
-					return;
-				}
 				player.setHealth(player.getMaxHealth());
 				event.setCanceled(true);
-				TempleDimensionData.ExitTemple(player.level, player);
-				player.sendSystemMessage(Component.translatable("msg.zelda.temple_failed"));
+				new Delayer<Player>(1, player) {
+
+					@Override
+					public boolean isclientside() {
+						return false;
+					}
+
+					@Override
+					public void finish() {
+						Player p=this.getParaments()[0];
+						if(p.isDeadOrDying())
+							return;
+						TempleDimensionData.ExitTemple(p.level, p);
+						p.sendSystemMessage(Component.translatable("msg.zelda.temple_failed"));
+					}};
 				return;
 			}
 			if(DataManager.data.get(player).unlocked[0]&&DataManager.data.get(player).skill[0]>0) {

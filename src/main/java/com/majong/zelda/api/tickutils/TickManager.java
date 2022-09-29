@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,6 +20,8 @@ public class TickManager {
 	private static final List<ITickable> server_add=new ArrayList<ITickable>();
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
+		if(event.phase==Phase.END)
+			return;
 		if(!server_add.isEmpty()) {
 			Iterator<ITickable> rem=server_add.iterator();
 			while(rem.hasNext()) {
@@ -40,6 +43,8 @@ public class TickManager {
 	}
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event) {
+		if(event.phase==Phase.END)
+			return;
 		if(!client_add.isEmpty()) {
 			Iterator<ITickable> rem=client_add.iterator();
 			while(rem.hasNext()) {
