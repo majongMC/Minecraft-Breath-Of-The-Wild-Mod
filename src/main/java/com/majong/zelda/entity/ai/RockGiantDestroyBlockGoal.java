@@ -38,8 +38,8 @@ public class RockGiantDestroyBlockGoal extends Goal{
 	@Override
 	public void start() {
 		this.attackprocess=0;
-		this.owner.getEntityData().set(RockGiantEntity.KNOCK,true);
-		owner.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,40,9));
+		this.owner.level.broadcastEntityEvent(owner,RockGiantEntity.KNOCK_EVENT);
+		owner.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,40,9,false,false));
 	}
 	@Override
 	public boolean canContinueToUse() {
@@ -57,13 +57,12 @@ public class RockGiantDestroyBlockGoal extends Goal{
 	 public void tick() {
 		if(attackprocess==10) {
 			this.destroy();
-			this.owner.getEntityData().set(RockGiantEntity.KNOCK,false);
 			owner.level.playSound(null,owner.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.BLOCKS, 10f, 1f);
 			List<Player> playerlist=this.owner.level.getEntitiesOfClass(Player.class, this.owner.getBoundingBox().inflate(12));
 			Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {
     			Player player=(Player) it.next();
-    			CameraShakeApi.CameraShakeServer(player, 30);
+    			CameraShakeApi.CameraShakeServer(player, 60);
     		}
 		}
 		attackprocess++;

@@ -46,15 +46,14 @@ public class BlewHornGoal extends Goal{
 	@Override
 	public void tick() {
 		if(attackprocess==0) {
-			this.attacker.getEntityData().set(BokoBrinEntity.BLEW_HORN,true);
-			attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,48,9));
+			this.attacker.level.broadcastEntityEvent(attacker,BokoBrinEntity.BLEW_EVENT);
+			attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,48,9,false,false));
 		}
 		if(attackprocess==2)
 			this.attacker.level.playSound(null,attacker.blockPosition(), SoundLoader.HORN.get(), SoundSource.BLOCKS, 10f, 1f);
 		if(attackprocess<25) {
 			 attackprocess++;
 		}else {
-			this.attacker.getEntityData().set(BokoBrinEntity.BLEW_HORN,false);
 			HornItem.AwakeOthers(targetentity, attacker);
 			attackprocess=0;
 			lastattacktime=this.attacker.level.getGameTime();

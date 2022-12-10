@@ -26,7 +26,7 @@ public class BombEntity extends PathfinderMob{
 		}
 		else {
 			if(ZeldaConfig.BOMBDESTROY.get())
-				this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3, BlockInteraction.BREAK);
+				this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3,BlockInteraction.BREAK);
 			else
 				this.level.explode(null, this.getX(), this.getY(), this.getZ(), 3, BlockInteraction.NONE);
 		}

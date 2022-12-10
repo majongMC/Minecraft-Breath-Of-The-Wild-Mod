@@ -149,27 +149,23 @@ public class DelayMeleeAttackGoal extends Goal{
 	         this.resetAttackCooldown();
 	         delay=delaytime;
 	         if(this.mob instanceof RockGiantEntity) {
-		    	  RockGiantEntity rockgiant=(RockGiantEntity) this.mob;
-		    	  rockgiant.getEntityData().set(RockGiantEntity.ATTACK, true);
+	        	 this.mob.level.broadcastEntityEvent(this.mob, RockGiantEntity.ATTACK_EVENT);
 		    	  
 	         }else if(this.mob instanceof BokoBrinEntity) {
-	        	 BokoBrinEntity bokobrin=(BokoBrinEntity) this.mob;
-	        	 bokobrin.getEntityData().set(BokoBrinEntity.ATTACK, true);
-	        	 bokobrin.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,24,9));
+	        	 this.mob.level.broadcastEntityEvent(mob,BokoBrinEntity.ATTACK_EVENT);
+	        	 this.mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,24,9,false,false));
 	         }else if(this.mob instanceof YigaTeamMemberEntity) {
 	        	 float yaw=mob.yHeadRot;
 			 		float f = -4F;
 			 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			 		double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			 		mob.setDeltaMovement(mob.getDeltaMovement().add(mx,0.4, mz));
-			 		mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,9,9));
-			 		mob.getEntityData().set(YigaTeamMemberEntity.ATTACK, true);
+			 		mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,9,9,false,false));
+			 		this.mob.level.broadcastEntityEvent(mob,YigaTeamMemberEntity.ATTACK_EVENT);
 	         }else
 	        	 this.mob.swing(InteractionHand.MAIN_HAND);
 	      }
 	      if(delay==8&&this.mob instanceof BokoBrinEntity) {
-	    	  BokoBrinEntity bokobrin=(BokoBrinEntity) this.mob;
-	        	 bokobrin.getEntityData().set(BokoBrinEntity.ATTACK, false);
 	        	 if(p_190102_2_ <= d0) {
 	        	 this.mob.doHurtTarget(p_190102_1_);
 	        	 p_190102_1_.invulnerableTime=0;
@@ -186,7 +182,6 @@ public class DelayMeleeAttackGoal extends Goal{
 		 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 		 		double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 		 		mob.setDeltaMovement(mob.getDeltaMovement().add(mx,0, mz));
-		 		mob.getEntityData().set(YigaTeamMemberEntity.ATTACK, false);
 	      }
 	      if(delay>0&&delay<10&&yigadelay<0&&this.mob instanceof YigaTeamMemberEntity&&p_190102_2_ <= 3*d0) {
 	    	  yigadelay=4;
@@ -195,21 +190,10 @@ public class DelayMeleeAttackGoal extends Goal{
 	    	  ((YigaTeamMemberEntity)this.mob).yigadamage(p_190102_1_);
 	      }
 	      if(delay==0) {
-	    	  if(this.mob instanceof RockGiantEntity) {
-		    	  RockGiantEntity rockgiant=(RockGiantEntity) this.mob;
-		    	  rockgiant.getEntityData().set(RockGiantEntity.ATTACK, false);
-	         }
 	    	  if(p_190102_2_ <= d0)
 	    	  if(!(this.mob instanceof YigaTeamMemberEntity))
 	    		  this.mob.doHurtTarget(p_190102_1_);
 	      }
-	      /*if(this.mob instanceof RockGiantEntity&&delay>=-delaytime&&delay<0) {
-	    	  RockGiantEntity entity=(RockGiantEntity) this.mob;
-	    	  if(reverse)
-	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, 10+delay);
-	    	  else
-	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, -delay-10);
-	      }*/
 	      delay--;yigadelay--;
 	   }
 
