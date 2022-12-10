@@ -1,6 +1,6 @@
 package com.majong.zelda.api.effects;
 
-import com.majong.zelda.config.ZeldaConfigClient;
+import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ZeldaNBTPack;
 
@@ -12,8 +12,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class CameraShakeApi {
 	public static int shakeframe=0;
 	public static void CameraShakeClient(int shakeframe) {
-		if(ZeldaConfigClient.CAMERA_SHAKE.get())
-			CameraShakeApi.shakeframe=shakeframe;
+		CameraShakeApi.shakeframe=(int) (shakeframe*ClientUtils.fpsratio());
 	}
 	public static void CameraShakeServer(Player player ,int shakeframe) {
 		CompoundTag pack=new CompoundTag();

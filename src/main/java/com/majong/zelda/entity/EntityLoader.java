@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EntityLoader {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Utils.MOD_ID);
-	 public static final RegistryObject<EntityType<LaserEntity>> LASER = ENTITY_TYPES.register("laser", () -> EntityType.Builder.of(LaserEntity::new, MobCategory.MISC).sized(1, 1).build("laser"));
+	 public static final RegistryObject<EntityType<LaserEntity>> LASER = ENTITY_TYPES.register("laser", () -> EntityType.Builder.of(LaserEntity::new, MobCategory.MISC).sized(1F, 1F).build("laser"));
 	 public static final RegistryObject<EntityType<GuardianEntity>> GUARDIAN = ENTITY_TYPES.register("guardian", () -> EntityType.Builder.of(GuardianEntity::new, MobCategory.MONSTER).sized(1, 2).build("guardian"));
 	 public static final RegistryObject<EntityType<WalkingGuardianEntity>> WALKING_GUARDIAN = ENTITY_TYPES.register("walking_guardian", () -> EntityType.Builder.of(WalkingGuardianEntity::new, MobCategory.MONSTER).sized(1, 2).build("walking_guardian"));
 	 public static final RegistryObject<EntityType<AncientArrowEntity>> ANCIENT_ARROW = ENTITY_TYPES.register("ancient_arrow", () -> EntityType.Builder.<AncientArrowEntity>of(AncientArrowEntity::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(4).build("ancient_arrow"));

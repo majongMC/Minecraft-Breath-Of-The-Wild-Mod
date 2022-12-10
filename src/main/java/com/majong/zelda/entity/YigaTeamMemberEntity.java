@@ -36,8 +36,8 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class YigaTeamMemberEntity extends Monster{
 	public static final EntityDataAccessor<Boolean> ACTIVATED = SynchedEntityData.defineId(YigaTeamMemberEntity.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> ATTACK = SynchedEntityData.defineId(YigaTeamMemberEntity.class, EntityDataSerializers.BOOLEAN);
 	public AnimationState attackstate = new AnimationState();
+	public static final byte ATTACK_EVENT=102;
 	private int animremaintime=-1;
 	public YigaTeamMemberEntity(EntityType<? extends Monster> p_i48553_1_, Level p_i48553_2_) {
 		super(p_i48553_1_, p_i48553_2_);
@@ -50,30 +50,17 @@ public class YigaTeamMemberEntity extends Monster{
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 	@Override
-	public void tick() {
-		super.tick();
-		if(this.level.isClientSide) {
-			if(this.getEntityData().get(ATTACK)&&!isPlayingAnim()) {
-				this.attackstate.start(this.tickCount);
-				this.animremaintime=42;
-			}
-			if(animremaintime==0) {
-				this.stopallanim();
-			}
-			if(animremaintime>-1) {
-				animremaintime--;
-			}
-		}else {
-			if(this.getTarget()==null||this.getTarget().isDeadOrDying())
-				this.getEntityData().set(ATTACK, false);
-		}
+	public void handleEntityEvent(byte eventid) {
+		switch (eventid) {
+        case ATTACK_EVENT:this.attackstate.start(this.tickCount);this.animremaintime=42;break;
+        default:super.handleEntityEvent(eventid);
+     }
 	}
 	@Override
 	protected void defineSynchedData() {
 		// TODO �Զ����ɵķ������
 		super.defineSynchedData();
 		this.entityData.define(ACTIVATED, false);
-		this.entityData.define(ATTACK, false);
 	}
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
@@ -87,6 +74,15 @@ public class YigaTeamMemberEntity extends Monster{
 		// TODO �Զ����ɵķ������
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("activated", this.entityData.get(ACTIVATED));
+	}
+	@Override
+	public void tick() {
+		super.tick();
+		if(this.level.isClientSide) {
+			if(animremaintime>-1) {
+				animremaintime--;
+			}
+		}
 	}
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -158,9 +154,6 @@ public class YigaTeamMemberEntity extends Monster{
 			}else
 				entity.kill();
 		}
-	}
-	private void stopallanim() {
-		attackstate.stop();
 	}
 	public boolean isPlayingAnim() {
 		return animremaintime>0;

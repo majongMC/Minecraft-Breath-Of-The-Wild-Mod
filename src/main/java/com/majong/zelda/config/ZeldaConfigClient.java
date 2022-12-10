@@ -6,7 +6,8 @@ public class ZeldaConfigClient {
 	public static ForgeConfigSpec CLIENT_CONFIG;
 	public static ForgeConfigSpec.IntValue GUARDIAN,WALKING_GUARDIAN,FIGHT,HINOX,ROCK_GIANT;
 	public static ForgeConfigSpec.BooleanValue DISABLE_MUSIC;
-	public static ForgeConfigSpec.BooleanValue DISPLAY_ANGLE,CAMERA_SHAKE;
+	public static ForgeConfigSpec.BooleanValue DISPLAY_ANGLE;
+	public static ForgeConfigSpec.DoubleValue CAMERA_SHAKE;
 	static {
         ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
         CLIENT_BUILDER.comment("Sound 声音(如果你用资源包修改了战斗音乐，请在此处修改对应的音乐长度（单位:tick），否则会造成音乐过早或过晚循环)").push("sound");
@@ -19,7 +20,7 @@ public class ZeldaConfigClient {
         CLIENT_BUILDER.pop();
         CLIENT_BUILDER.comment("Display 显示").push("display");
         DISPLAY_ANGLE =CLIENT_BUILDER.comment("以图形形式显示视线与目标之间的夹角（设置为false时）会以数字形式显示").define("displayangle", true);
-        CAMERA_SHAKE=CLIENT_BUILDER.comment("Enable Camera Shake 允许相机抖动").define("camera_shake", true);
+        CAMERA_SHAKE=CLIENT_BUILDER.comment("Camera Shake Extent(Set Zero To Disable It) 相机抖动幅度(设置为0以禁用抖动)").defineInRange("camera_shake", 1, 0, Double.POSITIVE_INFINITY);
         CLIENT_BUILDER.pop();
         CLIENT_CONFIG=CLIENT_BUILDER.build();
 	}

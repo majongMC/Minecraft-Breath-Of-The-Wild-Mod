@@ -2,7 +2,6 @@ package com.majong.zelda.entity.ai;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.LaserEntity;
@@ -69,16 +68,7 @@ public class GuardianAi extends Goal{
 			 this.targetlocation[0]=targetentity.getX();
 			 this.targetlocation[1]=targetentity.getY();
 			 this.targetlocation[2]=targetentity.getZ();
-			 List<Player> playerlist= this.attacker.level.getEntitiesOfClass(Player.class,this.attacker.getBoundingBox().inflate(48,48,48) ,new Predicate<Object>() {
-
-					@Override
-					public boolean test(Object t) {
-						// TODO �Զ����ɵķ������
-						if(t instanceof Player) 
-							return true;
-						else
-							return false;
-					}});
+			 List<Player> playerlist= this.attacker.level.getEntitiesOfClass(Player.class,this.attacker.getBoundingBox().inflate(48,48,48));
 	    		Iterator<Player> it=playerlist.iterator();
 	    		while(it.hasNext()) {
 	    			Player player=(Player) it.next();
@@ -111,7 +101,7 @@ public class GuardianAi extends Goal{
 			 LaserEntity laser=new LaserEntity(EntityLoader.LASER.get(),this.attacker.level);
 			 laser.setspeed((float)yaw, (float)pitch);
 			 laser.setowner(attacker);
-			 laser.setPos(this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ());
+			 laser.setPos(this.attacker.getX(),this.attacker.getY()+0.5,this.attacker.getZ());
 			 this.attacker.level.addFreshEntity(laser);
 			 attackprocess=0;
 			 lastattacktime=this.attacker.level.getGameTime();

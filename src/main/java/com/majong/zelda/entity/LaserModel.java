@@ -26,16 +26,16 @@ public class LaserModel extends EntityModel<LaserEntity>{
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
-		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-15, -1, -1, 30, 2, 2, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-		return LayerDefinition.create(meshdefinition, 64, 64);
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-15, 8, -1, 30, 2, 2, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.0F, 0.0F));
+		return LayerDefinition.create(meshdefinition, 16, 16);
 	}
 	@Override
 	public void setupAnim(LaserEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks,
 			float netHeadYaw, float headPitch) {
 		// TODO �Զ����ɵķ������
-		body.xRot = limbSwing;
-        body.yRot = netHeadYaw;
-        body.zRot = headPitch;
+		//body.xRot = (float) (Math.PI*entityIn.getEntityData().get(LaserEntity.PITCH)/180);
+        //body.yRot = (float) (Math.PI*entityIn.getEntityData().get(LaserEntity.YAW)/180);
+        //body.zRot = headPitch;
 	}
 
 	@Override

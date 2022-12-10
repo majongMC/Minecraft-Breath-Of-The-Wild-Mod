@@ -1,6 +1,8 @@
 package com.majong.zelda.event;
 
 import com.majong.zelda.api.effects.CameraShakeApi;
+import com.majong.zelda.client.ClientUtils;
+import com.majong.zelda.config.ZeldaConfigClient;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -12,17 +14,21 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class CameraShake {
-	public static long frame=0;
 	@SubscribeEvent
     public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
-		frame++;
+		ClientUtils.frame++;
 		if(CameraShakeApi.shakeframe>0) {
 			Player player=Minecraft.getInstance().player;
 			float yaw=player.yHeadRot;
 			float pitch=player.xRotO;
-			event.setPitch(pitch+Mth.sin(CameraShakeApi.shakeframe*2));
-			event.setYaw(yaw+0.5F*Mth.cos(CameraShakeApi.shakeframe));
+			float adjustratio=computeadjustratio();
+			event.setPitch(pitch+adjustratio*Mth.sin((float) (CameraShakeApi.shakeframe*2/ClientUtils.fpsratio())));
+			event.setYaw(yaw+adjustratio*0.5F*Mth.cos((float) (CameraShakeApi.shakeframe/ClientUtils.fpsratio())));
 			CameraShakeApi.shakeframe--;
 		}
+	}
+	private static float computeadjustratio() {
+		int alignedsf=(int) (CameraShakeApi.shakeframe/ClientUtils.fpsratio());
+		return (float) (ZeldaConfigClient.CAMERA_SHAKE.get()*alignedsf/18.0F);
 	}
 }

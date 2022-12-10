@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 import com.majong.zelda.sound.SoundLoader;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,7 +34,8 @@ public class HornItem extends BasicItem{
     {
 		if(!entity.level.isClientSide&&entity instanceof LivingEntity) {
 			player.level.playSound(null,player.blockPosition(), SoundLoader.HORN.get(), SoundSource.BLOCKS, 10f, 1f);
-		player.setItemInHand(InteractionHand.MAIN_HAND, stack.split(stack.getCount()-1));
+			if(!((ServerPlayer)player).gameMode.isCreative())
+				player.setItemInHand(InteractionHand.MAIN_HAND, stack.split(stack.getCount()-1));
 		AwakeOthers((LivingEntity) entity,player);
 		}
 		return false;

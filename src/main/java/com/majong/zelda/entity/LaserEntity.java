@@ -13,14 +13,17 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -29,7 +32,6 @@ public class LaserEntity extends ThrowableProjectile{
 	public static final EntityDataAccessor<Integer> PITCH = SynchedEntityData.defineId(LaserEntity.class, EntityDataSerializers.INT);
 	private long spawntime=0;
 	private LivingEntity owner;
-	private float range=0.5F;
 	public LaserEntity(EntityType<? extends ThrowableProjectile> entityTypeIn, Level worldIn) {
 		super(entityTypeIn, worldIn);
 		this.setNoGravity(true);
@@ -42,10 +44,10 @@ public class LaserEntity extends ThrowableProjectile{
 		super.tick();
 		if(!this.level.isClientSide) {
 		if(this.level.getGameTime()-spawntime>100) {
-			this.kill();
+			this.explode();
 			return;
 		}
-		if(this.onGround)
+		/*if(this.onGround)
 		{
 			explode();
 			return;
@@ -57,11 +59,27 @@ public class LaserEntity extends ThrowableProjectile{
 			}
 			else
 				explode();
-		}
+		}*/
 		}
 		if(this.level.isClientSide) {
 			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
 		}
+	}
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		Entity target=result.getEntity();
+		if(!target.level.isClientSide&&target!=owner&&target instanceof LivingEntity) {
+			if(target instanceof Player) {
+				trysheldreflect((Player) target);
+			}
+			else 
+				explode();
+		}
+	}
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		if(!this.level.isClientSide&&FallingBlock.isFree(this.level.getBlockState(result.getBlockPos())))
+			explode();
 	}
 	@Override
 	protected void defineSynchedData() {
@@ -101,7 +119,7 @@ public class LaserEntity extends ThrowableProjectile{
 	}
 	private void explode() {
 		this.level.explode(owner,this.getX(),this.getY(),this.getZ(),5,BlockInteraction.NONE);
-		this.kill();
+		this.discard();
 	}
 	private void trysheldreflect(Player player) {
 		long respondtime=this.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
@@ -134,13 +152,12 @@ public class LaserEntity extends ThrowableProjectile{
 		      });
 			reflect(player);
 		}
-		else
+		else 
 			explode();
 	}
 	private void reflect(Player player) {
 		this.setowner(player);
 		this.setDeltaMovement(this.getDeltaMovement().reverse());
-		this.range=1.5F;
 	}
 	public void setowner(LivingEntity owner) {
 		this.owner=owner;

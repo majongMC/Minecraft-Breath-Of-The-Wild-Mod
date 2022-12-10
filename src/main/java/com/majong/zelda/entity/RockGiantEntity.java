@@ -7,9 +7,6 @@ import com.majong.zelda.entity.ai.RockGiantDestroyBlockGoal;
 import com.majong.zelda.event.EntitySpottedEvent;
 import com.majong.zelda.sound.SoundLoader;
 
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -27,11 +24,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ToolActions;
 
 public class RockGiantEntity extends Monster{
-	public static final EntityDataAccessor<Boolean> ATTACK = SynchedEntityData.defineId(RockGiantEntity.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> KNOCK = SynchedEntityData.defineId(RockGiantEntity.class, EntityDataSerializers.BOOLEAN);
-	//public float lasty=0;
-	//public float currenty=0;
-	private int animremaintime=-1;
+	public static final byte KNOCK_EVENT=101;
+	public static final byte ATTACK_EVENT=102;
 	public AnimationState attackaAnimationState = new AnimationState();
 	public AnimationState attackbAnimationState = new AnimationState();
 	public AnimationState knockaAnimationState = new AnimationState();
@@ -50,10 +44,12 @@ public class RockGiantEntity extends Monster{
 		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 	}
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(ATTACK, false);
-		this.entityData.define(KNOCK, false);
+	public void handleEntityEvent(byte eventid) {
+		switch (eventid) {
+        case KNOCK_EVENT:performknockanim();break;
+        case ATTACK_EVENT:performattackanim();break;
+        default:super.handleEntityEvent(eventid);
+     }
 	}
 	@Override
 	public boolean skipAttackInteraction(Entity entityIn) {
@@ -68,18 +64,6 @@ public class RockGiantEntity extends Monster{
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		/*if(!this.level.isClientSide&&(cause.getEntity() instanceof Player||cause.isExplosion())) {
-		this.spawnAtLocation(new ItemStack(Items.ANCIENT_DEBRIS,(int) (Math.random()*2)));
-		this.spawnAtLocation(new ItemStack(Items.DIAMOND_ORE,(int) (Math.random()*3)));
-		this.spawnAtLocation(new ItemStack(Items.EMERALD_ORE,(int) (Math.random()*3)));
-		this.spawnAtLocation(new ItemStack(Items.REDSTONE_ORE,(int) (Math.random()*5)));
-		this.spawnAtLocation(new ItemStack(Items.LAPIS_ORE,(int) (Math.random()*5)));
-		this.spawnAtLocation(new ItemStack(Items.IRON_ORE,(int) (Math.random()*9)));
-		this.spawnAtLocation(new ItemStack(Items.GOLD_ORE,(int) (Math.random()*10)));
-		this.spawnAtLocation(new ItemStack(Items.NETHER_QUARTZ_ORE,(int) (Math.random()*12)));
-		this.spawnAtLocation(new ItemStack(Items.COAL_ORE,(int) (Math.random()*13)));
-		this.spawnAtLocation(new ItemStack(Items.COBBLESTONE,(int) (Math.random()*64)));
-		}*/
 		if(this.level.isClientSide) {
 			EntitySpottedEvent.SoundRemainTime=0;
 			ClientUtils.ClientStopSound();
@@ -89,45 +73,22 @@ public class RockGiantEntity extends Monster{
 	public void tick() {
 		super.tick();
 		if(this.level.isClientSide) {
-			//lasty=currenty;
-			//currenty=this.getEntityData().get(RockGiantEntity.HANDSWING);
-			if(this.getEntityData().get(RockGiantEntity.ATTACK)&&!isPlayingAnim()) {
-				this.animremaintime=40;
-				if(Math.random()>0.5)
-		    		  this.attackaAnimationState.start(this.tickCount);
-			         else
-			        	 this.attackbAnimationState.start(this.tickCount);
-			}
-			if(this.getEntityData().get(RockGiantEntity.KNOCK)&&!isPlayingAnim()) {
-				if(Math.random()>0.5)
-					this.knockaAnimationState.start(this.tickCount);
-				else
-					this.knockbAnimationState.start(this.tickCount);
-				this.animremaintime=40;
-			}
-			//ZeldaHealthBarApi.DisplayHealthBarClient(this.getHealth()/this.getMaxHealth(),this.getName());
 			if(EntitySpottedEvent.SoundRemainTime<=0&&!ZeldaConfigClient.DISABLE_MUSIC.get()&&!this.dead) {
 				ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),this.blockPosition(), SoundLoader.ROCK_GIANT.get(), SoundSource.AMBIENT, 10f, 1f);
 				EntitySpottedEvent.SoundRemainTime=ZeldaConfigClient.ROCK_GIANT.get();
 			}
-			if(animremaintime==0) {
-				this.stopallanim();
-			}
-			if(animremaintime>-1) {
-				animremaintime--;
-			}
-		}else {
-			if(this.getTarget()==null||this.getTarget().isDeadOrDying())
-				this.getEntityData().set(RockGiantEntity.ATTACK, false);
 		}
 	}
-	private void stopallanim() {
-		this.attackaAnimationState.stop();
-		this.attackbAnimationState.stop();
-		this.knockaAnimationState.stop();
-		this.knockbAnimationState.stop();
+	private void performknockanim() {
+		if(Math.random()>0.5)
+			this.knockaAnimationState.start(this.tickCount);
+		else
+			this.knockbAnimationState.start(this.tickCount);
 	}
-	public boolean isPlayingAnim() {
-		return animremaintime>0;
+	private void performattackanim() {
+			if(Math.random()>0.5)
+	    		  this.attackaAnimationState.start(this.tickCount);
+		         else
+		        	 this.attackbAnimationState.start(this.tickCount);
 	}
 }
