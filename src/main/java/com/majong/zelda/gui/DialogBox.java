@@ -1,6 +1,7 @@
 package com.majong.zelda.gui;
 
 import com.majong.zelda.Utils;
+import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.config.ZeldaConfigClient;
 import com.majong.zelda.event.EntitySpottedEvent;
@@ -54,7 +55,7 @@ public class DialogBox extends Screen{
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bind(DIALOG_BOX);
 		this.blit(matrixStack, (int)(this.width*0.1), (int)(this.height*0.6), 0, 0,(int)(this.width*0.8),(int)(this.height*0.3), (int)(this.width*0.8), (int)(this.height*0.3));
-		int speed=5;
+		double speed=5*ClientUtils.fpsratio();
 		if((int)((currentframe)/speed)<content[page].length())
 			drawCenteredString(matrixStack, this.font,content[page].substring(0, (int)((currentframe)/speed)), (int)(this.width*0.5),(int)(this.height*0.7), 16777215);
 		else

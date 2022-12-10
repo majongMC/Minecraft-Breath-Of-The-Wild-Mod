@@ -1,5 +1,6 @@
 package com.majong.zelda.overlays;
 
+import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.util.ConductiveItem;
 
 import net.minecraft.client.Minecraft;
@@ -42,7 +43,7 @@ public class RenderOverlays {
 				last=percentage;
 			}
 			if(Minecraft.getInstance().level.getGameTime()-lastattack>10&&percentage<delay) {
-				delay=delay-0.002;
+				delay=delay-0.002/ClientUtils.fpsratio();
 			}
 			BloodBar bar=new BloodBar(event.getMatrixStack());
 			bar.render(percentage, delay,name,at);

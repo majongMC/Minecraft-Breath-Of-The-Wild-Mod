@@ -11,20 +11,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class LaserModel extends EntityModel<LaserEntity>{
 	private final ModelRenderer body;
 	public LaserModel() {
-		this.texHeight=64;
-		this.texWidth=64;
+		this.texHeight=16;
+		this.texWidth=16;
 		body = new ModelRenderer(this);
 		body.setPos(0,0,0);
 		body.texOffs(0, 0);
-		body.addBox(-15, -1, -1, 30, 2, 2);
+		body.addBox(-15, 10, -1, 30, 2, 2);
 	}
 	@Override
 	public void setupAnim(LaserEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks,
 			float netHeadYaw, float headPitch) {
 		// TODO 自动生成的方法存根
-		body.xRot = limbSwing;
-        body.yRot = netHeadYaw;
-        body.zRot = headPitch;
+		//body.xRot = limbSwing;
+        //body.yRot = netHeadYaw;
+        //body.zRot = headPitch;
 	}
 
 	@Override

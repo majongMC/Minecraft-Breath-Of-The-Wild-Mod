@@ -7,7 +7,8 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.PlayerUseShield;
 import com.majong.zelda.item.ItemLoader;
 
-import net.minecraft.entity.EntityPredicate;
+import net.minecraft.block.FallingBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +20,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
@@ -48,7 +51,7 @@ public class LaserEntity extends ThrowableEntity{
 			this.kill();
 			return;
 		}
-		if(this.onGround)
+		/*if(this.onGround)
 		{
 			explode();
 			return;
@@ -60,11 +63,27 @@ public class LaserEntity extends ThrowableEntity{
 			}
 			else
 				explode();
-		}
+		}*/
 		}
 		if(this.level.isClientSide) {
 			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
 		}
+	}
+	protected void onHitEntity(EntityRayTraceResult result) {
+		super.onHitEntity(result);
+		Entity target=result.getEntity();
+		if(!target.level.isClientSide&&target!=owner&&target instanceof LivingEntity) {
+			if(target instanceof PlayerEntity) {
+				trysheldreflect((PlayerEntity) target);
+			}
+			else 
+				explode();
+		}
+	}
+	protected void onHitBlock(BlockRayTraceResult result) {
+		super.onHitBlock(result);
+		if(!this.level.isClientSide&&FallingBlock.isFree(this.level.getBlockState(result.getBlockPos())))
+			explode();
 	}
 	@Override
 	protected void defineSynchedData() {
