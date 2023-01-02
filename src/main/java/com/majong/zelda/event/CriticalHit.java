@@ -1,5 +1,6 @@
 package com.majong.zelda.event;
 
+import com.majong.zelda.entity.Lynel;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 
@@ -32,6 +33,8 @@ public class CriticalHit {
 					if(relativey>0.6667) {
 						target.hurt(new EntityDamageSource("player",player).bypassMagic(),10);
 						target.invulnerableTime = 0;
+						if(target instanceof Lynel)
+							((Lynel)target).dizzy();
 						float yaw=player.yHeadRot;
 						float f = 2F;
 						double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;

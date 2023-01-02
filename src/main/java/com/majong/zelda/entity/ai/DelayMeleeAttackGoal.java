@@ -6,13 +6,16 @@ import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.RockGiantEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
 
@@ -190,9 +193,15 @@ public class DelayMeleeAttackGoal extends Goal{
 	    	  ((YigaTeamMemberEntity)this.mob).yigadamage(p_190102_1_);
 	      }
 	      if(delay==0) {
-	    	  if(p_190102_2_ <= d0)
-	    	  if(!(this.mob instanceof YigaTeamMemberEntity))
+	    	  if(p_190102_2_ <= d0) {
+	    	  if(!(this.mob instanceof YigaTeamMemberEntity)&&!(this.mob instanceof Chicken))
 	    		  this.mob.doHurtTarget(p_190102_1_);
+	    	  if(this.mob instanceof Chicken) {
+	    		  p_190102_1_.invulnerableTime=0;
+	    		  p_190102_1_.hurt(new EntityDamageSource("chicken",mob).bypassArmor().bypassInvul(), 1);
+	    		  mob.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH);
+	    	  }
+	    	  }
 	      }
 	      delay--;yigadelay--;
 	   }

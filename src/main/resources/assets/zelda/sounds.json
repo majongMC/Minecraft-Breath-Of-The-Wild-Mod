@@ -149,6 +149,36 @@
       }
     ]
   },
+  "lynel_death": {
+    "subtitle": "sound.zelda.lynel_death",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:lynel_death",
+        "stream": true
+      }
+    ]
+  },
+  "lynel_roar": {
+    "subtitle": "sound.zelda.lynel_roar",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:lynel_roar",
+        "stream": true
+      }
+    ]
+  },
+  "chicken_god": {
+    "subtitle": "sound.zelda.chicken_god",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:chicken_god",
+        "stream": true
+      }
+    ]
+  },
   "walking_guardian": {
     "subtitle": "sound.zelda.walking_guardian",
     "replace": "true",

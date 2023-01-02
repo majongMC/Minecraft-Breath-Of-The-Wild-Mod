@@ -1,9 +1,13 @@
 package com.majong.zelda.gui;
 
+import java.util.Random;
+
 import com.majong.zelda.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class OpenDialogBox {
 	public OpenDialogBox() {
@@ -13,7 +17,8 @@ public class OpenDialogBox {
 				break;
 			maxmessage++;
 		}
-		select=(int) (Math.random()*maxmessage);
+		//select=(int) (Math.random()*(maxmessage+1));
+		select=Mth.nextInt(RandomSource.create(), 0, maxmessage-1);
 		while(true) {
 			if(!hasvalue("yigateam.dialog."+select+"_"+length))
 				break;

@@ -3,6 +3,7 @@ package com.majong.zelda.event;
 import com.majong.zelda.api.overlays.ZeldaHealthBarApi;
 import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.GuardianEntity;
+import com.majong.zelda.entity.Lynel;
 import com.majong.zelda.entity.MollyBrinEntity;
 import com.majong.zelda.entity.WalkingGuardianEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
@@ -60,6 +61,15 @@ public class EntitySpottedEvent {
 			                            () -> (ServerPlayer) target
 			                    ),
 			                    new SoundPack(4,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
+				}
+			}
+			if(entity instanceof Lynel) {
+				if(entity.level.getGameTime()%20==10||entity.level.getGameTime()%20==11) {
+						Networking.SOUND.send(
+			                    PacketDistributor.PLAYER.with(
+			                            () -> (ServerPlayer) target
+			                    ),
+			                    new SoundPack(13,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
 				}
 			}
 			if(Linkage.isHinox(entity)) {

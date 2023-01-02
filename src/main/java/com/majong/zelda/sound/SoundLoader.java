@@ -26,4 +26,7 @@ public class SoundLoader {
 	public static final RegistryObject<SoundEvent> RADAR = SOUNDS.register("radar", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "radar")));
 	public static final RegistryObject<SoundEvent> MIPHA = SOUNDS.register("mipha", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "mipha")));
 	public static final RegistryObject<SoundEvent> TEMPLE = SOUNDS.register("temple", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "temple")));
+	public static final RegistryObject<SoundEvent> LYNEL_ROAR = SOUNDS.register("lynel_roar", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "lynel_roar")));
+	public static final RegistryObject<SoundEvent> LYNEL_DEATH = SOUNDS.register("lynel_death", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "lynel_death")));
+	public static final RegistryObject<SoundEvent> CHICKEN_GOD = SOUNDS.register("chicken_god", () -> new SoundEvent(new ResourceLocation(Utils.MOD_ID, "chicken_god")));
 }

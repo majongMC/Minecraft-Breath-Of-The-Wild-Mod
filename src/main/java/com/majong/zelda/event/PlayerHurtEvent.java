@@ -2,10 +2,13 @@ package com.majong.zelda.event;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
+import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
+import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,6 +18,12 @@ import net.minecraftforge.fml.common.Mod;
 public class PlayerHurtEvent {
 	@SubscribeEvent
 	public static void onPlayerHurt(LivingDamageEvent event) {
+		if(Math.random()<0.33&&event.getEntity() instanceof Chicken&&!event.getEntity().level.isClientSide&&event.getSource().getEntity()!=null&&event.getSource().getEntity() instanceof LivingEntity) {
+			Chicken chicken=(Chicken) event.getEntity();
+			chicken.goalSelector.addGoal(0,new DelayMeleeAttackGoal(chicken,1,true,1));
+			chicken.setTarget((LivingEntity) event.getSource().getEntity());
+			chicken.playSound(SoundLoader.CHICKEN_GOD.get());
+		}
 		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
 			event.setCanceled(TryReflect((Player) event.getEntity(),event.getSource().getEntity(),event.getAmount()));
 		}
@@ -22,7 +31,7 @@ public class PlayerHurtEvent {
 	public static boolean TryReflect(Player player,Entity source,float amount) {
 		long respondtime=player.level.getGameTime()-PlayerUseShield.PLAYER_LAST_USE_SHIELD.get(player);
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
-			if(source==null||!(source instanceof LivingEntity)||source instanceof Player)
+			if(source==null||!(source instanceof LivingEntity)||source instanceof Player||source instanceof Chicken)
 				return false;
 			float amountback=0;
 			float maxhealth=((LivingEntity)source).getMaxHealth();
@@ -42,7 +51,7 @@ public class PlayerHurtEvent {
 			source.setDeltaMovement(source.getDeltaMovement().add(mx,0.1, mz));
 			return true;
 		}
-		if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&source instanceof LivingEntity&&source!=player&&amount>0&&player.isShiftKeyDown()) {
+		if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&source instanceof LivingEntity&&source!=player&&amount>0&&player.isShiftKeyDown()&&!(source instanceof Chicken)) {
 			float amountback=0;
 			float maxhealth=((LivingEntity)source).getMaxHealth();
 			if(maxhealth>100) {

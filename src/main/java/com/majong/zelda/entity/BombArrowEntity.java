@@ -2,7 +2,6 @@ package com.majong.zelda.entity;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.network.Networking;
@@ -41,16 +40,7 @@ public class BombArrowEntity extends Arrow{
 	public void tick() {
 		super.tick();
 		if(!this.level.isClientSide) {
-			List<Player> playerlist= level.getEntitiesOfClass(Player.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
-					// TODO �Զ����ɵķ������
-					if(t instanceof Player) 
-						return true;
-					else
-						return false;
-				}});
+			List<Player> playerlist= level.getEntitiesOfClass(Player.class,this.getBoundingBox().inflate(20, 20, 20));
     		Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {
     			Player player=(Player) it.next();

@@ -59,12 +59,8 @@ public class RockGiantModel extends HierarchicalModel<RockGiantEntity> {
 		this.animate(entity.knockbAnimationState,RockGiantAnimation.ROCKGIANT_KNOCK_B,ageInTicks);
 		this.animate(entity.attackaAnimationState,RockGiantAnimation.ROCKGIANT_ATTACK_A,ageInTicks);
 		this.animate(entity.attackbAnimationState,RockGiantAnimation.ROCKGIANT_ATTACK_B,ageInTicks);
-		//ZeldaOverlays.y=netHeadYaw;
-		//ZeldaOverlays.p=headPitch;
 	}
 	private void animateWalk(float limbSwing, float limbSwingAmount) {
-		//ZeldaOverlays.ls=limbSwing;
-		//ZeldaOverlays.lsa=limbSwingAmount;
 		float swing=0.3F*limbSwingAmount*Mth.sin(limbSwing);
 		this.leftfoot.xRot=swing;
 		this.rightfoot.xRot=-swing;
@@ -80,7 +76,6 @@ public class RockGiantModel extends HierarchicalModel<RockGiantEntity> {
 	}
 	@Override
 	public ModelPart root() {
-		// TODO Auto-generated method stub
 		return this.root;
 	}
 }

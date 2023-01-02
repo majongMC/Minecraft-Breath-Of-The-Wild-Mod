@@ -3,8 +3,6 @@ package com.majong.zelda.event;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.RockGiantEntity;
-import com.majong.zelda.entity.YigaTeamMemberEntity;
-import com.majong.zelda.gui.OpenDialogBox;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.util.EntityFreezer;
@@ -39,15 +37,6 @@ public class PlayerUsualEvent {
 	}
 	@SubscribeEvent
 	public static void onPlayerRightClickEntity(EntityInteract event) {
-		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
-		{
-			if(event.getLevel().isClientSide) {
-				new OpenDialogBox();
-			}else {
-				if(!ZeldaConfig.NPCONLY.get())
-				((YigaTeamMemberEntity)event.getTarget()).activate();
-			}
-		}
 		Player player=event.getEntity();
 		if(player!=null&&!player.level.isClientSide) {
 			ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
