@@ -1,0 +1,14 @@
+{
+    "structures": [
+      {
+        "structure": "zelda:lynel_spawn",
+        "weight": 1
+      }
+    ],
+    "placement": {
+      "salt": 866666603,
+      "spacing": 40,
+      "separation": 20,
+      "type": "minecraft:random_spread"
+    }
+  }

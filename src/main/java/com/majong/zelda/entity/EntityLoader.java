@@ -30,16 +30,18 @@ public class EntityLoader {
 	 public static final RegistryObject<EntityType<RockGiantEntity>> ROCK_GIANT = ENTITY_TYPES.register("rock_giant", () -> EntityType.Builder.of(RockGiantEntity::new, MobCategory.MONSTER).sized(3, 3).build("rock_giant"));
 	 public static final RegistryObject<EntityType<BokoBrinEntity>> BOKO_BRIN = ENTITY_TYPES.register("boko_brin", () -> EntityType.Builder.of(BokoBrinEntity::new, MobCategory.MONSTER).sized(0.75F, 2F).build("boko_brin"));
 	 public static final RegistryObject<EntityType<YigaTeamMemberEntity>> YIGA_TEAM_MEMBER = ENTITY_TYPES.register("yiga_team_member", () -> EntityType.Builder.of(YigaTeamMemberEntity::new, MobCategory.MONSTER).sized(0.75F, 2F).build("yiga_team_member"));
+	 public static final RegistryObject<EntityType<Lynel>> LYNEL = ENTITY_TYPES.register("lynel", () -> EntityType.Builder.of(Lynel::new, MobCategory.MONSTER).sized(1F, 3F).build("lynel"));
 	 @SubscribeEvent
 	    public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-		 event.put(GUARDIAN.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).build());
-		 event.put(WALKING_GUARDIAN.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 120D).add(Attributes.ATTACK_DAMAGE,0D).add(Attributes.MOVEMENT_SPEED, 0.25D).build());
+		 event.put(GUARDIAN.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.FOLLOW_RANGE, 64D).build());
+		 event.put(WALKING_GUARDIAN.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 120D).add(Attributes.ATTACK_DAMAGE,0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.FOLLOW_RANGE, 64D).build());
 		 event.put(MOLLY_BRIN.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).build());
 		 event.put(BOMB.get(), BombEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1D).build());
 		 event.put(MOVING_BLOCK_CARRIER.get(), MovingBlockCarrierEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1024D).build());
-		 event.put(ROCK_GIANT.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_KNOCKBACK,5D).add(Attributes.KNOCKBACK_RESISTANCE,1D).build());
+		 event.put(ROCK_GIANT.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_KNOCKBACK,5D).add(Attributes.KNOCKBACK_RESISTANCE,1D).add(Attributes.FOLLOW_RANGE, 48D).build());
 		 event.put(BOKO_BRIN.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,3D).add(Attributes.MOVEMENT_SPEED, 0.24D).add(Attributes.ATTACK_KNOCKBACK,0D).build());
 		 event.put(YIGA_TEAM_MEMBER.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.ATTACK_SPEED,2D).add(Attributes.MOVEMENT_SPEED, 0.24D).build());
+		 event.put(LYNEL.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 500D).add(Attributes.ATTACK_DAMAGE,20D).add(Attributes.ATTACK_SPEED,4D).add(Attributes.MOVEMENT_SPEED, 0.38D).add(Attributes.FOLLOW_RANGE, 64D).build());
 	    }
 	 }
 

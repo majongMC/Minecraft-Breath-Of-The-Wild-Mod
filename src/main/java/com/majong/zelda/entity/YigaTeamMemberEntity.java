@@ -4,6 +4,7 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.event.PlayerHurtEvent;
+import com.majong.zelda.gui.OpenDialogBox;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
@@ -19,6 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -112,7 +114,19 @@ public class YigaTeamMemberEntity extends Monster{
 			this.spawnAtLocation(new ItemStack(Items.EMERALD,1));
 		}
 	}
-	public void activate() {
+	@Override
+	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+		if(!isactivated()) {
+			if(this.level.isClientSide) {
+				new OpenDialogBox();
+			}else {
+				if(!ZeldaConfig.NPCONLY.get())
+					activate();
+			}
+		}
+	     return super.mobInteract(player, hand);
+	   }
+	private void activate() {
 		this.entityData.set(ACTIVATED, true);
 		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemLoader.CHOPPING_WIND_BLADE.get(),1));
 		this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,30));

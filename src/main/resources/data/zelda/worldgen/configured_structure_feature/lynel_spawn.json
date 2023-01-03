@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:village",
+    "config": {
+      "start_pool": "zelda:lynel_spawn/start_pool",
+      "size": 1
+    },
+    "biomes": "#zelda:has_structure/lynel_spawn",
+    "adapt_noise": false,
+    "spawn_overrides": {}
+  }

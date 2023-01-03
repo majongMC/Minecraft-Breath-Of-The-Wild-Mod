@@ -15,6 +15,7 @@ public class EntityRendererSubscriber {
         event.registerLayerDefinition(BombModel.LAYER_LOCATION, BombModel::createBodyLayer);
         event.registerLayerDefinition(RockGiantModel.LAYER_LOCATION, RockGiantModel::createBodyLayer);
         event.registerLayerDefinition(BokoBrinModel.LAYER_LOCATION, BokoBrinModel::createBodyLayer);
+        event.registerLayerDefinition(LynelModel.LAYER_LOCATION, LynelModel::createBodyLayer);
     }
 	@SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
@@ -32,6 +33,6 @@ public class EntityRendererSubscriber {
         event.registerEntityRenderer(EntityLoader.ROCK_GIANT.get(), RockGiantRenderer::new);
         event.registerEntityRenderer(EntityLoader.BOKO_BRIN.get(), BokoBrinRenderer::new);
         event.registerEntityRenderer(EntityLoader.YIGA_TEAM_MEMBER.get(), YigaTeamMemberRenderer::new);
-        
+        event.registerEntityRenderer(EntityLoader.LYNEL.get(), LynelRenderer::new);
     }
 }

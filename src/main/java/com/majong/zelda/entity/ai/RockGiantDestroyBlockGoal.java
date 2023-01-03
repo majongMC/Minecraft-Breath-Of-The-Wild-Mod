@@ -49,10 +49,10 @@ public class RockGiantDestroyBlockGoal extends Goal{
 		}
 		return true;
 	}
-	@Override
+	/*@Override
 	public void stop() {
 		this.attackprocess=0;
-	}
+	}*/
 	@Override
 	 public void tick() {
 		if(attackprocess==10) {

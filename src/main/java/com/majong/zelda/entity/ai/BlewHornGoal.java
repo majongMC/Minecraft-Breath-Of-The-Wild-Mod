@@ -36,14 +36,6 @@ public class BlewHornGoal extends Goal{
 		this.attackprocess=0;
 	}
 	@Override
-	public boolean canContinueToUse() {
-		return this.canUse();
-	}
-	@Override
-	public void stop() {
-		this.start();
-	}
-	@Override
 	public void tick() {
 		if(attackprocess==0) {
 			this.attacker.level.broadcastEntityEvent(attacker,BokoBrinEntity.BLEW_EVENT);

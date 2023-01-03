@@ -4,7 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ZeldaConfigClient {
 	public static ForgeConfigSpec CLIENT_CONFIG;
-	public static ForgeConfigSpec.IntValue GUARDIAN,WALKING_GUARDIAN,FIGHT,HINOX,ROCK_GIANT;
+	public static ForgeConfigSpec.IntValue GUARDIAN,WALKING_GUARDIAN,FIGHT,FIGHT_ORIGINAL,HINOX,ROCK_GIANT;
 	public static ForgeConfigSpec.BooleanValue DISABLE_MUSIC;
 	public static ForgeConfigSpec.BooleanValue DISPLAY_ANGLE;
 	public static ForgeConfigSpec.DoubleValue CAMERA_SHAKE;
@@ -14,6 +14,7 @@ public class ZeldaConfigClient {
         GUARDIAN = CLIENT_BUILDER.comment("Guardian Misic Length 守护者音乐长度").defineInRange("guardian", 1200, 0, Integer.MAX_VALUE);
         WALKING_GUARDIAN = CLIENT_BUILDER.comment("Walking Guardian Misic Length 行走的守护者音乐长度").defineInRange("walking_guardian", 1800, 0, Integer.MAX_VALUE);
         FIGHT = CLIENT_BUILDER.comment("Fight Misic Length 战斗音乐长度").defineInRange("fight", 2060, 0, Integer.MAX_VALUE);
+        FIGHT_ORIGINAL = CLIENT_BUILDER.comment("Fight Original Misic Length 莱尼尔/依盖队成员战斗音乐长度").defineInRange("fight_original", 2200, 0, Integer.MAX_VALUE);
         HINOX = CLIENT_BUILDER.comment("Hinox Misic Length 西诺克斯音乐长度").defineInRange("hinox", 2200, 0, Integer.MAX_VALUE);
         ROCK_GIANT =CLIENT_BUILDER.comment("Rock Giant Misic Length 岩石巨人音乐长度").defineInRange("rock_giant", 1200, 0, Integer.MAX_VALUE);
         DISABLE_MUSIC =CLIENT_BUILDER.comment("Disable Music 禁用音乐，设置为true时不再播放战斗音乐").define("disable_music", false);

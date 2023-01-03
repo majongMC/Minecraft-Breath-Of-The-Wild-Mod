@@ -93,4 +93,8 @@ public class ItemLoader {
             () -> new ForgeSpawnEggItem(EntityLoader.ROCK_GIANT, 13948116, 7631988, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> YIGA_TEAM_MEMBER_SPAWN_EGG = ITEMS.register("yiga_team_member_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityLoader.YIGA_TEAM_MEMBER, 16299861, 14431027, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+	public static final RegistryObject<Item> LYNEL_SPAWN_EGG = ITEMS.register("lynel_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityLoader.LYNEL, 13413697, 9860685, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
+	public static final RegistryObject<Item> BEAST_GOD_SWORD = ITEMS.register("beast_god_sword", BeastGodSword::new);
+	public static final RegistryObject<Item> BEAST_GOD_BOW = ITEMS.register("beast_god_bow", BeastGodBow::new);
 }
