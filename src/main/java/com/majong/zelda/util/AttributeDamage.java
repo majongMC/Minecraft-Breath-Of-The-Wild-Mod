@@ -4,8 +4,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.majong.zelda.api.util.AttributeDamageApi;
 import com.majong.zelda.config.ZeldaConfig;
+import com.majong.zelda.entity.Lynel;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.tag.EntityTypeTag;
@@ -14,6 +17,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -78,22 +82,28 @@ public class AttributeDamage {
     		}
 		}
 	}
-    public static void ancientdamage(LivingEntity living,Entity attacker) {
+    public static void ancientdamage(LivingEntity living,@Nullable Entity attacker) {
     	if(!living.level.isClientSide) {
 			Iterator<Class<? extends LivingEntity>> it=AttributeDamageApi.ANCIENT_RESTRAINTED.iterator();
 	    	while(it.hasNext())
 			{
 	    		Class<? extends LivingEntity> restrainted=it.next();
 	    		if(restrainted.isInstance(living)&&ZeldaConfig.ATTRIBUTE.get()) {
-	    			living.hurt(new EntityDamageSource("ancient",attacker),32767);
+	    			living.hurt(new DamageSource("ancient"),32767);
 	    			return;
 	    		}
 			}
 	    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ANCIENT_RESTRAINTED)))
-	    		{living.hurt(new EntityDamageSource("arrow",attacker),32767);return;}
-	    	if((living.getMaxHealth()<=20&&!(living instanceof Player))) {
+	    	{
+	    		if(attacker!=null)
+	    			living.hurt(new EntityDamageSource("arrow",attacker),32767);
+	    		else
+	    			living.hurt(new DamageSource("arrow"),32767);
+	    		return;
+	    	}
+	    	if((living.getMaxHealth()<=20&&!(living instanceof Player))||living instanceof Lynel) {
 	    		living.teleportTo(living.getX(), -80, living.getZ());
-	    		if(attacker instanceof Player) {
+	    		if(attacker!=null&&attacker instanceof Player) {
 	    			Networking.SOUND.send(
 		                    PacketDistributor.PLAYER.with(
 		                            () -> (ServerPlayer) attacker
@@ -107,10 +117,18 @@ public class AttributeDamage {
 				living.kill();
 				return;
 			}*/
-			if(living.canChangeDimensions())
-				living.hurt(new EntityDamageSource("ancient",attacker),20);
-			else
-				living.hurt(new EntityDamageSource("ancient",attacker),40);
+	    	if(living.canChangeDimensions()) {
+				if(attacker!=null)
+					living.hurt(new EntityDamageSource("ancient",attacker),20);
+				else
+					living.hurt(new DamageSource("ancient"),20);
+			}
+			else {
+				if(attacker!=null)
+					living.hurt(new EntityDamageSource("ancient",attacker),40);
+				else
+					living.hurt(new DamageSource("ancient"),40);
+			}
 		}
 	}
     /*public static boolean ischaoisland(Level Level,BlockPos pos) {

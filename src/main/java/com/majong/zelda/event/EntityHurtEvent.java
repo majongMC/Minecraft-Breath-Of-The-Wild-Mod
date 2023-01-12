@@ -1,5 +1,8 @@
 package com.majong.zelda.event;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
@@ -15,14 +18,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber()
-public class PlayerHurtEvent {
+public class EntityHurtEvent {
 	@SubscribeEvent
-	public static void onPlayerHurt(LivingDamageEvent event) {
+	public static void onEntityHurt(LivingDamageEvent event) {
 		if(Math.random()<0.33&&event.getEntity() instanceof Chicken&&!event.getEntity().level.isClientSide&&event.getSource().getEntity()!=null&&event.getSource().getEntity() instanceof LivingEntity) {
 			Chicken chicken=(Chicken) event.getEntity();
-			chicken.goalSelector.addGoal(0,new DelayMeleeAttackGoal(chicken,1,true,1));
-			chicken.setTarget((LivingEntity) event.getSource().getEntity());
 			chicken.playSound(SoundLoader.CHICKEN_GOD.get(),1,1);
+			List<Chicken> chickenlist= chicken.level.getEntitiesOfClass(Chicken.class,chicken.getBoundingBox().inflate(16, 16, 16));
+			Iterator<Chicken> it=chickenlist.iterator();
+			while(it.hasNext()) {
+				Chicken chickens=it.next();
+				chickens.goalSelector.addGoal(0,new DelayMeleeAttackGoal(chickens,1,true,1));
+				chickens.setTarget((LivingEntity) event.getSource().getEntity());
+			}
 		}
 		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
 			event.setCanceled(TryReflect((Player) event.getEntity(),event.getSource().getEntity(),event.getAmount()));

@@ -3,7 +3,7 @@ package com.majong.zelda.entity;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
-import com.majong.zelda.event.PlayerHurtEvent;
+import com.majong.zelda.event.EntityHurtEvent;
 import com.majong.zelda.gui.OpenDialogBox;
 import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.network.Networking;
@@ -143,7 +143,7 @@ public class YigaTeamMemberEntity extends Monster{
 			return;
 		entity.invulnerableTime=20;
 		if(entity instanceof Player) {
-			if(PlayerHurtEvent.TryReflect((Player) entity, this, damage))
+			if(EntityHurtEvent.TryReflect((Player) entity, this, damage))
 				return;
 		}
 		if(entity.getHealth()>damage) {
