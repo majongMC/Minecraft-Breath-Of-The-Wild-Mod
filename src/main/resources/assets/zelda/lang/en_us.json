@@ -82,6 +82,7 @@
 "tooltip.zelda.conductive":"Conductive",
 "death.attack.yigadamage":"%1$s was slain by Yiga Team Member",
 "death.attack.chicken":"%1$s was punished by the chicken god",
+"death.attack.ancient":"%1$s was teleported to ancient",
 "key.category.zelda":"Breath Of The Wild",
 "key.detonate":"Detonate Bomb/Unfreeze/Loose Magnet",
 "key.skill":"Use Skill"

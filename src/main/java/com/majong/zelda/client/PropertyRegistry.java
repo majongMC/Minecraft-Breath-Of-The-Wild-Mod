@@ -1,6 +1,5 @@
 package com.majong.zelda.client;
 
-import com.majong.zelda.Utils;
 import com.majong.zelda.item.ItemLoader;
 
 import net.minecraft.client.renderer.item.ItemProperties;

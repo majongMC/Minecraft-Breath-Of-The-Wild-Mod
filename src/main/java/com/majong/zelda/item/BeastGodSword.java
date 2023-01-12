@@ -10,7 +10,6 @@ public class BeastGodSword extends AxeItem{
 
 	public BeastGodSword() {
 		super(CustomItemTier.BEASTGOD, 16, -3.2F, (new Item.Properties()).tab(Utils.ZELDA_CREATIVE_TAB));
-		// TODO Auto-generated constructor stub
 	}
 
 }
