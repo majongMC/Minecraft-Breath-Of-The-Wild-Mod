@@ -74,9 +74,9 @@ public class ShootupSkill extends Skill{
 	      abstractarrow.shoot(0,1,0, 1.6F, (float)(3 - lynel.level.getDifficulty().getId()));
 	      abstractarrow1.shoot(0,1,0, 1.6F, (float)(3 - lynel.level.getDifficulty().getId()));
 	      abstractarrow2.shoot(0,1,0, 1.6F, (float)(3 - lynel.level.getDifficulty().getId()));
-	      abstractarrow.setBaseDamage(abstractarrow.getBaseDamage()+3);
-	      abstractarrow1.setBaseDamage(abstractarrow1.getBaseDamage()+3);
-	      abstractarrow2.setBaseDamage(abstractarrow2.getBaseDamage()+3);
+	      abstractarrow.setBaseDamage(abstractarrow.getBaseDamage()+8);
+	      abstractarrow1.setBaseDamage(abstractarrow1.getBaseDamage()+8);
+	      abstractarrow2.setBaseDamage(abstractarrow2.getBaseDamage()+8);
 	      lynel.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (lynel.getRandom().nextFloat() * 0.4F + 0.8F));
 	      lynel.level.addFreshEntity(abstractarrow);
 	      lynel.level.addFreshEntity(abstractarrow1);

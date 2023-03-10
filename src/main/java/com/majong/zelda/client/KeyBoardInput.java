@@ -19,17 +19,17 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class KeyBoardInput {
-	public static final KeyMapping SKILL_KEY = new KeyMapping("key.skill",
+	public static final KeyMapping SKILL_KEY = new KeyMapping("key.zelda.skill",
             KeyConflictContext.IN_GAME,
             KeyModifier.NONE,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_V,
             "key.category." + Utils.MOD_ID);
-	public static final KeyMapping DETONATE_KEY = new KeyMapping("key.detonate",
+	public static final KeyMapping DETONATE_KEY = new KeyMapping("key.zelda.detonate",
             KeyConflictContext.IN_GAME,
             KeyModifier.NONE,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_C,
+            GLFW.GLFW_KEY_B,
             "key.category." + Utils.MOD_ID);
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent

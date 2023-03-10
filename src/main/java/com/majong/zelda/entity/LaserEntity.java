@@ -47,22 +47,9 @@ public class LaserEntity extends ThrowableProjectile{
 			this.explode();
 			return;
 		}
-		/*if(this.onGround)
-		{
-			explode();
-			return;
-		}
-		LivingEntity target=this.level.getNearestEntity(LivingEntity.class,TargetingConditions.forCombat().range(range), null, this.getX(), this.getY(), this.getZ(),this.getBoundingBox().inflate(range, range, range));
-		if(target!=null&&target!=owner) {
-			if(target instanceof Player) {
-				trysheldreflect((Player) target);
-			}
-			else
-				explode();
-		}*/
 		}
 		if(this.level.isClientSide) {
-			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY()+0.5, this.getZ(), 0, 0, 0);
 		}
 	}
 	protected void onHitEntity(EntityHitResult result) {

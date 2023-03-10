@@ -26,7 +26,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class PotTileEntity extends BlockEntity{
 	private ItemStack slot[]=new ItemStack[5];
 	private Player user;
-	private boolean using=false;
+	public boolean using=false;
 	private int process=0;
 	public PotTileEntity(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(TileEntityLoader.POT_TILE_ENTITY.get(),pWorldPosition,pBlockState);
@@ -39,6 +39,7 @@ public class PotTileEntity extends BlockEntity{
 			for(int i=0;i<5;i++) {
 				if(slot[i].isEmpty()) {
 					slot[i]=itemstackIn.split(1);
+					this.getLevel().sendBlockUpdated(this.getBlockPos(),this.getLevel().getBlockState(this.getBlockPos()),this.getLevel().getBlockState(this.getBlockPos()),1);
 					setChanged(this.level, this.worldPosition, this.getBlockState());
 					return itemstackIn;
 				}
@@ -50,6 +51,7 @@ public class PotTileEntity extends BlockEntity{
 			if(!slot[i].isEmpty()) {
 				ItemStack back=slot[i].copy();
 				slot[i]=ItemStack.EMPTY;
+				this.getLevel().sendBlockUpdated(this.getBlockPos(),this.getLevel().getBlockState(this.getBlockPos()),this.getLevel().getBlockState(this.getBlockPos()),1);
 				setChanged(this.level, this.worldPosition, this.getBlockState());
 				return back;
 			}
@@ -61,13 +63,11 @@ public class PotTileEntity extends BlockEntity{
 			this.user=user;
 			this.using=true;
 			this.process=0;
-			//int type=5;
 			boolean failed=false;
 			for(int i=0;i<5;i++) {
 				if(this.slot[i].isEmpty())
 					break;
 				if(!this.slot[i].isEdible()) {
-					//type+=2;
 					failed=true;
 					break;
 				}
@@ -78,25 +78,6 @@ public class PotTileEntity extends BlockEntity{
 				level.playSound(null,worldPosition, SoundLoader.COOKING.get(), SoundSource.BLOCKS, 10f, 1f);
 			this.getLevel().sendBlockUpdated(this.getBlockPos(),this.getLevel().getBlockState(this.getBlockPos()),this.getLevel().getBlockState(this.getBlockPos()),1);
 			setChanged(this.level, this.worldPosition, this.getBlockState());
-			/*List<Player> playerlist= Level.getEntitiesWithinAABB(Player.class,user.getBoundingBox().grow(20, 20, 20) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
-					// TODO �Զ����ɵķ������
-					if(t instanceof Player) 
-						return true;
-					else
-						return false;
-				}});
-    		Iterator<Player> it=playerlist.iterator();
-    		while(it.hasNext()) {
-    			Player player=(Player) it.next();
-    			Networking.SOUND.send(
-	                    PacketDistributor.PLAYER.with(
-	                            () -> (ServerPlayerEntity) player
-	                    ),
-	                    new SoundPack(type,this.getPos()));
-    		}*/
 		}
 	}
 	private void finish() {
@@ -195,13 +176,17 @@ public class PotTileEntity extends BlockEntity{
     }
 	public CompoundTag getUpdateTag() {
         CompoundTag tag=this.saveWithoutMetadata();
-        tag.putBoolean("using", using);
+        tag.putBoolean("us", using);
+        for(int i=0;i<5;i++)
+        	tag.put("s"+i, slot[i].serializeNBT());
         return tag;
     }
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		CompoundTag tag = pkt.getTag();
-		this.using=tag.getBoolean("using");
+		this.using=tag.getBoolean("us");
+		for(int i=0;i<5;i++)
+			this.slot[i]=ItemStack.of(tag.getCompound("s"+i));
 	}
 	public ItemStack getStack(int index) {
 		return this.slot[index];

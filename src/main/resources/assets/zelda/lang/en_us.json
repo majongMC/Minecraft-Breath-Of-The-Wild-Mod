@@ -75,6 +75,7 @@
 "sound.zelda.lynel_death":"Lynel:death",
 "sound.zelda.lynel_roar":"Lynel:roar",
 "sound.zelda.chicken_god":"Chicken God:alarm",
+"sound.zelda.rock_giant_destroy":"Rock Giant:destroy",
 "sound.zelda.walking_guardian":"Walking Guardian:fight",
 "tooltip.zelda.temple":"Temple",
 "tooltip.shikastone.researchtarget":"Research Target",
@@ -84,6 +85,6 @@
 "death.attack.chicken":"%1$s was punished by the chicken god",
 "death.attack.ancient":"%1$s was teleported to ancient",
 "key.category.zelda":"Breath Of The Wild",
-"key.detonate":"Detonate Bomb/Unfreeze/Loose Magnet",
-"key.skill":"Use Skill"
+"key.zelda.detonate":"Detonate Bomb/Unfreeze/Loose Magnet",
+"key.zelda.skill":"Use Skill"
 }

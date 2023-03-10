@@ -1,5 +1,7 @@
 package com.majong.zelda.entity;
 
+import javax.annotation.Nullable;
+
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
@@ -18,12 +20,15 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -34,6 +39,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.PacketDistributor;
 
 public class YigaTeamMemberEntity extends Monster{
@@ -126,6 +132,13 @@ public class YigaTeamMemberEntity extends Monster{
 		}
 	     return super.mobInteract(player, hand);
 	   }
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag p_21438_) {
+		SpawnGroupData data=super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		this.setLeftHanded(false);
+		return data;
+	}
 	private void activate() {
 		this.entityData.set(ACTIVATED, true);
 		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemLoader.CHOPPING_WIND_BLADE.get(),1));

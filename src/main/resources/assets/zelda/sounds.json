@@ -179,6 +179,13 @@
       }
     ]
   },
+  "rock_giant_destroy": {
+    "subtitle": "sound.zelda.rock_giant_destroy",
+    "replace": "true",
+    "sounds": [
+      "item/totem/use_totem"
+    ]
+  },
   "walking_guardian": {
     "subtitle": "sound.zelda.walking_guardian",
     "replace": "true",
