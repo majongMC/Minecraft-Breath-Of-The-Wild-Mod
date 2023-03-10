@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.majong.zelda.api.effects.CameraShakeApi;
 import com.majong.zelda.entity.RockGiantEntity;
+import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -49,15 +49,11 @@ public class RockGiantDestroyBlockGoal extends Goal{
 		}
 		return true;
 	}
-	/*@Override
-	public void stop() {
-		this.attackprocess=0;
-	}*/
 	@Override
 	 public void tick() {
 		if(attackprocess==10) {
 			this.destroy();
-			owner.level.playSound(null,owner.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.BLOCKS, 10f, 1f);
+			owner.level.playSound(null,owner.blockPosition(), SoundLoader.ROCK_GIANT_DESTROY.get(), SoundSource.BLOCKS, 10f, 1f);
 			List<Player> playerlist=this.owner.level.getEntitiesOfClass(Player.class, this.owner.getBoundingBox().inflate(12));
 			Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {

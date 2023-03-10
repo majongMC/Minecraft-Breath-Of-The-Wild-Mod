@@ -51,7 +51,7 @@ public class LaserEntity extends ThrowableProjectile{
 		}
 		}
 		if(this.level.isClientSide) {
-			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY()+0.5, this.getZ(), 0, 0, 0);
 		}
 	}
 	@Override

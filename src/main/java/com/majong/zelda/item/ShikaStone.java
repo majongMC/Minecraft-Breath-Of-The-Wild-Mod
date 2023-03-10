@@ -201,14 +201,19 @@ public class ShikaStone extends Item{
 	private BlockPos LocateTargetBlock(Level worldIn,BlockPos basepos,Block targetblock) {
 		int basex=basepos.getX();
 		int basez=basepos.getZ();
-		for(int x=basex-8;x<basex+8;x++)
-			for(int z=basez-8;z<basez+8;z++)
-				for(int y=-64;y<319;y++) {
-					BlockPos pos=new BlockPos(x,y,z);
-					Block block=worldIn.getBlockState(pos).getBlock();
-					if(block==targetblock)
-						return pos;
-				}
+		int basey=basepos.getY();
+		for(int r=0;r<16;r++) {
+			for(int dx=-r;dx<=r;dx++)
+				for(int dz=-r;dz<=r;dz++)
+					for(int dy=-r;dy<=r;dy++) {
+						if(Math.abs(dx)==r||Math.abs(dy)==r||Math.abs(dz)==r) {
+							BlockPos pos=new BlockPos(basex+dx,basey+dy,basez+dz);
+							Block block=worldIn.getBlockState(pos).getBlock();
+							if(block==targetblock)
+								return pos;
+						}
+					}
+		}	
 		return null;
 	}
 }
