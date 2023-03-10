@@ -51,6 +51,6 @@
 "tooltip.zelda.conductive":"Conductive",
 "death.attack.yigadamage":"%1$s was slain by Yiga Assassin",
 "key.category.zelda":"Breath Of The Wild",
-"key.detonate":"Detonate Bomb/Unfreeze/Loose Magnet",
-"key.skill":"Use Skill"
+"key.zelda.detonate":"Detonate Bomb/Unfreeze/Loose Magnet",
+"key.zelda.skill":"Use Skill"
 }

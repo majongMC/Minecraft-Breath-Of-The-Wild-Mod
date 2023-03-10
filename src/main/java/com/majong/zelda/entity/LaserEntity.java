@@ -35,7 +35,6 @@ public class LaserEntity extends ThrowableEntity{
 	public static final DataParameter<Integer> PITCH = EntityDataManager.defineId(LaserEntity.class, DataSerializers.INT);
 	private long spawntime=0;
 	private LivingEntity owner;
-	private float range=0.5F;
 	public LaserEntity(EntityType<? extends ThrowableEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
 		this.setNoGravity(true);
@@ -51,22 +50,9 @@ public class LaserEntity extends ThrowableEntity{
 			this.kill();
 			return;
 		}
-		/*if(this.onGround)
-		{
-			explode();
-			return;
-		}
-		LivingEntity target=this.level.getNearestEntity(LivingEntity.class,new EntityPredicate().range(range), null, this.getX(), this.getY(), this.getZ(),this.getBoundingBox().inflate(range, range, range));
-		if(target!=null&&target!=owner) {
-			if(target instanceof PlayerEntity) {
-				trysheldreflect((PlayerEntity) target);
-			}
-			else
-				explode();
-		}*/
 		}
 		if(this.level.isClientSide) {
-			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+			level.addAlwaysVisibleParticle(ParticleTypes.CLOUD, this.getX(), this.getY()+0.5, this.getZ(), 0, 0, 0);
 		}
 	}
 	protected void onHitEntity(EntityRayTraceResult result) {
@@ -162,7 +148,6 @@ public class LaserEntity extends ThrowableEntity{
 	private void reflect(PlayerEntity player) {
 		this.setowner(player);
 		this.setDeltaMovement(this.getDeltaMovement().reverse());
-		this.range=1.5F;
 	}
 	public void setowner(LivingEntity owner) {
 		this.owner=owner;

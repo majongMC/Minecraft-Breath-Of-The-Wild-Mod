@@ -6,7 +6,6 @@ import com.majong.zelda.entity.ai.GuardianAi;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +17,6 @@ public class GuardianEntity extends MonsterEntity{
 		super(type, worldIn);
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(2,new GuardianAi(this));
-		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 50.0F));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(3, new ChangeDistanceNearestAttackableTargetGoal<>(this, PlayerEntity.class,1, true,false,48));
 		this.getAttributes().getInstance(Attributes.MAX_HEALTH);

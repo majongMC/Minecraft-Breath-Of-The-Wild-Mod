@@ -36,14 +36,6 @@ public class BlewHornGoal extends Goal{
 		this.attacker.level.playSound(null,attacker.blockPosition(), SoundLoader.HORN.get(), SoundCategory.BLOCKS, 10f, 1f);
 	}
 	@Override
-	public boolean canContinueToUse() {
-		return this.canUse();
-	}
-	@Override
-	public void stop() {
-		this.start();
-	}
-	@Override
 	public void tick() {
 		if(attackprocess<50) {
 			if(attackprocess%10==1)

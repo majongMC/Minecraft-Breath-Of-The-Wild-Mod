@@ -51,15 +51,8 @@ public class GuardianAi extends Goal{
 		this.attackprocess=0;
 	}
 	@Override
-	public boolean canContinueToUse() {
-		return this.canUse();
-	}
-	@Override
-	public void stop() {
-		this.start();
-	}
-	@Override
 	 public void tick() {
+		attacker.getLookControl().setLookAt(targetentity.getX(),targetentity.getEyeY(), targetentity.getZ());
 		 if(attackprocess<95) {
 			 attackprocess++;
 			 this.targetlocation[0]=targetentity.getX();

@@ -34,12 +34,12 @@ public class EntityLoader {
 	 @SubscribeEvent
 	    public static void setupAttributes(FMLCommonSetupEvent event) {
 		 event.enqueueWork(() -> {
-			 GlobalEntityTypeAttributes.put(GUARDIAN.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).build());
-			 GlobalEntityTypeAttributes.put(WALKING_GUARDIAN.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 120D).add(Attributes.ATTACK_DAMAGE,0D).add(Attributes.MOVEMENT_SPEED, 0.25D).build());
+			 GlobalEntityTypeAttributes.put(GUARDIAN.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.FOLLOW_RANGE, 64D).build());
+			 GlobalEntityTypeAttributes.put(WALKING_GUARDIAN.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 120D).add(Attributes.ATTACK_DAMAGE,0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.FOLLOW_RANGE, 64D).build());
 			 GlobalEntityTypeAttributes.put(MOLLY_BRIN.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).build());
 			 GlobalEntityTypeAttributes.put(BOMB.get(), BombEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1D).build());
 			 GlobalEntityTypeAttributes.put(MOVING_BLOCK_CARRIER.get(), MovingBlockCarrierEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 1024D).build());
-			 GlobalEntityTypeAttributes.put(ROCK_GIANT.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_KNOCKBACK,5D).add(Attributes.KNOCKBACK_RESISTANCE,1D).build());
+			 GlobalEntityTypeAttributes.put(ROCK_GIANT.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 200D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.ATTACK_KNOCKBACK,5D).add(Attributes.KNOCKBACK_RESISTANCE,1D).add(Attributes.FOLLOW_RANGE, 48D).build());
 			 GlobalEntityTypeAttributes.put(POK_BRIN.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.24D).build());
 			 GlobalEntityTypeAttributes.put(YIGA_TEAM_MEMBER.get(), MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ATTACK_DAMAGE,5D).add(Attributes.MOVEMENT_SPEED, 0.24D).build());
 	        });

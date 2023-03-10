@@ -39,15 +39,6 @@ public class PlayerUsualEvent {
 	}
 	@SubscribeEvent
 	public static void onPlayerRightClickEntity(EntityInteract event) {
-		if(event.getTarget().getType()==EntityLoader.YIGA_TEAM_MEMBER.get()&&!((YigaTeamMemberEntity)event.getTarget()).isactivated())
-		{
-			if(event.getWorld().isClientSide) {
-				new OpenDialogBox();
-			}else {
-				if(!ZeldaConfig.NPCONLY.get())
-					((YigaTeamMemberEntity)event.getTarget()).activate();
-			}
-		}
 		PlayerEntity player=event.getPlayer();
 		if(player!=null&&!player.level.isClientSide) {
 			ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);

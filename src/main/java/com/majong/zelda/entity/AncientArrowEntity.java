@@ -2,7 +2,6 @@ package com.majong.zelda.entity;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
@@ -37,16 +36,7 @@ public class AncientArrowEntity extends ArrowEntity{
 	public void tick() {
 		super.tick();
 		if(!this.level.isClientSide) {
-			List<PlayerEntity> playerlist= level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
-					// TODO 自动生成的方法存根
-					if(t instanceof PlayerEntity) 
-						return true;
-					else
-						return false;
-				}});
+			List<PlayerEntity> playerlist= level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20));
     		Iterator<PlayerEntity> it=playerlist.iterator();
     		while(it.hasNext()) {
     			PlayerEntity player=(PlayerEntity) it.next();
