@@ -1,16 +1,16 @@
 package com.majong.zelda.util;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.Util;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
 public class BiomeUtil {
-	public static String getBiomeName(Biome biome,World world) {
-		ResourceLocation biomeBaseKey = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
+	public static String getBiomeName(Biome biome,Level world) {
+		ResourceLocation biomeBaseKey = world.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome);
 		String key = Util.makeDescriptionId("biome", biomeBaseKey);
-		return new TranslationTextComponent(key).getString();
+		return Component.translatable(key).getString();
 	}
 }

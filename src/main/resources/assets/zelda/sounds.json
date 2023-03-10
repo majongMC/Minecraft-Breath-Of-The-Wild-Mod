@@ -1,6 +1,6 @@
 {
   "guardian": {
-    "subtitle": "guardian",
+    "subtitle": "sound.zelda.guardian",
     "replace": "true",
     "sounds": [
       {
@@ -10,7 +10,7 @@
     ]
   },
   "wake_up": {
-    "subtitle": "wake_up",
+    "subtitle": "sound.zelda.wake_up",
     "replace": "true",
     "sounds": [
       {
@@ -20,7 +20,7 @@
     ]
   },
   "horn": {
-    "subtitle": "horn",
+    "subtitle": "sound.zelda.horn",
     "replace": "true",
     "sounds": [
       {
@@ -29,18 +29,18 @@
       }
     ]
   },
-  "mifa": {
-    "subtitle": "mipha",
+  "mipha": {
+    "subtitle": "sound.zelda.mipha",
     "replace": "true",
     "sounds": [
       {
-        "name": "zelda:mifa",
+        "name": "zelda:mipha",
         "stream": true
       }
     ]
   },
   "red_envelope": {
-    "subtitle": "red_envelope",
+    "subtitle": "sound.zelda.red_envelope",
     "replace": "true",
     "sounds": [
       {
@@ -50,7 +50,7 @@
     ]
   },
   "rock_giant": {
-    "subtitle": "rock_giant",
+    "subtitle": "sound.zelda.rock_giant",
     "replace": "true",
     "sounds": [
       {
@@ -59,18 +59,18 @@
       }
     ]
   },
-  "sinox": {
-    "subtitle": "sinox",
+  "hinox": {
+    "subtitle": "sound.zelda.hinox",
     "replace": "true",
     "sounds": [
       {
-        "name": "zelda:sinox",
+        "name": "zelda:hinox",
         "stream": true
       }
     ]
   },
   "dead": {
-    "subtitle": "dead",
+    "subtitle": "sound.zelda.dead",
     "replace": "true",
     "sounds": [
       {
@@ -80,7 +80,7 @@
     ]
   },
   "fight": {
-    "subtitle": "fight",
+    "subtitle": "sound.zelda.fight",
     "replace": "true",
     "sounds": [
       {
@@ -90,7 +90,7 @@
     ]
   },
   "fight_original": {
-    "subtitle": "fight_original",
+    "subtitle": "sound.zelda.fight_original",
     "replace": "true",
     "sounds": [
       {
@@ -100,7 +100,7 @@
     ]
   },
   "obtain": {
-    "subtitle": "obtain",
+    "subtitle": "sound.zelda.obtain",
     "replace": "true",
     "sounds": [
       {
@@ -110,7 +110,7 @@
     ]
   },
   "cooking": {
-    "subtitle": "cooking",
+    "subtitle": "sound.zelda.cooking",
     "replace": "true",
     "sounds": [
       {
@@ -120,7 +120,7 @@
     ]
   },
   "cooking_failed": {
-    "subtitle": "cooking_failed",
+    "subtitle": "sound.zelda.cooking_failed",
     "replace": "true",
     "sounds": [
       {
@@ -130,7 +130,7 @@
     ]
   },
   "radar": {
-    "subtitle": "radar",
+    "subtitle": "sound.zelda.radar",
     "replace": "true",
     "sounds": [
       {
@@ -140,7 +140,7 @@
     ]
   },
   "temple": {
-    "subtitle": "temple",
+    "subtitle": "sound.zelda.temple",
     "replace": "true",
     "sounds": [
       {
@@ -149,8 +149,45 @@
       }
     ]
   },
+  "lynel_death": {
+    "subtitle": "sound.zelda.lynel_death",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:lynel_death",
+        "stream": true
+      }
+    ]
+  },
+  "lynel_roar": {
+    "subtitle": "sound.zelda.lynel_roar",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:lynel_roar",
+        "stream": true
+      }
+    ]
+  },
+  "chicken_god": {
+    "subtitle": "sound.zelda.chicken_god",
+    "replace": "true",
+    "sounds": [
+      {
+        "name": "zelda:chicken_god",
+        "stream": true
+      }
+    ]
+  },
+  "rock_giant_destroy": {
+    "subtitle": "sound.zelda.rock_giant_destroy",
+    "replace": "true",
+    "sounds": [
+      "item/totem/use_totem"
+    ]
+  },
   "walking_guardian": {
-    "subtitle": "walking_guardian",
+    "subtitle": "sound.zelda.walking_guardian",
     "replace": "true",
     "sounds": [
       {

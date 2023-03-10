@@ -4,18 +4,20 @@ import com.majong.zelda.Utils;
 import com.majong.zelda.entity.AncientArrowEntity;
 import com.majong.zelda.entity.BombArrowEntity;
 import com.majong.zelda.entity.ElectricityArrowEntity;
+import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.FireArrowEntity;
 import com.majong.zelda.entity.IceArrowEntity;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ItemLoader {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Utils.MOD_ID);
@@ -29,45 +31,45 @@ public class ItemLoader {
 	public static final RegistryObject<Item> ANCIENT_ARROW = ITEMS.register("ancient_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new AncientArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new AncientArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> ELECTRICITY_ARROW = ITEMS.register("electricity_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new ElectricityArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new ElectricityArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> BOMB_ARROW = ITEMS.register("bomb_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new BombArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new BombArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> ICE_ARROW = ITEMS.register("ice_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new IceArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new IceArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    return arrowentity;
 		}});
 	public static final RegistryObject<Item> FIRE_ARROW = ITEMS.register("fire_arrow", ()->new AbstractAttributeArrow() {
 
 		@Override
-		public AbstractArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter) {
-			// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-			ArrowEntity arrowentity = new FireArrowEntity(worldIn, shooter);
+		public AbstractArrow createArrow(Level worldIn, ItemStack stack, LivingEntity shooter) {
+			// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			Arrow arrowentity = new FireArrowEntity(worldIn, shooter);
 		    arrowentity.setEffectsFromItem(stack);
 		    arrowentity.setSecondsOnFire(32767);
 		    return arrowentity;
@@ -78,4 +80,22 @@ public class ItemLoader {
 	public static final RegistryObject<Item> HORN = ITEMS.register("horn", HornItem::new);
 	public static final RegistryObject<Item> RED_ENVELOPE = ITEMS.register("red_envelope", RedEnvelope::new);
 	public static final RegistryObject<Item> SPIRIT_ORB = ITEMS.register("spirit_orb", BasicItem::new);
+	public static final RegistryObject<Item> ANCIENT_HORN = ITEMS.register("ancient_horn", AncientHorn::new);
+	public static final RegistryObject<Item> CHOPPING_WIND_BLADE = ITEMS.register("chopping_wind_blade", ChoppingWindBladeItem::new);
+	public static final RegistryObject<Item> GUARDIAN_SPAWN_EGG = ITEMS.register("guardian_spawn_egg", 
+            () -> new ForgeSpawnEggItem(EntityLoader.GUARDIAN, 3515354, 920940, new Item.Properties()));
+	public static final RegistryObject<Item> WALKING_GUARDIAN_SPAWN_EGG = ITEMS.register("walking_guardian_spawn_egg", 
+            () -> new ForgeSpawnEggItem(EntityLoader.WALKING_GUARDIAN, 3515354, 920940, new Item.Properties()));
+	public static final RegistryObject<Item> MOLLY_BRIN_SPAWN_EGG = ITEMS.register("molly_brin_spawn_egg", 
+            () -> new ForgeSpawnEggItem(EntityLoader.MOLLY_BRIN, 15000806, 4671303, new Item.Properties()));
+	public static final RegistryObject<Item> BOKO_BRIN_SPAWN_EGG = ITEMS.register("boko_brin_spawn_egg", 
+            () -> new ForgeSpawnEggItem(EntityLoader.BOKO_BRIN, 6912441, 12266, new Item.Properties()));
+	public static final RegistryObject<Item> ROCK_GIANT_SPAWN_EGG = ITEMS.register("rock_giant_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityLoader.ROCK_GIANT, 13948116, 7631988, new Item.Properties()));
+	public static final RegistryObject<Item> YIGA_TEAM_MEMBER_SPAWN_EGG = ITEMS.register("yiga_team_member_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityLoader.YIGA_TEAM_MEMBER, 16299861, 14431027, new Item.Properties()));
+	public static final RegistryObject<Item> LYNEL_SPAWN_EGG = ITEMS.register("lynel_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityLoader.LYNEL, 13413697, 9860685, new Item.Properties()));
+	public static final RegistryObject<Item> BEAST_GOD_SWORD = ITEMS.register("beast_god_sword", BeastGodSword::new);
+	public static final RegistryObject<Item> BEAST_GOD_BOW = ITEMS.register("beast_god_bow", BeastGodBow::new);
 }

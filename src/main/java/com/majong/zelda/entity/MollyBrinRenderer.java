@@ -2,21 +2,21 @@ package com.majong.zelda.entity;
 
 import com.majong.zelda.Utils;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class MollyBrinRenderer extends SkeletonRenderer{
 
-	public MollyBrinRenderer(EntityRendererManager renderManagerIn) {
+	public MollyBrinRenderer(EntityRendererProvider.Context renderManagerIn) {
 		super(renderManagerIn);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	@Override
-	public ResourceLocation getTextureLocation(AbstractSkeletonEntity entity) {
+	public ResourceLocation getTextureLocation(AbstractSkeleton entity) {
 		return new ResourceLocation(Utils.MOD_ID, "textures/entity/molly_brin.png");
 	}
 }

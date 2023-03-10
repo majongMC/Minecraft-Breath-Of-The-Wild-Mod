@@ -1,36 +1,47 @@
 package com.majong.zelda.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.majong.zelda.Utils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class LaserModel extends EntityModel<LaserEntity>{
-	private final ModelRenderer body;
-	public LaserModel() {
-		this.texHeight=16;
-		this.texWidth=16;
-		body = new ModelRenderer(this);
-		body.setPos(0,0,0);
-		body.texOffs(0, 0);
-		body.addBox(-15, 10, -1, 30, 2, 2);
+	private final ModelPart body;
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Utils.MOD_ID, "laser"), "main");
+	public LaserModel(ModelPart root) {
+		this.body=root.getChild("body");
+	}
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-15, 10, -1, 30, 2, 2, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+		return LayerDefinition.create(meshdefinition, 16, 16);
 	}
 	@Override
 	public void setupAnim(LaserEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks,
 			float netHeadYaw, float headPitch) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-		//body.xRot = limbSwing;
-        //body.yRot = netHeadYaw;
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//body.xRot = (float) (Math.PI*entityIn.getEntityData().get(LaserEntity.PITCH)/180);
+        //body.yRot = (float) (Math.PI*entityIn.getEntityData().get(LaserEntity.YAW)/180);
         //body.zRot = headPitch;
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn,
 			float red, float green, float blue, float alpha) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 	}
 

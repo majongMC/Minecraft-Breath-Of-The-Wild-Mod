@@ -4,21 +4,24 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ZeldaConfigClient {
 	public static ForgeConfigSpec CLIENT_CONFIG;
-	public static ForgeConfigSpec.IntValue GUARDIAN,WALKING_GUARDIAN,FIGHT,HINOX,ROCK_GIANT;
+	public static ForgeConfigSpec.IntValue GUARDIAN,WALKING_GUARDIAN,FIGHT,FIGHT_ORIGINAL,HINOX,ROCK_GIANT;
 	public static ForgeConfigSpec.BooleanValue DISABLE_MUSIC;
 	public static ForgeConfigSpec.BooleanValue DISPLAY_ANGLE;
+	public static ForgeConfigSpec.DoubleValue CAMERA_SHAKE;
 	static {
         ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
-        CLIENT_BUILDER.comment("Sound ÉùÒô(Èç¹ûÄãÓÃ×ÊÔ´°üĞŞ¸ÄÁËÕ½¶·ÒôÀÖ£¬ÇëÔÚ´Ë´¦ĞŞ¸Ä¶ÔÓ¦µÄÒôÀÖ³¤¶È£¨µ¥Î»:tick£©£¬·ñÔò»áÔì³ÉÒôÀÖ¹ıÔç»ò¹ıÍíÑ­»·)").push("sound");
-        GUARDIAN = CLIENT_BUILDER.comment("Guardian Misic Length ÊØ»¤ÕßÒôÀÖ³¤¶È").defineInRange("guardian", 1200, 0, Integer.MAX_VALUE);
-        WALKING_GUARDIAN = CLIENT_BUILDER.comment("Walking Guardian Misic Length ĞĞ×ßµÄÊØ»¤ÕßÒôÀÖ³¤¶È").defineInRange("walking_guardian", 1800, 0, Integer.MAX_VALUE);
-        FIGHT = CLIENT_BUILDER.comment("Fight Misic Length Õ½¶·ÒôÀÖ³¤¶È").defineInRange("fight", 2060, 0, Integer.MAX_VALUE);
-        HINOX = CLIENT_BUILDER.comment("Hinox Misic Length Î÷Åµ¿ËË¹ÒôÀÖ³¤¶È").defineInRange("hinox", 2200, 0, Integer.MAX_VALUE);
-        ROCK_GIANT =CLIENT_BUILDER.comment("Rock Giant Misic Length ÑÒÊ¯¾ŞÈËÒôÀÖ³¤¶È").defineInRange("rock_giant", 1200, 0, Integer.MAX_VALUE);
-        DISABLE_MUSIC =CLIENT_BUILDER.comment("Disable Music ½ûÓÃÒôÀÖ£¬ÉèÖÃÎªtrueÊ±²»ÔÙ²¥·ÅÕ½¶·ÒôÀÖ").define("disable_music", false);
+        CLIENT_BUILDER.comment("Sound å£°éŸ³(å¦‚æœä½ ç”¨èµ„æºåŒ…ä¿®æ”¹äº†æˆ˜æ–—éŸ³ä¹ï¼Œè¯·åœ¨æ­¤å¤„ä¿®æ”¹å¯¹åº”çš„éŸ³ä¹é•¿åº¦ï¼ˆå•ä½:tickï¼‰ï¼Œå¦åˆ™ä¼šé€ æˆéŸ³ä¹è¿‡æ—©æˆ–è¿‡æ™šå¾ªç¯)").push("sound");
+        GUARDIAN = CLIENT_BUILDER.comment("Guardian Misic Length å®ˆæŠ¤è€…éŸ³ä¹é•¿åº¦").defineInRange("guardian", 1200, 0, Integer.MAX_VALUE);
+        WALKING_GUARDIAN = CLIENT_BUILDER.comment("Walking Guardian Misic Length è¡Œèµ°çš„å®ˆæŠ¤è€…éŸ³ä¹é•¿åº¦").defineInRange("walking_guardian", 1800, 0, Integer.MAX_VALUE);
+        FIGHT = CLIENT_BUILDER.comment("Fight Misic Length æˆ˜æ–—éŸ³ä¹é•¿åº¦").defineInRange("fight", 2060, 0, Integer.MAX_VALUE);
+        FIGHT_ORIGINAL = CLIENT_BUILDER.comment("Fight Original Misic Length è±å°¼å°”/ä¾ç›–é˜Ÿæˆå‘˜æˆ˜æ–—éŸ³ä¹é•¿åº¦").defineInRange("fight_original", 2200, 0, Integer.MAX_VALUE);
+        HINOX = CLIENT_BUILDER.comment("Hinox Misic Length è¥¿è¯ºå…‹æ–¯éŸ³ä¹é•¿åº¦").defineInRange("hinox", 2200, 0, Integer.MAX_VALUE);
+        ROCK_GIANT =CLIENT_BUILDER.comment("Rock Giant Misic Length å²©çŸ³å·¨äººéŸ³ä¹é•¿åº¦").defineInRange("rock_giant", 1200, 0, Integer.MAX_VALUE);
+        DISABLE_MUSIC =CLIENT_BUILDER.comment("Disable Music ç¦ç”¨éŸ³ä¹ï¼Œè®¾ç½®ä¸ºtrueæ—¶ä¸å†æ’­æ”¾æˆ˜æ–—éŸ³ä¹").define("disable_music", false);
         CLIENT_BUILDER.pop();
-        CLIENT_BUILDER.comment("Display ÏÔÊ¾").push("display");
-        DISPLAY_ANGLE =CLIENT_BUILDER.comment("ÒÔÍ¼ĞÎĞÎÊ½ÏÔÊ¾ÊÓÏßÓëÄ¿±êÖ®¼äµÄ¼Ğ½Ç£¨ÉèÖÃÎªfalseÊ±£©»áÒÔÊı×ÖĞÎÊ½ÏÔÊ¾").define("displayangle", true);
+        CLIENT_BUILDER.comment("Display æ˜¾ç¤º").push("display");
+        DISPLAY_ANGLE =CLIENT_BUILDER.comment("ä»¥å›¾å½¢å½¢å¼æ˜¾ç¤ºè§†çº¿ä¸ç›®æ ‡ä¹‹é—´çš„å¤¹è§’ï¼ˆè®¾ç½®ä¸ºfalseæ—¶ï¼‰ä¼šä»¥æ•°å­—å½¢å¼æ˜¾ç¤º").define("displayangle", true);
+        CAMERA_SHAKE=CLIENT_BUILDER.comment("Camera Shake Extent(Set Zero To Disable It) ç›¸æœºæŠ–åŠ¨å¹…åº¦(è®¾ç½®ä¸º0ä»¥ç¦ç”¨æŠ–åŠ¨)").defineInRange("camera_shake", 1, 0, Double.POSITIVE_INFINITY);
         CLIENT_BUILDER.pop();
         CLIENT_CONFIG=CLIENT_BUILDER.build();
 	}

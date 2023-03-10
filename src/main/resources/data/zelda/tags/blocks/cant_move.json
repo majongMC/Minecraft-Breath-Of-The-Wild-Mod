@@ -3,6 +3,7 @@
     "values": [
         "#minecraft:tall_flowers", 
         "minecraft:spawner",
+        "minecraft:powder_snow",
         "#minecraft:doors"
     ]
 }

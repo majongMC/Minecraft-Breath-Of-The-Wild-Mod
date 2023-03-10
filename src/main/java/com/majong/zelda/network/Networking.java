@@ -2,13 +2,13 @@ package com.majong.zelda.network;
 
 import com.majong.zelda.Utils;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Networking {
-	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKTOSERVER,FOODMESSAGEPACK,BAR;
-    public static final String VERSION = "165.1.4.5";
+	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKWITHUUID,FOODMESSAGEPACK,BAR;
+    public static final String VERSION = "19.1.5.7";
     private static int ID = 0;
 
     public static int nextID() {
@@ -49,13 +49,13 @@ public class Networking {
                 .decoder(ZeldaNBTPack::new)
                 .consumer(ZeldaNBTPack::handler)
                 .add();
-        PACKTOSERVER = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "pack_to_server"),
+        PACKWITHUUID = NetworkRegistry.newSimpleChannel(
+                new ResourceLocation(Utils.MOD_ID, "pack_with_uuid"),
                 () -> VERSION,
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
         );
-        PACKTOSERVER.messageBuilder(PackToServer.class, nextID())
+        PACKWITHUUID.messageBuilder(PackToServer.class, nextID())
                 .encoder(PackToServer::toBytes)
                 .decoder(PackToServer::new)
                 .consumer(PackToServer::handler)

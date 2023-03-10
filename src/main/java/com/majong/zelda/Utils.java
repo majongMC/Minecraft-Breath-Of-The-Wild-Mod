@@ -1,20 +1,16 @@
 package com.majong.zelda;
 
 
-import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.util.ClassExist;
+import com.mojang.serialization.Codec;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class Utils {
 	public static final String MOD_ID="zelda";
 	public static final boolean DRACONIC_EVOLUTION_LOADED=ClassExist.isClassExist("com.brandon3055.draconicevolution.DraconicEvolution");
-	public static final ItemGroup ZELDA_CREATIVE_TAB = new ItemGroup("Zelda") {
-		@Override
-		public ItemStack makeIcon() {
-			// TODO 自动生成的方法存根
-			return new ItemStack(ItemLoader.SHIKA_STONE.get());
-		}
-    };
+    public static DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS =
+		    DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Utils.MOD_ID);
 }

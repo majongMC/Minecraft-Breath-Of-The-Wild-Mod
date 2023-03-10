@@ -2,12 +2,12 @@ package com.majong.zelda.world.dimension;
 
 import com.majong.zelda.Utils;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 public class DimensionInit {
-	public static final RegistryKey<World> TEMPLE_DIMENSION = RegistryKey.create(Registry.DIMENSION_REGISTRY,
+	public static final ResourceKey<Level> TEMPLE_DIMENSION = ResourceKey.create(Registries.DIMENSION,
             new ResourceLocation(Utils.MOD_ID,"temple"));
 }

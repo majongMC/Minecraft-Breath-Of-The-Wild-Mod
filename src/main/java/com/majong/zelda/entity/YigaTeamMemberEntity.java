@@ -1,69 +1,96 @@
 package com.majong.zelda.entity;
 
+import javax.annotation.Nullable;
+
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
-import com.majong.zelda.event.PlayerHurtEvent;
+import com.majong.zelda.event.EntityHurtEvent;
 import com.majong.zelda.gui.OpenDialogBox;
+import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.network.PacketDistributor;
 
-public class YigaTeamMemberEntity extends MonsterEntity{
-	public static final DataParameter<Boolean> ACTIVATED = EntityDataManager.defineId(YigaTeamMemberEntity.class, DataSerializers.BOOLEAN);
-	public YigaTeamMemberEntity(EntityType<? extends MonsterEntity> p_i48553_1_, World p_i48553_2_) {
+public class YigaTeamMemberEntity extends Monster{
+	public static final EntityDataAccessor<Boolean> ACTIVATED = SynchedEntityData.defineId(YigaTeamMemberEntity.class, EntityDataSerializers.BOOLEAN);
+	public AnimationState attackstate = new AnimationState();
+	public static final byte ATTACK_EVENT=102;
+	private int animremaintime=-1;
+	public YigaTeamMemberEntity(EntityType<? extends Monster> p_i48553_1_, Level p_i48553_2_) {
 		super(p_i48553_1_, p_i48553_2_);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
-		this.goalSelector.addGoal(1, new SwimGoal(this));
-		this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 0.0F));
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
+		this.goalSelector.addGoal(1, new FloatGoal(this));
+		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 0.0F));
 		if(!ZeldaConfig.NPCONLY.get())
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+	}
+	@Override
+	public void handleEntityEvent(byte eventid) {
+		switch (eventid) {
+        case ATTACK_EVENT:this.attackstate.start(this.tickCount);this.animremaintime=42;break;
+        default:super.handleEntityEvent(eventid);
+     }
 	}
 	@Override
 	protected void defineSynchedData() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		super.defineSynchedData();
 		this.entityData.define(ACTIVATED, false);
 	}
 	@Override
-	public void readAdditionalSaveData(CompoundNBT compound) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	public void readAdditionalSaveData(CompoundTag compound) {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		super.readAdditionalSaveData(compound);
 		this.entityData.set(ACTIVATED, compound.getBoolean("activated"));
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT compound) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	public void addAdditionalSaveData(CompoundTag compound) {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("activated", this.entityData.get(ACTIVATED));
+	}
+	@Override
+	public void tick() {
+		super.tick();
+		if(this.level.isClientSide) {
+			if(animremaintime>-1) {
+				animremaintime--;
+			}
+		}
 	}
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -89,12 +116,12 @@ public class YigaTeamMemberEntity extends MonsterEntity{
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if(cause.getEntity() instanceof PlayerEntity&&this.entityData.get(ACTIVATED)) {
+		if(cause.getEntity() instanceof Player&&this.entityData.get(ACTIVATED)) {
 			this.spawnAtLocation(new ItemStack(Items.EMERALD,1));
 		}
 	}
 	@Override
-	protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		if(!isactivated()) {
 			if(this.level.isClientSide) {
 				new OpenDialogBox();
@@ -105,13 +132,18 @@ public class YigaTeamMemberEntity extends MonsterEntity{
 		}
 	     return super.mobInteract(player, hand);
 	   }
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @Nullable SpawnGroupData p_21437_, @Nullable CompoundTag p_21438_) {
+		SpawnGroupData data=super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);
+		this.setLeftHanded(false);
+		return data;
+	}
 	private void activate() {
 		this.entityData.set(ACTIVATED, true);
-		if(ZeldaConfig.DELAY_ATTACK.get())
-			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,8));
-		else
-			this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,0));
-		this.setCustomName(new TranslationTextComponent("name.yiga.activated"));
+		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemLoader.CHOPPING_WIND_BLADE.get(),1));
+		this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,30));
+		this.setCustomName(Component.translatable("name.yiga.activated"));
 	}
 	public boolean isactivated() {
 		return this.entityData.get(ACTIVATED);
@@ -120,23 +152,26 @@ public class YigaTeamMemberEntity extends MonsterEntity{
 		int damage=7;
 		if(entity.level.getServer().isSingleplayer())
 			damage=10;
-		if(entity instanceof PlayerEntity) {
-			if(PlayerHurtEvent.TryReflect((PlayerEntity) entity, this, damage))
+		if(entity.invulnerableTime>10)
+			return;
+		entity.invulnerableTime=20;
+		if(entity instanceof Player) {
+			if(EntityHurtEvent.TryReflect((Player) entity, this, damage))
 				return;
 		}
 		if(entity.getHealth()>damage) {
 			entity.setHealth(entity.getHealth()-damage);
-			if(entity instanceof PlayerEntity) {
+			if(entity instanceof Player) {
 				Networking.SOUND.send(
 					      PacketDistributor.PLAYER.with(
-					                            () -> (ServerPlayerEntity) entity
+					                            () -> (ServerPlayer) entity
 					             ),
 					             new SoundPack(11,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
 			}
 		}
 		else {
-			if(entity instanceof PlayerEntity) {
-				PlayerEntity player=(PlayerEntity) entity;
+			if(entity instanceof Player) {
+				Player player=(Player) entity;
 				DamageSource yigadamage=(new DamageSource("yigadamage")).bypassArmor().bypassInvul();
 				DataManager.AdjustAllSkills(player, false);
 				player.hurt(yigadamage,20);
@@ -146,5 +181,8 @@ public class YigaTeamMemberEntity extends MonsterEntity{
 			}else
 				entity.kill();
 		}
+	}
+	public boolean isPlayingAnim() {
+		return animremaintime>0;
 	}
 }

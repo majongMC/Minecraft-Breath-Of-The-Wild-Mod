@@ -2,17 +2,19 @@ package com.majong.zelda.network;
 
 import java.util.function.Supplier;
 
+import org.joml.Vector3f;
+
 import com.majong.zelda.client.ClientUtils;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class ParticlePack {
 	private final double DATA[]=new double[6];
 	private final int type;
-    public ParticlePack(PacketBuffer buffer) {
+    public ParticlePack(FriendlyByteBuf buffer) {
     	type=buffer.readInt();
     	for(int i=0;i<6;i++) {
 			DATA[i]=buffer.readDouble();
@@ -29,7 +31,7 @@ public class ParticlePack {
         DATA[5]=c;
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
     	buf.writeInt(type);
     	for(int i=0;i<6;i++) {
     		buf.writeDouble(DATA[i]);
@@ -46,24 +48,24 @@ public class ParticlePack {
         		rx=rand*DATA[0]+(1-rand)*DATA[3];
         		ry=rand*DATA[1]+(1-rand)*DATA[4];
         		rz=rand*DATA[2]+(1-rand)*DATA[5];
-        		ClientUtils.GetClientLevel().addAlwaysVisibleParticle(RedstoneParticleData.REDSTONE,rx,ry,rz,0,0,0);
+        		ClientUtils.GetClientLevel().addAlwaysVisibleParticle(DustParticleOptions.REDSTONE,rx,ry,rz,0,0,0);
         	}
         	}
         	if(type!=0) {
         		switch(type) {
-        		case 1:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new RedstoneParticleData(1F,1F,0F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 2:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new RedstoneParticleData(1F,0.5F,0F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 3:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new RedstoneParticleData(1F,1F,1F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 4:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(RedstoneParticleData.REDSTONE,DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 5:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new RedstoneParticleData(0F,0F,1F,1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 1:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,1F,0F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 2:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,0.5F,0F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 3:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(1F,1F,1F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 4:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(DustParticleOptions.REDSTONE,DATA[0],DATA[1],DATA[2],0,0,0);break;
+        		case 5:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(new DustParticleOptions(new Vector3f(0F,0F,1F),1F),DATA[0],DATA[1],DATA[2],0,0,0);break;
         		case 6:ClientUtils.GetClientLevel().addAlwaysVisibleParticle(ParticleTypes.FLASH,DATA[0],DATA[1],DATA[2],0,0,0);break;
-        		case 7:PerformMifaParticle();break;
+        		case 7:PerformMiphaParticle();break;
         		}
         	}
         });
         ctx.get().setPacketHandled(true);
     }
-    private void PerformMifaParticle() {
+    private void PerformMiphaParticle() {
     	for(int i=0;i<50;i++) {
     		ClientUtils.GetClientLevel().addAlwaysVisibleParticle(ParticleTypes.HAPPY_VILLAGER,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);
     		ClientUtils.GetClientLevel().addAlwaysVisibleParticle(ParticleTypes.NAUTILUS,DATA[0]-1+2*Math.random(),DATA[1]+2*Math.random(),DATA[2]-1+2*Math.random(),0,0,0);

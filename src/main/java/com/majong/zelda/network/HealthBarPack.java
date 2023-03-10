@@ -6,32 +6,31 @@ import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.overlays.RenderOverlays;
 import com.majong.zelda.util.BiomeUtil;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.network.NetworkEvent;
 
 public class HealthBarPack {
 	private final double DATA;
-	private final ITextComponent NAME;
-	public static final ITextComponent SINOX=new TranslationTextComponent("boss.sinox.bar");
-	public HealthBarPack(PacketBuffer buffer) {
+	private final Component NAME;
+	public static final Component HINOX=Component.translatable("boss.hinox.bar");
+	public HealthBarPack(FriendlyByteBuf buffer) {
 		DATA=buffer.readDouble();
 		NAME=buffer.readComponent();
     }
-	@Deprecated//ÇëÊ¹ÓÃapiÖÐµÄ·½·¨
-    public HealthBarPack(ITextComponent name,double percentage) {
+	@Deprecated//ï¿½ï¿½Ê¹ï¿½ï¿½apiï¿½ÐµÄ·ï¿½ï¿½ï¿½
+    public HealthBarPack(Component name,double percentage) {
         this.DATA=percentage;
         this.NAME=name;
     }
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
     	buf.writeDouble(DATA);
     	buf.writeComponent(NAME);
     }
     @SuppressWarnings("deprecation")
 	public void handler(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-        	RenderOverlays.DisplayBloodBar(DATA, NAME,BiomeUtil.getBiomeName(ClientUtils.GetClientLevel().getBiome(ClientUtils.GetClientPlayer().blockPosition()), ClientUtils.GetClientLevel())+"µÄ");
+        	RenderOverlays.DisplayHealthBar(DATA, NAME,BiomeUtil.getBiomeName(ClientUtils.GetClientLevel().getBiome(ClientUtils.GetClientPlayer().blockPosition()).get(), ClientUtils.GetClientLevel())+"çš„");
         });
         ctx.get().setPacketHandled(true);
     }

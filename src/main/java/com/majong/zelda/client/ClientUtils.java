@@ -1,20 +1,27 @@
 package com.majong.zelda.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 public class ClientUtils {
-	public static PlayerEntity GetClientPlayer() {
+	public static long frame=0;
+	private static long lastcallframe=0;
+	private static int lastfps=60;
+	public static Player GetClientPlayer() {
 		return Minecraft.getInstance().player;
 	}
-	public static World GetClientLevel() {
+	public static Level GetClientLevel() {
 		return Minecraft.getInstance().level;
 	}
 	public static void ClientStopSound() {
 		Minecraft.getInstance().getSoundManager().stop();
 	}
 	public static int getfps() {
+		if(frame==lastcallframe) {
+			return lastfps;
+		}
+		lastcallframe=frame;
 		String fpsstr=Minecraft.getInstance().fpsString;
 		System.out.println(fpsstr);
 		int fps=60;
@@ -27,6 +34,7 @@ public class ClientUtils {
 		}
 		if(fps==0)
 			fps=1;
+		lastfps=fps;
 		return fps;
 	}
 	public static double fpsratio() {

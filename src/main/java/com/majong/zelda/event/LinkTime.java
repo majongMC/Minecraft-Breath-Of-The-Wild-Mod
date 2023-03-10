@@ -8,12 +8,12 @@ import java.util.Map;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.util.EntityFreezer;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -21,22 +21,22 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber()
 public class LinkTime {
-	public static final Map<PlayerEntity,Integer> LINK_TIME=new HashMap<>();
+	public static final Map<Player,Integer> LINK_TIME=new HashMap<>();
 	@SubscribeEvent
 	public static void onPlayerNockArrow(ArrowNockEvent event) {
-		if(!event.getWorld().isClientSide) {
-			PlayerEntity player=event.getPlayer();
+		if(!event.getLevel().isClientSide) {
+			Player player=event.getEntity();
 			if(!player.isOnGround()&&!player.isFallFlying()) {
-				player.setDeltaMovement(Vector3d.ZERO);
-				player.addEffect(new EffectInstance(Effects.SLOW_FALLING,120,8));
-				player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,120,3));
+				player.setDeltaMovement(Vec3.ZERO);
+				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,120,8));
+				player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,120,3));
 				player.setNoGravity(true);
 				slownearmonsters(player,false);
 				LINK_TIME.put(player,ZeldaConfig.LINKTIME.get());
 			}
 			else {
-				player.removeEffect(Effects.SLOW_FALLING);
-				player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+				player.removeEffect(MobEffects.SLOW_FALLING);
+				player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 				player.setNoGravity(false);
 				LINK_TIME.put(player,-1);
 			}
@@ -44,25 +44,25 @@ public class LinkTime {
 	}
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerLooseArrow(ArrowLooseEvent event) {
-		if(!event.getWorld().isClientSide) {
-			PlayerEntity player=event.getPlayer();
-			player.removeEffect(Effects.SLOW_FALLING);
-			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+		if(!event.getLevel().isClientSide) {
+			Player player=event.getEntity();
+			player.removeEffect(MobEffects.SLOW_FALLING);
+			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
 			slownearmonsters(player,true);
 			LINK_TIME.put(player,-1);
 		}
 	}
-	private static void slownearmonsters(PlayerEntity player,boolean remove) {
-		World world=player.level;
-		List<MobEntity> entitylist= world.getEntitiesOfClass(MobEntity.class,player.getBoundingBox().inflate(24, 24, 24) ,(MobEntity t)->true);
-		Iterator<MobEntity> it=entitylist.iterator();
+	private static void slownearmonsters(Player player,boolean remove) {
+		Level Level=player.level;
+		List<Mob> entitylist= Level.getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(24, 24, 24) ,(Mob t)->true);
+		Iterator<Mob> it=entitylist.iterator();
 		while(it.hasNext()) {
-			MobEntity mob=it.next();
+			Mob mob=it.next();
 			if(remove) {
-				EntityFreezer.unFreezeMobEntity(mob);
+				EntityFreezer.unFreezeMob(mob);
 			}else {
-				EntityFreezer.FreezeMobEntity(mob,100);
+				EntityFreezer.FreezeMob(mob,100);
 			}
 		}
 	}

@@ -1,0 +1,6 @@
+{
+    "parent": "zelda:item/beast_god_bow",
+    "textures": {
+        "layer0": "zelda:items/beast_god_bow_pulling_0"
+    }
+}

@@ -5,55 +5,56 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.EntityTick;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
-public class TempleStartTileEntity extends TileEntity implements ITickableTileEntity{
+public class TempleStartTileEntity extends BlockEntity{
 	private int templeID=0;
-	public TempleStartTileEntity() {
-		super(TileEntityLoader.TEMPLE_START_TILE_ENTITY.get());
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+	public TempleStartTileEntity(BlockPos pWorldPosition, BlockState pBlockState) {
+		super(TileEntityLoader.TEMPLE_START_TILE_ENTITY.get(),pWorldPosition,pBlockState);
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	public void setID(int id) {
 		this.templeID=id;
+		setChanged(this.level, this.worldPosition, this.getBlockState());
 	}
 	public int getID() {
 		return templeID;
 	}
 	@Override
-    public void load(BlockState state, CompoundNBT nbt) {
-		super.load(state,nbt);
+    public void load(CompoundTag nbt) {
+		super.load(nbt);
 		this.templeID=nbt.getInt("templeID");
 	}
 	@Override
-    public CompoundNBT save(CompoundNBT tag) {
+    public void saveAdditional(CompoundTag tag) {
 		tag.putInt("templeID", templeID);
-		return super.save(tag);
+		super.saveAdditional(tag);
 	}
-	@Override
-	public void tick() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-		if(!this.level.isClientSide&&templeID==0) {
-			BlockPos pos=this.getBlockPos();
-			PlayerEntity player=level.getNearestPlayer(pos.getX(), pos.getY(), pos.getZ(), 80, false);
+
+	public static void tick(Level level, BlockPos pos, BlockState pState, TempleStartTileEntity tile) {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		if(!level.isClientSide&&tile.templeID==0) {
+			Player player=level.getNearestPlayer(pos.getX(), pos.getY(), pos.getZ(), 80, false);
 			if(player!=null&&DataManager.data.get(player).intemple!=0) {
-				this.templeID=DataManager.data.get(player).intemple;
+				tile.templeID=DataManager.data.get(player).intemple;
+				setChanged(level, pos, pState);
 				for(int i=-1;i<2;i++)
 					for(int j=-1;j<2;j++) {
 						BlockPos search=pos.offset(i, -2, j);
 						if(level.getBlockState(search).getBlock()==Blocks.COMMAND_BLOCK) {
 							player.teleportTo(search.getX()+0.5, search.getY()+2, search.getZ()+0.5);
 							int[] startpoint= {search.getX(), search.getY(), search.getZ()};
-							TempleDimensionData.getTempleData(level, templeID).putIntArray("startpoint", startpoint);
+							TempleDimensionData.getTempleData(level, tile.templeID).putIntArray("startpoint", startpoint);
 							TempleDimensionData.get(level).setDirty();
 							EntityTick.ENTER_TEMPLE_TIME.remove(player);
-							player.setDeltaMovement(Vector3d.ZERO);
+							player.setDeltaMovement(Vec3.ZERO);
 							TempleEntryBlock.PlayTempleSound(player);
 							TempleDimensionData.occupied=false;
 							return;
@@ -61,10 +62,10 @@ public class TempleStartTileEntity extends TileEntity implements ITickableTileEn
 					}
 				player.teleportTo(pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5);
 				int[] startpoint= {pos.getX(), pos.getY(), pos.getZ()};
-				TempleDimensionData.getTempleData(level, templeID).putIntArray("startpoint", startpoint);
+				TempleDimensionData.getTempleData(level, tile.templeID).putIntArray("startpoint", startpoint);
 				TempleDimensionData.get(level).setDirty();
 				EntityTick.ENTER_TEMPLE_TIME.remove(player);
-				player.setDeltaMovement(Vector3d.ZERO);
+				player.setDeltaMovement(Vec3.ZERO);
 				TempleEntryBlock.PlayTempleSound(player);
 				TempleDimensionData.occupied=false;
 			}

@@ -34,6 +34,9 @@
     "minecraft:netherite_helmet",
     "minecraft:netherite_chestplate",
     "minecraft:netherite_leggings",
-    "minecraft:netherite_boots"
+    "minecraft:netherite_boots",
+    "minecraft:lightning_rod",
+    "minecraft:copper_ingot",
+    "minecraft:copper_block"
   ]
 }
