@@ -30,4 +30,8 @@ public class SoundLoader {
 	public static final RegistryObject<SoundEvent> LYNEL_ROAR = SOUNDS.register("lynel_roar", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "lynel_roar")));
 	public static final RegistryObject<SoundEvent> LYNEL_DEATH = SOUNDS.register("lynel_death", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "lynel_death")));
 	public static final RegistryObject<SoundEvent> CHICKEN_GOD = SOUNDS.register("chicken_god", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "chicken_god")));
+	public static final RegistryObject<SoundEvent> BLADE_HIT = SOUNDS.register("blade_hit", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "blade_hit")));
+	public static final RegistryObject<SoundEvent> WHOOSH_SHARP = SOUNDS.register("whoosh_sharp", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "whoosh_sharp")));
+	public static final RegistryObject<SoundEvent> REFLECT = SOUNDS.register("reflect", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "reflect")));
+	public static final RegistryObject<SoundEvent> WHOOSH = SOUNDS.register("whoosh", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "whoosh")));
 }
