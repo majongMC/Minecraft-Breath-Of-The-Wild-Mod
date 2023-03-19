@@ -52,6 +52,7 @@ public class PlayerLoggedEvent {
                 ),
                 new ZeldaNBTPack(2,cdpack));
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(player,0L);
+		PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.put(player,false);
 		if(Festival.isLunarSpringFestival(new Date())) {
 			player.sendSystemMessage(Component.translatable("msg.zelda.lunaryear"));
 			if(ZeldaConfig.REDENVELOPE.get())
@@ -63,6 +64,7 @@ public class PlayerLoggedEvent {
 		Player player=event.getEntity();
 		EntityTick.THUNDER_COUNT_TIME.remove(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(player);
+		PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.remove(player);
 		CompoundTag entityData = player.getPersistentData();
 		CompoundTag zeldaplayerdata=DataManager.readtonbt(player);
 		entityData.put("zpd", zeldaplayerdata);
