@@ -8,17 +8,14 @@ import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.event.EntityHurtEvent;
 import com.majong.zelda.gui.OpenDialogBox;
 import com.majong.zelda.item.ItemLoader;
-import com.majong.zelda.network.Networking;
-import com.majong.zelda.network.SoundPack;
+import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.util.animation.AnimationState;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
@@ -40,7 +37,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.network.PacketDistributor;
 
 public class YigaTeamMemberEntity extends Monster{
 	public static final EntityDataAccessor<Boolean> ACTIVATED = SynchedEntityData.defineId(YigaTeamMemberEntity.class, EntityDataSerializers.BOOLEAN);
@@ -161,13 +157,6 @@ public class YigaTeamMemberEntity extends Monster{
 		}
 		if(entity.getHealth()>damage) {
 			entity.setHealth(entity.getHealth()-damage);
-			if(entity instanceof Player) {
-				Networking.SOUND.send(
-					      PacketDistributor.PLAYER.with(
-					                            () -> (ServerPlayer) entity
-					             ),
-					             new SoundPack(11,new BlockPos(entity.getX(),entity.getY(),entity.getZ())));
-			}
 		}
 		else {
 			if(entity instanceof Player) {
@@ -181,6 +170,7 @@ public class YigaTeamMemberEntity extends Monster{
 			}else
 				entity.kill();
 		}
+		playSound(SoundLoader.BLADE_HIT.get(),1,1);
 	}
 	public boolean isPlayingAnim() {
 		return animremaintime>0;

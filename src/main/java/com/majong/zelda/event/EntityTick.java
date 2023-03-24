@@ -151,6 +151,7 @@ public class EntityTick {
 		DataManager.writefromnbt(DataManager.readtonbt(event.getOriginal()), event.getPlayer());
 		//DataManager.removedata(event.getOriginal());
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(event.getPlayer(),0L);
+		PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.put(event.getPlayer(),false);
 		//PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(event.getOriginal());
 		EntityTick.THUNDER_COUNT_TIME.put(event.getPlayer(), 100);
 		//PlayerTick.THUNDER_COUNT_TIME.remove(event.getOriginal());

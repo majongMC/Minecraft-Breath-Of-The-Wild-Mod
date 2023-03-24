@@ -8,6 +8,7 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.sound.SoundLoader;
 
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,12 +52,14 @@ public class EntityHurtEvent {
 			}
 			else
 				amountback=amount*3+5;
+			PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.put(player,true);
 			source.hurt(new EntityDamageSource("shield",player).setThorns(), amountback);
 			float yaw=player.yHeadRot;
 			float f = 2F;
 			double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			source.setDeltaMovement(source.getDeltaMovement().add(mx,0.1, mz));
+			player.level.playSound(null,player.blockPosition(), SoundLoader.REFLECT.get(), SoundSource.BLOCKS, 10f, 1f);
 			return true;
 		}
 		if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&source instanceof LivingEntity&&source!=player&&amount>0&&player.isShiftKeyDown()&&!(source instanceof Chicken)) {
@@ -73,6 +76,7 @@ public class EntityHurtEvent {
 			source.hurt(new EntityDamageSource("hero",player).setThorns(), amountback);
 			DataManager.data.get(player).skill[2]--;
 			DataManager.sendzeldaplayerdatapack(player);
+			player.level.playSound(null,player.blockPosition(), SoundLoader.REFLECT.get(), SoundSource.BLOCKS, 10f, 1f);
 			return true;
 		}
 		return false;

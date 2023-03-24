@@ -6,6 +6,7 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.PlayerUseShield;
 import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -124,6 +125,7 @@ public class LaserEntity extends ThrowableProjectile{
 		}
 		}
 		if(respondtime<=ZeldaConfig.SHIELD.get()) {
+			PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.put(player,true);
 			reflect(player);
 		}
 		else if(DataManager.data.get(player).unlocked[2]&&DataManager.data.get(player).skill[2]>0&&player.isShiftKeyDown()) {
@@ -147,6 +149,7 @@ public class LaserEntity extends ThrowableProjectile{
 			explode();
 	}
 	private void reflect(Player player) {
+		playSound(SoundLoader.REFLECT.get(),1,1);
 		this.setowner(player);
 		this.setDeltaMovement(this.getDeltaMovement().reverse());
 	}

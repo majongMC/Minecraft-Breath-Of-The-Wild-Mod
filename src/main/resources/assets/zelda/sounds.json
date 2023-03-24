@@ -186,6 +186,34 @@
       "item/totem/use_totem"
     ]
   },
+  "blade_hit":
+    {
+        "subtitle":"sound.zelda.blade_hit",
+        "replace": "true",
+        "sounds":[{"name":"zelda:blade_hit1", "stream":true}, {"name":"zelda:blade_hit2", "stream":true}, {"name":"zelda:blade_hit3", "stream":true}]
+    },
+  "whoosh_sharp":
+    {
+        "subtitle":"sound.zelda.whoosh_sharp",
+        "replace": "true",
+        "sounds":[{"name":"zelda:whoosh_sharp", "stream":true}]
+    },
+  "whoosh":
+    {
+        "subtitle":"sound.zelda.whoosh",
+        "replace": "true",
+        "sounds":[{"name":"zelda:whoosh", "stream":true}]
+    },
+  "reflect": {
+      "subtitle": "sound.zelda.reflect",
+      "replace": "true",
+      "sounds": [
+        {
+          "name": "zelda:reflect",
+          "stream": true
+        }
+      ]
+    },
   "walking_guardian": {
     "subtitle": "sound.zelda.walking_guardian",
     "replace": "true",

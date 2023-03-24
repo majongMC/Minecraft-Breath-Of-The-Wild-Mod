@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.RockGiantEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
+import com.majong.zelda.sound.SoundLoader;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -170,9 +171,11 @@ public class DelayMeleeAttackGoal extends Goal{
 	      }
 	      if(delay==8&&this.mob instanceof BokoBrinEntity) {
 	        	 if(p_190102_2_ <= d0) {
-	        	 this.mob.doHurtTarget(p_190102_1_);
-	        	 p_190102_1_.invulnerableTime=0;
-	        	 }
+	        		 this.mob.playSound(SoundLoader.BLADE_HIT.get(),1,1);
+	        		 this.mob.doHurtTarget(p_190102_1_);
+	        		 p_190102_1_.invulnerableTime=0;
+	        	 }else
+	        		 this.mob.playSound(SoundLoader.WHOOSH.get(),1,1);
 	        	 float yaw=mob.yHeadRot;
 		 		float f = 1F;
 		 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
@@ -185,6 +188,7 @@ public class DelayMeleeAttackGoal extends Goal{
 		 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 		 		double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 		 		mob.setDeltaMovement(mob.getDeltaMovement().add(mx,0, mz));
+		 		this.mob.playSound(SoundLoader.WHOOSH_SHARP.get(),1,1);
 	      }
 	      if(delay>0&&delay<10&&yigadelay<0&&this.mob instanceof YigaTeamMemberEntity&&p_190102_2_ <= 3*d0) {
 	    	  yigadelay=4;
@@ -196,11 +200,16 @@ public class DelayMeleeAttackGoal extends Goal{
 	    	  if(p_190102_2_ <= d0) {
 	    	  if(!(this.mob instanceof YigaTeamMemberEntity)&&!(this.mob instanceof Chicken))
 	    		  this.mob.doHurtTarget(p_190102_1_);
+	    	  if(this.mob instanceof BokoBrinEntity)
+	    		  this.mob.playSound(SoundLoader.BLADE_HIT.get(),1,1);
 	    	  if(this.mob instanceof Chicken) {
 	    		  p_190102_1_.invulnerableTime=0;
 	    		  p_190102_1_.hurt(new EntityDamageSource("chicken",mob).bypassArmor().bypassInvul(), 1);
 	    		  mob.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH,1,1);
 	    	  }
+	    	  }else {
+	    		  if(this.mob instanceof BokoBrinEntity)
+	    			  this.mob.playSound(SoundLoader.WHOOSH.get(),1,1);
 	    	  }
 	      }
 	      delay--;yigadelay--;
