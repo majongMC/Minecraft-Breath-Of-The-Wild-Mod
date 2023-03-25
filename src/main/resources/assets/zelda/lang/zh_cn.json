@@ -39,6 +39,7 @@
 "block.zelda.pot":"锅",
 "block.zelda.temple_entry":"神庙入口方块",
 "block.zelda.temple_start":"神庙起点方块",
+"block.zelda.static_temple_start":"神庙起点方块（不自动旋转）",
 "block.zelda.temple_finish":"神庙终点方块",
 "itemGroup.Zelda":"旷野之息",
 "boss.hinox.bar":"西诺克斯",

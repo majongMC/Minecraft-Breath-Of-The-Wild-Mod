@@ -39,6 +39,7 @@
 "block.zelda.pot":"Pot",
 "block.zelda.temple_entry":"Temple Entry Block",
 "block.zelda.temple_start":"Temple Start Block",
+"block.zelda.static_temple_start":"Temple Start Block(not rotation automatic)",
 "block.zelda.temple_finish":"Temple Finish Block",
 "itemGroup.Zelda":"Breath Of The Wild",
 "boss.hinox.bar":"HinOx",

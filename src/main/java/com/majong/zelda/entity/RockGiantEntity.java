@@ -13,7 +13,6 @@ import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -32,16 +31,15 @@ public class RockGiantEntity extends Monster{
 	public AnimationState knockbAnimationState = new AnimationState();
 	public RockGiantEntity(EntityType<? extends Monster> type, Level worldIn) {
 		super(type, worldIn);
-		// TODO �Զ����ɵĹ��캯�����
+	}
+	@Override
+	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new RockGiantDestroyBlockGoal(this));
 		this.goalSelector.addGoal(2, new DelayMeleeAttackGoal(this, 1.0D, true,20));
 		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 50.0F));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
-		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
-		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
-		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 	}
 	@Override
 	public void handleEntityEvent(byte eventid) {

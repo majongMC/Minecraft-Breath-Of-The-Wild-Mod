@@ -14,11 +14,9 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 
 public class DialogBox extends Screen{
-	private ResourceLocation DIALOG_BOX=new ResourceLocation(Utils.MOD_ID, "textures/gui/background.png");
 	private String[] content;
 	private int page=0;
 	private int currentframe=0;
@@ -54,9 +52,12 @@ public class DialogBox extends Screen{
     public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, DIALOG_BOX);
-		//this.minecraft.getTextureManager().bindForSetup(DIALOG_BOX);
-		blit(PoseStack, (int)(this.width*0.1), (int)(this.height*0.6), 0, 0,(int)(this.width*0.8),(int)(this.height*0.3), (int)(this.width*0.8), (int)(this.height*0.3));
+		fill(PoseStack,(int)(0.1*this.width), (int)(0.6*this.height),(int)(0.9*this.width),(int)(0.9*this.height), -2144193998);
+		fill(PoseStack,(int)(0.1*this.width), (int)(0.6*this.height),(int)(0.9*this.width),(int)(0.6*this.height)+1, -1);
+		fill(PoseStack,(int)(0.1*this.width), (int)(0.9*this.height),(int)(0.9*this.width),(int)(0.9*this.height)-1, -1);
+		fill(PoseStack,(int)(0.1*this.width), (int)(0.6*this.height),(int)(0.1*this.width)+1,(int)(0.9*this.height), -1);
+		fill(PoseStack,(int)(0.9*this.width), (int)(0.6*this.height),(int)(0.9*this.width)-1,(int)(0.9*this.height), -1);
+		//blit(PoseStack, (int)(this.width*0.1), (int)(this.height*0.6), 0, 0,(int)(this.width*0.8),(int)(this.height*0.3), (int)(this.width*0.8), (int)(this.height*0.3));
 		double speed=5*ClientUtils.fpsratio();
 		if((int)((currentframe)/speed)<content[page].length())
 			drawCenteredString(PoseStack, this.font,content[page].substring(0, (int)((currentframe)/speed)), (int)(this.width*0.5),(int)(this.height*0.7), 16777215);
