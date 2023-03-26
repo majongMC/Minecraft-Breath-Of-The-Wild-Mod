@@ -45,7 +45,7 @@ import net.minecraftforge.network.PacketDistributor;
 public class TempleEntryBlock extends BaseEntityBlock{
 	private static DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public TempleEntryBlock() {
-		super(Properties.of(Material.METAL,MaterialColor.STONE).strength(-1).noOcclusion());
+		super(Properties.of(Material.METAL,MaterialColor.STONE).strength(-1, 3600000.0F).noOcclusion());
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING,Direction.NORTH));
 		// TODO �Զ����ɵĹ��캯�����
 	}

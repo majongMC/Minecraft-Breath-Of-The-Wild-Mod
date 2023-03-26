@@ -45,7 +45,9 @@ public class YigaTeamMemberEntity extends Monster{
 	private int animremaintime=-1;
 	public YigaTeamMemberEntity(EntityType<? extends Monster> p_i48553_1_, Level p_i48553_2_) {
 		super(p_i48553_1_, p_i48553_2_);
-		// TODO �Զ����ɵĹ��캯�����
+	}
+	@Override
+	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 0.0F));
 		if(!ZeldaConfig.NPCONLY.get())

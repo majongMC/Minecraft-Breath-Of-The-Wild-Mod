@@ -61,14 +61,6 @@
 			"color": 0,
 			"children": [0]
 		}
-	],
-	"overrides": [
-        {
-            "predicate": {
-                "blocking": 1
-            },
-            "model": "zelda:item/ancient_shield_blocking"
-        }
-    ]
+	]
 	
 }

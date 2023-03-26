@@ -13,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -29,7 +28,6 @@ public class MovingBlockCarrierEntity extends Mob{
 	private boolean loose=false;
 	protected MovingBlockCarrierEntity(EntityType<? extends Mob> p_21368_, Level p_21369_) {
 		super(p_21368_, p_21369_);
-		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
 		this.setInvulnerable(true);
 		this.setNoGravity(true);
 	}

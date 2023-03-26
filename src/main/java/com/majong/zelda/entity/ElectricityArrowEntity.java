@@ -34,7 +34,7 @@ public class ElectricityArrowEntity extends Arrow{
 	
 	@Override
 	public void tick() {
-		if(!this.level.isClientSide) {
+		if(!this.level.isClientSide&&(!this.inGround||this.random.nextInt(0, 10)==0)) {
 			List<Player> playerlist=level.getEntitiesOfClass(Player.class,this.getBoundingBox().inflate(20, 20, 20));
     		Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {
