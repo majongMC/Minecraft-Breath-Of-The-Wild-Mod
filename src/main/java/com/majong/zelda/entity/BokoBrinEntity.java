@@ -16,7 +16,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -36,6 +35,11 @@ public class BokoBrinEntity extends Monster{
 	public AnimationState attackstate = new AnimationState();
 	public BokoBrinEntity(EntityType<? extends Monster> type, Level worldIn) {
 		super(type, worldIn);
+		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WOODEN_SWORD,1));
+		this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(ItemLoader.HORN.get(),1));
+	}
+	@Override
+	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new BlewHornGoal(this));
 		this.goalSelector.addGoal(3, new DelayMeleeAttackGoal(this, 1.0D, true,18));
@@ -43,11 +47,6 @@ public class BokoBrinEntity extends Monster{
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
-		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
-		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
-		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WOODEN_SWORD,1));
-		this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(ItemLoader.HORN.get(),1));
 	}
 	@Override
 	public void handleEntityEvent(byte eventid) {

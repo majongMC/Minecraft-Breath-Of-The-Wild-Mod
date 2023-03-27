@@ -20,13 +20,10 @@ public class ZeldaOverlays extends GuiComponent{
 	private final int w;
     private final int h;
     private PoseStack PoseStack;
-    //private final Minecraft minecraft;
 	private ResourceLocation texture=new ResourceLocation(Utils.MOD_ID, "textures/gui/hud.png");
-	private ResourceLocation BARR=new ResourceLocation(Utils.MOD_ID, "textures/gui/bar.png");
 	public ZeldaOverlays(PoseStack PoseStack) {
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
-        //this.minecraft = Minecraft.getInstance();
         this.PoseStack = PoseStack;
 	}
 	public void render(AbstractClientPlayer player) {
@@ -34,7 +31,6 @@ public class ZeldaOverlays extends GuiComponent{
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, texture);
-		//this.minecraft.getTextureManager().bindForSetup(texture);
 		ZeldaPlayerData playerdata=DataManager.data.get(player);
 		if(playerdata.unlocked[0]) {
 			blit(PoseStack, (int)(0.05*w), (int)(0.2*h), 0, 0, 16, 16, 64, 64);
@@ -68,12 +64,11 @@ public class ZeldaOverlays extends GuiComponent{
 			drawCenteredString(PoseStack,Minecraft.getInstance().font,ShikaStone.name,(int)(0.9*w),(int)(0.85*h),16777215);
 			if(ZeldaConfigClient.DISPLAY_ANGLE.get())
 			{
-				RenderSystem.setShaderTexture(0, BARR);
 				double display=ShikaStone.delta;
 				if(display>180)
 				display=360-display;
-				blit(PoseStack, (int)(this.w*0.9-32), (int)(this.h*0.9), 0, 4,64,2, 16, 16);
-				blit(PoseStack, (int)(this.w*0.9-32), (int)(this.h*0.9), 0, 12,(int) (64*(180-display)/180),2, 16, 16);
+				fill(PoseStack,(int)(this.w*0.9-32), (int)(this.h*0.9),(int)(this.w*0.9-32)+64, (int)(this.h*0.9)+2, -2139062144);
+				fill(PoseStack,(int)(this.w*0.9-32), (int)(this.h*0.9),(int)(this.w*0.9-32+64*(180-display)/180), (int)(this.h*0.9)+2, -14503604);
 			}else
 				drawCenteredString(PoseStack,Minecraft.getInstance().font,""+ShikaStone.delta,(int)(0.9*w),(int)(0.9*h),16777215);
 		}

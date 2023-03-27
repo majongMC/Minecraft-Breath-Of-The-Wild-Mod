@@ -3,19 +3,27 @@ package com.majong.zelda.entity;
 import com.majong.zelda.config.ZeldaConfig;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 
 
-public class BombEntity extends PathfinderMob{
+public class BombEntity extends Mob{
 	public Player owner;
-	public BombEntity(EntityType<? extends PathfinderMob> type, Level worldIn) {
+	private int life=0;
+	public BombEntity(EntityType<? extends Mob> type, Level worldIn) {
 		super(type, worldIn);
-		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
 		// TODO �Զ����ɵĹ��캯�����
+	}
+	@Override
+	public void tick() {
+		super.tick();
+		if(!this.level.isClientSide) {
+			if(life>1200)
+				this.discard();
+			life++;
+		}
 	}
 	public void setowner(Player player) {
 		this.owner=player;
