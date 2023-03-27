@@ -19,7 +19,7 @@ public class ClientUtils {
 		System.out.println(fpsstr);
 		int fps=60;
 		for(int i=0;i<fpsstr.length();i++) {
-			if(fpsstr.charAt(i)==' ') {
+			if(fpsstr.charAt(i)==' '||fpsstr.charAt(i)=='/') {
 				String fpss=fpsstr.substring(0,i);
 				fps=Integer.valueOf(fpss);
 				break;

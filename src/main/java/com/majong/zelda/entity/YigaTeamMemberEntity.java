@@ -38,7 +38,9 @@ public class YigaTeamMemberEntity extends MonsterEntity{
 	public static final DataParameter<Boolean> ACTIVATED = EntityDataManager.defineId(YigaTeamMemberEntity.class, DataSerializers.BOOLEAN);
 	public YigaTeamMemberEntity(EntityType<? extends MonsterEntity> p_i48553_1_, World p_i48553_2_) {
 		super(p_i48553_1_, p_i48553_2_);
-		// TODO 自动生成的构造函数存根
+	}
+	@Override
+	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 0.0F));
 		if(!ZeldaConfig.NPCONLY.get())

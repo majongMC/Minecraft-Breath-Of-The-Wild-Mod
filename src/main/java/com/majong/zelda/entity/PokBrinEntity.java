@@ -6,7 +6,6 @@ import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.item.ItemLoader;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -26,6 +25,12 @@ public class PokBrinEntity extends MonsterEntity{
 
 	public PokBrinEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
 		super(type, worldIn);
+		this.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.WOODEN_SWORD,1));
+		this.setItemInHand(Hand.OFF_HAND, new ItemStack(ItemLoader.HORN.get(),1));
+		// TODO 自动生成的构造函数存根
+	}
+	@Override
+	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(2, new BlewHornGoal(this));
 		if(ZeldaConfig.DELAY_ATTACK.get())
@@ -36,12 +41,6 @@ public class PokBrinEntity extends MonsterEntity{
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
-		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
-		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
-		this.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.WOODEN_SWORD,1));
-		this.setItemInHand(Hand.OFF_HAND, new ItemStack(ItemLoader.HORN.get(),1));
-		// TODO 自动生成的构造函数存根
 	}
 	@Override
 	protected SoundEvent getAmbientSound() {

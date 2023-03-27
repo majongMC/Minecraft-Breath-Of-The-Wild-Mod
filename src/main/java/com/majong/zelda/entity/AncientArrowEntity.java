@@ -35,7 +35,7 @@ public class AncientArrowEntity extends ArrowEntity{
 	@Override
 	public void tick() {
 		super.tick();
-		if(!this.level.isClientSide) {
+		if(!this.level.isClientSide&&(!this.inGround||this.random.nextInt(10)==0)) {
 			List<PlayerEntity> playerlist= level.getEntitiesOfClass(PlayerEntity.class,this.getBoundingBox().inflate(20, 20, 20));
     		Iterator<PlayerEntity> it=playerlist.iterator();
     		while(it.hasNext()) {

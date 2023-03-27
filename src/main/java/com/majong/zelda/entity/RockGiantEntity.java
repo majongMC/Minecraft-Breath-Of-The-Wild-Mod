@@ -10,7 +10,6 @@ import com.majong.zelda.sound.SoundLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -34,16 +33,15 @@ public class RockGiantEntity extends MonsterEntity{
 	public float currenty=0;
 	public RockGiantEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
 		super(type, worldIn);
-		// TODO 自动生成的构造函数存根
+	}
+	@Override
+	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new DestroyBlockGoal(this,4));
 		this.goalSelector.addGoal(2, new DelayMeleeAttackGoal(this, 1.0D, true,10));
 		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 50.0F));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
-		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
-		this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
-		this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 	}
 	@Override
 	public void defineSynchedData() {
