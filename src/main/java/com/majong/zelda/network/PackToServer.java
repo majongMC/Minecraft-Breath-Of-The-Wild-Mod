@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
@@ -20,6 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -171,6 +173,7 @@ public class PackToServer {
 			double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			player.setDeltaMovement(player.getDeltaMovement().add(mx,5, mz));
+			TriggerRegistery.WIND_BOMB.trigger((ServerPlayer) player);
 		}
 		while(it.hasNext()) {
 			BombEntity bomb=(BombEntity) it.next();

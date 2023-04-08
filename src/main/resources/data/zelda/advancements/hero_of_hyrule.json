@@ -1,0 +1,32 @@
+{
+    "parent": "zelda:spirit_orb",
+    "criteria": {
+      "heart_container_full": {
+        "conditions": {},
+        "trigger": "zelda:heart_full"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.hero_of_hyrule.description"
+      },
+      "frame": "challenge",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:heart_container"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.hero_of_hyrule.title"
+      }
+    },
+    "requirements": [
+      [
+        "heart_container_full"
+      ]
+    ],
+    "rewards": {
+      "experience": 100
+    }  
+  }

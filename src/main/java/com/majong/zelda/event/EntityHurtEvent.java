@@ -3,11 +3,13 @@ package com.majong.zelda.event;
 import java.util.Iterator;
 import java.util.List;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;
 import com.majong.zelda.sound.SoundLoader;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +27,8 @@ public class EntityHurtEvent {
 		if(Math.random()<0.33&&event.getEntity() instanceof Chicken&&!event.getEntity().level.isClientSide&&event.getSource().getEntity()!=null&&event.getSource().getEntity() instanceof LivingEntity) {
 			Chicken chicken=(Chicken) event.getEntity();
 			chicken.playSound(SoundLoader.CHICKEN_GOD.get());
+			if(event.getSource().getEntity() instanceof Player)
+				TriggerRegistery.CHICKEN_GOD.trigger((ServerPlayer) event.getSource().getEntity());
 			List<Chicken> chickenlist= chicken.level.getEntitiesOfClass(Chicken.class,chicken.getBoundingBox().inflate(16, 16, 16));
 			Iterator<Chicken> it=chickenlist.iterator();
 			while(it.hasNext()) {
@@ -53,6 +57,7 @@ public class EntityHurtEvent {
 			else
 				amountback=amount*3+5;
 			PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.put(player,true);
+			TriggerRegistery.SHIELD_REFLECT.trigger((ServerPlayer) player);
 			source.hurt(new EntityDamageSource("shield",player).setThorns(), amountback);
 			float yaw=player.yHeadRot;
 			float f = 2F;

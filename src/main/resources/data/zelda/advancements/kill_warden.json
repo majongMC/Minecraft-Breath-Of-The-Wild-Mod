@@ -1,0 +1,32 @@
+{
+    "parent": "zelda:power_of_ancient",
+    "criteria": {
+        "kill_warden": {
+            "conditions": {},
+            "trigger": "zelda:kill_warden"
+          }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.kill_warden.description"
+      },
+      "frame": "challenge",
+      "hidden": true,
+      "icon": {
+        "item": "zelda:ancient_arrow"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.kill_warden.title"
+      }
+    },
+    "requirements": [
+      [
+        "kill_warden"
+      ]
+    ],
+    "rewards": {
+      "experience": 100
+    }
+  }

@@ -80,6 +80,7 @@ public class ItemLoader {
 	public static final RegistryObject<Item> HORN = ITEMS.register("horn", HornItem::new);
 	public static final RegistryObject<Item> RED_ENVELOPE = ITEMS.register("red_envelope", RedEnvelope::new);
 	public static final RegistryObject<Item> SPIRIT_ORB = ITEMS.register("spirit_orb", BasicItem::new);
+	public static final RegistryObject<Item> HEART_CONTAINER = ITEMS.register("heart_container", HeartContainer::new);
 	public static final RegistryObject<Item> ANCIENT_HORN = ITEMS.register("ancient_horn", AncientHorn::new);
 	public static final RegistryObject<Item> CHOPPING_WIND_BLADE = ITEMS.register("chopping_wind_blade", ChoppingWindBladeItem::new);
 	public static final RegistryObject<Item> GUARDIAN_SPAWN_EGG = ITEMS.register("guardian_spawn_egg", 
@@ -98,4 +99,5 @@ public class ItemLoader {
             () -> new SpawnEggItem(EntityLoader.LYNEL.get(), 13413697, 9860685, new Item.Properties().tab(Utils.ZELDA_CREATIVE_TAB)));
 	public static final RegistryObject<Item> BEAST_GOD_SWORD = ITEMS.register("beast_god_sword", BeastGodSword::new);
 	public static final RegistryObject<Item> BEAST_GOD_BOW = ITEMS.register("beast_god_bow", BeastGodBow::new);
+	public static final RegistryObject<Item> GUIDE_BOOK = ITEMS.register("guide_book", GuideBook::new);
 }

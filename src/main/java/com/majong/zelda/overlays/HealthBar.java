@@ -11,12 +11,10 @@ import net.minecraft.network.chat.Component;
 public class HealthBar extends GuiComponent{
 	private final int w;
     private final int h;
-    //private final Minecraft minecraft;
     private PoseStack PoseStack;
 	public HealthBar(PoseStack PoseStack) {
 		this.w = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         this.h = Minecraft.getInstance().getWindow().getGuiScaledHeight();
-        //this.minecraft = Minecraft.getInstance();
         this.PoseStack = PoseStack;
 	}
 	public void render(double percentage,double delay,Component name,String at) {

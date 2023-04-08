@@ -1,0 +1,11 @@
+{
+    "name": "林克时间",
+    "icon": "minecraft:bow",
+    "category": "zelda:game_setting_category",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text":"当玩家在下落时拉弓，会使得玩家进入林克时间，此时玩家下落速度减缓并时停周围生物。"
+        }
+    ]
+}

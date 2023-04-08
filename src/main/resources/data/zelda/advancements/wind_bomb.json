@@ -1,0 +1,32 @@
+{
+    "parent": "zelda:shika_stone",
+    "criteria": {
+      "wind_bomb": {
+        "conditions": {},
+        "trigger": "zelda:wind_bomb"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.wind_bomb.description"
+      },
+      "frame": "challenge",
+      "hidden": true,
+      "icon": {
+        "item": "minecraft:elytra"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.wind_bomb.title"
+      }
+    },
+    "requirements": [
+      [
+        "wind_bomb"
+      ]
+    ],
+    "rewards": {
+      "experience": 100
+    }  
+  }

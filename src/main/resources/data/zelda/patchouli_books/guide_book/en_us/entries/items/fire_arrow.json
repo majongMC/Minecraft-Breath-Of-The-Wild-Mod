@@ -1,0 +1,16 @@
+{
+    "name": "Fire Arrow",
+    "icon": "zelda:fire_arrow",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:fire_arrow",
+            "text":"击中目标会使目标以及目标周围的方块着火，火属性伤害，默认属性克制流浪者。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:fire_arrow"
+        }
+    ]
+}

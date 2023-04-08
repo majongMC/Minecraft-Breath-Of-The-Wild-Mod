@@ -1,0 +1,32 @@
+{
+    "parent": "zelda:ancient_horn",
+    "criteria": {
+      "sonic_boom_warden": {
+        "conditions": {},
+        "trigger": "zelda:sonic_boom_warden"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.sonic_boom_warden.description"
+      },
+      "frame": "challenge",
+      "hidden": true,
+      "icon": {
+        "item": "minecraft:sculk_catalyst"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.sonic_boom_warden.title"
+      }
+    },
+    "requirements": [
+      [
+        "sonic_boom_warden"
+      ]
+    ],
+    "rewards": {
+      "experience": 100
+    }
+  }

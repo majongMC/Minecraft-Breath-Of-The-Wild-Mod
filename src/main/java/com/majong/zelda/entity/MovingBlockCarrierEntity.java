@@ -3,17 +3,18 @@ package com.majong.zelda.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.tag.BlockTag;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -29,7 +30,6 @@ public class MovingBlockCarrierEntity extends Mob{
 	private boolean loose=false;
 	protected MovingBlockCarrierEntity(EntityType<? extends Mob> p_21368_, Level p_21369_) {
 		super(p_21368_, p_21369_);
-		this.getAttributes().getInstance(Attributes.MAX_HEALTH);
 		this.setInvulnerable(true);
 		this.setNoGravity(true);
 	}
@@ -106,7 +106,11 @@ public class MovingBlockCarrierEntity extends Mob{
 			Iterator<LivingEntity> it=list.iterator();
 			while(it.hasNext()) {
 				LivingEntity entity=it.next();
+				if(entity==this)
+					continue;
 				if(entity.hurt(DamageSource.FALLING_BLOCK,(float) (10*speed))) {
+					if(owner!=null)
+						TriggerRegistery.COLLIDE_MOBS.trigger((ServerPlayer) owner);
 					entity.setDeltaMovement(vecspeed.scale(2));
 					this.setDeltaMovement(vecspeed.scale(0.5));
 					return;

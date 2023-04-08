@@ -1,0 +1,11 @@
+{
+    "name": "盾反",
+    "icon": "zelda:ancient_shield",
+    "category": "zelda:game_setting_category",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text":"如果玩家在被其他生物击中的瞬间（默认判定条件为在生物击中玩家前的5tick以内）举盾，则取消本次伤害判定，并返回一定的伤害给攻击者，并击退攻击者。如果是在守护者的光束击中的瞬间举盾则会将守护者的光束反射回去。"
+        }
+    ]
+}

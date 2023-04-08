@@ -1,10 +1,12 @@
 package com.majong.zelda;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.block.BlockLoader;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.config.ZeldaConfigClient;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.loot.AddLootTableModifier;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.tileentity.TileEntityLoader;
 
@@ -26,7 +28,8 @@ public class Zelda {
 		BlockLoader.BLOCKS.register(bus);
 		TileEntityLoader.TILE_ENTITIES.register(bus);
 		SoundLoader.SOUNDS.register(bus);
-		Utils.BIOME_MODIFIER_SERIALIZERS.register(bus);
+		AddLootTableModifier.LOOT_MODIFIERS.register(bus);
+		TriggerRegistery.register();
 		//ModStructures.register(bus);
 		//BiomeInit.BIOMES.register(bus);
         //BiomeInit.registerBiomes();

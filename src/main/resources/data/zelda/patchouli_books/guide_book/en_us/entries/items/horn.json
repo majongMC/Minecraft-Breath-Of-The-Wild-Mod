@@ -1,0 +1,12 @@
+{
+    "name": "Horn",
+    "icon": "zelda:horn",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:horn",
+            "text":"击杀波克布林有概率掉落，左键攻击生物会消耗本身并使周围有攻击性的生物攻击此生物。"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "parent": "zelda:horn",
+    "criteria": {
+      "ancient_horn": {
+        "conditions": {},
+        "trigger": "zelda:sonic_boom"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.ancient_horn.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:ancient_horn"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.ancient_horn.title"
+      }
+    },
+    "requirements": [
+      [
+        "ancient_horn"
+      ]
+    ]
+  }

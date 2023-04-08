@@ -1,0 +1,11 @@
+{
+    "name": "Attribute Restraint",
+    "icon": "zelda:fire_arrow",
+    "category": "zelda:game_setting_category",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text":"当玩家使用属性箭时，若目标生物被当前属性克制则直接秒杀，默认冰箭克制烈焰人，火箭克制流浪者，古代箭克制守护者和行走的守护者。"
+        }
+    ]
+}

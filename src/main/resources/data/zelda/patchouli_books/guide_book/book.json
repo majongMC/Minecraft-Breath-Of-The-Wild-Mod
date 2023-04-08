@@ -1,0 +1,11 @@
+{
+    "name": "book.zelda.name",
+    "landing_text": "book.zelda.landing_text",
+    "version": 1,
+    "pause_game": true,
+	"book_texture": "patchouli:textures/gui/book_blue.png",
+    "creative_tab": "Zelda",
+	"model": "zelda:guide_book",
+	"dont_generate_book": true,
+    "custom_book_item": "zelda:guide_book"
+}

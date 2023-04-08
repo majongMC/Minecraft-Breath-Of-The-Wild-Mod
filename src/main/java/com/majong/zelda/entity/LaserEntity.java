@@ -1,5 +1,6 @@
 package com.majong.zelda.entity;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.PlayerUseShield;
@@ -14,6 +15,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -146,6 +148,7 @@ public class LaserEntity extends ThrowableProjectile{
 	}
 	private void reflect(Player player) {
 		playSound(SoundLoader.REFLECT.get());
+		TriggerRegistery.REFLECT_LASER.trigger((ServerPlayer) player);
 		this.setowner(player);
 		this.setDeltaMovement(this.getDeltaMovement().reverse());
 	}

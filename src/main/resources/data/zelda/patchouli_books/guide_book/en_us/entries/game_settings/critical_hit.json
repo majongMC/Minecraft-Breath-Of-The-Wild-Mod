@@ -1,0 +1,11 @@
+{
+    "name": "Critical Hit",
+    "icon": "minecraft:bow",
+    "category": "zelda:game_setting_category",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text":"当玩家用弓箭击中怪物的头部时，怪物会受到额外伤害并被击退，对莱尼尔可将其击晕一段时间。"
+        }
+    ]
+}

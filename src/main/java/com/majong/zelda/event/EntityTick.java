@@ -66,7 +66,7 @@ public class EntityTick {
 						TempleDimensionData.ExitTemple(player.level, player);
 					}
 				}
-				if(player.isOnGround()&&!player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isAir())
+				if(player.isOnGround()&&player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isCollisionShapeFullBlock(player.level, player.blockPosition().offset(0,-1,0)))
 					LAST_STAND_POS.put(player, player.blockPosition());
 				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {
 					BlockPos pos=LAST_STAND_POS.get(player);

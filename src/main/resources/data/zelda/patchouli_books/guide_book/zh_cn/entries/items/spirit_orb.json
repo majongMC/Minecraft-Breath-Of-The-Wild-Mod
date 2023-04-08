@@ -1,0 +1,12 @@
+{
+    "name": "试炼通过证",
+    "icon": "zelda:spirit_orb",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:spirit_orb",
+            "text":"通过神庙关卡获得，可用于合成心之容器。"
+        }
+    ]
+}

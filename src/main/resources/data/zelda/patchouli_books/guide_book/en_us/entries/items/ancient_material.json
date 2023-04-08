@@ -1,0 +1,11 @@
+{
+    "name": "Ancient material",
+    "icon": "zelda:ancient_core",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text":"包括古代螺丝，古代齿轮，古代弹簧，古代传动轴，古代核心，巨大的古代核心。合成材料，击败守护者或行走的守护者获得。"
+        }
+    ]
+}

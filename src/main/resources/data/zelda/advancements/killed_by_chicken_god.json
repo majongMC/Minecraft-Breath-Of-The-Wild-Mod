@@ -1,0 +1,36 @@
+{
+    "parent": "zelda:chicken_god",
+    "criteria": {
+      "killed_by_chicken_god": {
+        "conditions": {
+            "entity": {
+                "type": "chicken"
+              }
+        },
+        "trigger": "minecraft:entity_killed_player"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.killed_by_chicken_god.description"
+      },
+      "frame": "challenge",
+      "hidden": true,
+      "icon": {
+        "item": "minecraft:chicken_spawn_egg"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.killed_by_chicken_god.title"
+      }
+    },
+    "requirements": [
+      [
+        "killed_by_chicken_god"
+      ]
+    ],
+    "rewards": {
+      "experience": 100
+    }
+  }

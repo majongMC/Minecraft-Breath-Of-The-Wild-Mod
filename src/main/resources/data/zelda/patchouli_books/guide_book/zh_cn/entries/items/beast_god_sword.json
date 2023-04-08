@@ -1,0 +1,12 @@
+{
+    "name": "兽神大剑",
+    "icon": "zelda:beast_god_sword",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:beast_god_sword",
+            "text":"莱尼尔的武器之一，击杀莱尼尔有概率掉落，拥有巨大的伤害。$(br)在安装了史诗战斗模组的情况下，该武器拥有大剑的属性，具有极高的冲击属性，且具有强大的横扫攻击能力。"
+        }
+    ]
+}

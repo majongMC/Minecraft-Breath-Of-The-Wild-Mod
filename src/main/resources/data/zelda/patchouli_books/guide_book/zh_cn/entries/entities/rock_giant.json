@@ -1,0 +1,17 @@
+{
+    "name": "岩石巨人",
+    "icon": "zelda:rock_giant_spawn_egg",
+    "category": "zelda:entity_category",
+    "pages": [
+        {
+            "type":"patchouli:entity",
+            "entity":"zelda:rock_giant",
+            "scale":0.7,
+            "text":"岩石巨人是一种敌对生物，生命值200点，当玩家处于主世界Y<0处时有概率在玩家附近生成，玩家破坏方块时更容易生成。"
+        },
+        {
+            "type": "patchouli:text",
+            "text":"攻击方式为近战攻击，当岩石巨人周围有方块阻挡时会尝试破坏方块。$(br)岩石巨人主要由石头构成，因此采用镐子攻击有额外的伤害加成，死亡后随机掉落矿石。"
+        }
+    ]
+}

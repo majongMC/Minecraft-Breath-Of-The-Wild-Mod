@@ -1,0 +1,32 @@
+{
+    "parent": "zelda:shika_stone",
+    "criteria": {
+      "collide_mobs": {
+        "conditions": {},
+        "trigger": "zelda:collide_mobs"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.rogue_of_hyrule.description"
+      },
+      "frame": "challenge",
+      "hidden": true,
+      "icon": {
+        "item": "minecraft:anvil"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.rogue_of_hyrule.title"
+      }
+    },
+    "requirements": [
+      [
+        "collide_mobs"
+      ]
+    ],
+    "rewards": {
+      "experience": 100
+    }  
+  }

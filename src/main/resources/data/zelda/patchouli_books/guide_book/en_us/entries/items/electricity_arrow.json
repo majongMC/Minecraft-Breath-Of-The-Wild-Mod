@@ -1,0 +1,16 @@
+{
+    "name": "Electricity Arrow",
+    "icon": "zelda:electricity_arrow",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:electricity_arrow",
+            "text":"击中目标后默认有50%概率直接掉落目标生物手中的装备。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:electricity_arrow"
+        }
+    ]
+}

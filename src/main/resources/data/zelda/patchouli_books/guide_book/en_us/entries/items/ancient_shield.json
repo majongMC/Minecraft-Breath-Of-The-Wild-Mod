@@ -1,0 +1,16 @@
+{
+    "name": "Ancient Shield",
+    "icon": "zelda:ancient_shield",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:ancient_shield",
+            "text":"自动反射守护者的光束，同时消耗耐久，若玩家手动盾反成功或使用英杰技能则不消耗耐久。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:ancient_shield"
+        }
+    ]
+}

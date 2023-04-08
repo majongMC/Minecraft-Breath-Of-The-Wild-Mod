@@ -1,0 +1,12 @@
+{
+    "name": "兽神弓",
+    "icon": "zelda:beast_god_bow",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:beast_god_bow",
+            "text":"莱尼尔的武器之一，击杀莱尼尔有概率掉落，能一次射出5支箭。"
+        }
+    ]
+}

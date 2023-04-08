@@ -54,7 +54,7 @@ public class PlayerUsualEvent {
 	public static void onPlayerDestroyBlock(HarvestCheck event) {
 		if(!event.getEntity().level.isClientSide&&event.canHarvest()) {
 			Player player=event.getEntity();
-			if(player.level.dimension().location().equals(Level.OVERWORLD.location())&&player.getY()<40) {
+			if(player.level.dimension().location().equals(Level.OVERWORLD.location())&&player.getY()<0) {
 				if(Math.random()<0.001*ZeldaConfig.ROCKGIANT.get()) {
 					RockGiantEntity entity=new RockGiantEntity(EntityLoader.ROCK_GIANT.get(),event.getEntity().level);
 					BlockPos pos=new BlockPos(player.getX()+randomint(), player.getY(), player.getZ()+randomint());
