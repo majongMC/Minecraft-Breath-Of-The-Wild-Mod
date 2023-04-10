@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.Lynel;
 import com.majong.zelda.network.Networking;
@@ -30,16 +31,28 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class AttributeDamage {
 	public static void firedamage(LivingEntity living,Entity attacker) {
-    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.FIRE_RESTRAINTED)))
-    		living.hurt(new EntityDamageSource("arrow",attacker),32767);
+    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.FIRE_RESTRAINTED))) {
+    		if(attacker==null)
+    			living.hurt(new DamageSource("arrow"),32767);
+    		else
+    			living.hurt(new EntityDamageSource("arrow",attacker),32767);
+    		if(attacker instanceof Player)
+    			TriggerRegistery.ATTRIBUTE_RESTRAINTED.trigger((ServerPlayer) attacker);
+    	}
 	}
     public static void icedamage(LivingEntity living,Entity attacker) {
     	if(living instanceof Mob)
     		EntityFreezer.FreezeMob((Mob) living, 200);
     	else
     		living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,200,9));
-    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ICE_RESTRAINTED)))
-    		living.hurt(new EntityDamageSource("arrow",attacker),32767);
+    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ICE_RESTRAINTED))) {
+    		if(attacker==null)
+    			living.hurt(new DamageSource("arrow"),32767);
+    		else
+    			living.hurt(new EntityDamageSource("arrow",attacker),32767);
+    		if(attacker instanceof Player)
+    			TriggerRegistery.ATTRIBUTE_RESTRAINTED.trigger((ServerPlayer) attacker);
+    	}
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
     	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()&&!living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ELECTRICITY_INVULNERABLE))) {
@@ -72,11 +85,15 @@ public class AttributeDamage {
 	    			living.hurt(new EntityDamageSource("arrow",attacker),32767);
 	    		else
 	    			living.hurt(new DamageSource("arrow"),32767);
+	    		if(attacker instanceof Player)
+	    			TriggerRegistery.KILL_GUARDIAN.trigger((ServerPlayer) attacker);
 	    		return;
 	    	}
 	    	if((living.getMaxHealth()<=20&&!(living instanceof Player))||living instanceof Warden||living instanceof Lynel) {
 	    		living.teleportTo(living.getX(), -80, living.getZ());
-	    		if(attacker!=null&&attacker instanceof Player) {
+	    		if(attacker instanceof Player) {
+	    			if(living instanceof Warden)
+	    				TriggerRegistery.KILL_WARDEN.trigger((ServerPlayer) attacker);
 	    			Networking.SOUND.send(
 		                    PacketDistributor.PLAYER.with(
 		                            () -> (ServerPlayer) attacker

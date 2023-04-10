@@ -1,0 +1,17 @@
+{
+    "name": "依盖队成员",
+    "icon": "zelda:yiga_team_member_spawn_egg",
+    "category": "zelda:entity_category",
+    "pages": [
+        {
+            "type":"patchouli:entity",
+            "name": "依盖队成员",
+            "entity":"zelda:yiga_team_member",
+            "text":"依盖队成员自然生成于村庄中，伪装为村民，当玩家试图于其交易时会被激活。"
+        },
+        {
+            "type": "patchouli:text",
+            "text":"激活后，依盖队成员会手持斩风刀，皮肤变为红色。当靠近玩家时会释放拔刀斩技能，伤害为5点真实伤害，无视原版以及绝大多数模组的护甲，以及不死图腾等复活道具，并且无视米法的技能，但可被本模组的盾反机制弹反。在被激活的状态下死亡掉落绿宝石。"
+        }
+    ]
+}

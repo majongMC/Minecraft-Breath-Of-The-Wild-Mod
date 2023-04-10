@@ -1,0 +1,37 @@
+{
+    "parent": "zelda:find_temple",
+    "criteria": {
+      "spirit_orb": {
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "zelda:spirit_orb"
+              ]
+            }
+          ]
+        },
+        "trigger": "minecraft:inventory_changed"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.spirit_orb.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:spirit_orb"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.spirit_orb.title"
+      }
+    },
+    "requirements": [
+      [
+        "spirit_orb"
+      ]
+    ]
+  }

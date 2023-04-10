@@ -1,0 +1,34 @@
+{
+    "criteria": {
+      "installed": {
+        "conditions": {},
+        "trigger": "minecraft:location"
+      }
+    },
+    "display": {
+      "announce_to_chat": false,
+      "background": "minecraft:textures/block/light_blue_concrete.png",
+      "description": {
+        "translate": "advancement.zelda.root.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:shika_stone"
+      },
+      "show_toast": false,
+      "title": {
+        "translate": "advancement.zelda.root.title"
+      }
+    },
+    "requirements": [
+      [
+        "installed"
+      ]
+    ],
+    "rewards": {
+      "loot": [
+        "zelda:advancements/root"
+      ]
+    }
+}

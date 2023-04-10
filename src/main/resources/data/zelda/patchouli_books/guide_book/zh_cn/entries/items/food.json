@@ -1,0 +1,12 @@
+{
+    "name": "美味的料理",
+    "icon": "zelda:food",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:food",
+            "text":"烹饪成功获得，其回复的饱食度及生命值取决于放入食物的饥饿值和饱和度。"
+        }
+    ]
+}

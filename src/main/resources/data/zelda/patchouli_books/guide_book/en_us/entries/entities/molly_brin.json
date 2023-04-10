@@ -1,0 +1,12 @@
+{
+    "name": "Skeleton Molly Brin",
+    "icon": "zelda:molly_brin_spawn_egg",
+    "category": "zelda:entity_category",
+    "pages": [
+        {
+            "type":"patchouli:entity",
+            "entity":"zelda:molly_brin",
+            "text":"行为与骷髅相同，会发射属性箭（火箭，电箭，冰箭），默认掉落骨头与属性箭。"
+        }
+    ]
+}

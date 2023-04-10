@@ -1,0 +1,12 @@
+{
+    "name": "坚硬的菜肴",
+    "icon": "zelda:hard_food",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:hard_food",
+            "text":"当放入的物品中有任何不可食用的物品获得，食用会回复一点饱食度并受到一点伤害。"
+        }
+    ]
+}

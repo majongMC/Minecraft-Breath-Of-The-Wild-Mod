@@ -3,10 +3,12 @@ package com.majong.zelda.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.tag.BlockTag;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -107,6 +109,8 @@ public class MovingBlockCarrierEntity extends Mob{
 				if(entity==this)
 					continue;
 				if(entity.hurt(DamageSource.fallingBlock(owner),(float) (10*speed))) {
+					if(owner!=null)
+						TriggerRegistery.COLLIDE_MOBS.trigger((ServerPlayer) owner);
 					entity.setDeltaMovement(vecspeed.scale(2));
 					this.setDeltaMovement(vecspeed.scale(0.5));
 					return;

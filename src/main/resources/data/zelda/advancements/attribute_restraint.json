@@ -1,0 +1,29 @@
+{
+    "parent": "zelda:reflect_laser",
+    "criteria": {
+      "attribute_restraint": {
+        "conditions": {},
+        "trigger": "zelda:attribute_restraint"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.attribute_restraint.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:fire_arrow"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.attribute_restraint.title"
+      }
+    },
+    "requirements": [
+      [
+        "attribute_restraint"
+      ]
+    ]
+  }

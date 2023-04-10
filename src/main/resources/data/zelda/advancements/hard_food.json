@@ -1,0 +1,38 @@
+{
+    "parent": "zelda:pot",
+    "criteria": {
+      "hard_food": {
+        "conditions": {
+          "item": {
+              "items": [
+                "zelda:hard_food"
+              ]
+          }
+        },
+        "trigger": "minecraft:consume_item"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.hard_food.description"
+      },
+      "frame": "challenge",
+      "hidden": true,
+      "icon": {
+        "item": "zelda:hard_food"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.hard_food.title"
+      }
+    },
+    "requirements": [
+      [
+        "hard_food"
+      ]
+    ],
+    "rewards": {
+      "experience": 100
+    }
+  }

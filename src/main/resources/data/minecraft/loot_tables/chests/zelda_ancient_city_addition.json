@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "functions": [
+                        {
+                          "function": "minecraft:set_count",
+                          "count": {
+                              "min": 0,
+                              "max": 1
+                          }
+                        }
+                      ],
+                    "name": "zelda:ancient_arrow",
+                    "weight": 1
+                  }
+            ]
+        }
+    ]
+}

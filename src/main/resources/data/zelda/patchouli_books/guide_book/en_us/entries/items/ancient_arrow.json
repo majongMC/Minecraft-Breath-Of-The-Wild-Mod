@@ -1,0 +1,16 @@
+{
+    "name": "Ancient Arrow",
+    "icon": "zelda:ancient_arrow",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:ancient_arrow",
+            "text":"击中目标默认造成20点古代伤害，对BOSS类生物伤害翻倍，默认克制守护者以及行走的守护者,古代箭会直接将最大生命值小于等于20的非玩家生物、监守者和莱尼尔传送回古($(m)xu$())代($(m)kong$())，因此古代箭对付监守者是十分有效的，在1.19版本中，古代箭有几率在远古城市的箱子中生成。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:ancient_arrow"
+        }
+    ]
+}

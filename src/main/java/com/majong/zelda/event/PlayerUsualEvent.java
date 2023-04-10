@@ -1,5 +1,6 @@
 package com.majong.zelda.event;
 
+import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.RockGiantEntity;
@@ -7,7 +8,6 @@ import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.util.EntityFreezer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
@@ -32,7 +32,7 @@ public class PlayerUsualEvent {
 	@SubscribeEvent
 	public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
 		if(event.getEntity().level.isClientSide) {
-			Minecraft.getInstance().level.playSound(Minecraft.getInstance().player,Minecraft.getInstance().player.blockPosition(), SoundLoader.WAKE_UP.get(), SoundSource.AMBIENT, 10f, 1f);
+			ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),ClientUtils.GetClientPlayer().blockPosition(), SoundLoader.WAKE_UP.get(), SoundSource.AMBIENT, 10f, 1f);
 		}
 	}
 	@SubscribeEvent
@@ -54,7 +54,7 @@ public class PlayerUsualEvent {
 	public static void onPlayerDestroyBlock(HarvestCheck event) {
 		if(!event.getEntity().level.isClientSide&&event.canHarvest()) {
 			Player player=event.getEntity();
-			if(player.level.dimension().location().equals(Level.OVERWORLD.location())&&player.getY()<40) {
+			if(player.level.dimension().location().equals(Level.OVERWORLD.location())&&player.getY()<0) {
 				if(Math.random()<0.001*ZeldaConfig.ROCKGIANT.get()) {
 					RockGiantEntity entity=new RockGiantEntity(EntityLoader.ROCK_GIANT.get(),event.getEntity().level);
 					BlockPos pos=new BlockPos(player.getX()+randomint(), player.getY(), player.getZ()+randomint());

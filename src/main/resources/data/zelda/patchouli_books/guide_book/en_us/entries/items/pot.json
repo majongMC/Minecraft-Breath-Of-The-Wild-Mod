@@ -1,0 +1,16 @@
+{
+    "name": "Pot",
+    "icon": "zelda:pot",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:pot",
+            "text":"下方需要有火或者营火才能工作，右键放入食物，空手潜行右键取出食物，空手右键开始烹饪。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:pot"
+        }
+    ]
+}

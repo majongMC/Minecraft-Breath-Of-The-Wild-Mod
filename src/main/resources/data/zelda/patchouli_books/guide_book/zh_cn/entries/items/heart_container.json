@@ -1,0 +1,16 @@
+{
+    "name": "心之容器",
+    "icon": "zelda:heart_container",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:heart_container",
+            "text":"用于提升自身的生命值上限，右键使用。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:heart_container"
+        }
+    ]
+}

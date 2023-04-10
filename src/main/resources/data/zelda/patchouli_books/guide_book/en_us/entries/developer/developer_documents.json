@@ -1,0 +1,13 @@
+{
+    "name": "Developer Documents",
+    "icon": "minecraft:written_book",
+    "category": "zelda:developer_category",
+    "pages": [
+        {
+            "type": "patchouli:link",
+            "text":"想添加更多属于自己的内容？点击下方链接即可查看本模组开发者文档页面。",
+            "link_text":"开发者文档页面",
+            "url":"https://github.com/majongMC/Minecraft-Breath-Of-The-Wild-Mod/wiki/%E5%BC%80%E5%8F%91%E8%80%85%E9%80%89%E9%A1%B9"
+        }
+    ]
+}

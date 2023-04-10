@@ -1,10 +1,12 @@
 package com.majong.zelda;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.block.BlockLoader;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.config.ZeldaConfigClient;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.loot.AddLootTableModifier;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.tileentity.TileEntityLoader;
 
@@ -14,7 +16,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -32,7 +33,8 @@ public class Zelda {
 		BlockLoader.BLOCKS.register(bus);
 		TileEntityLoader.TILE_ENTITIES.register(bus);
 		SoundLoader.SOUNDS.register(bus);
-		Utils.BIOME_MODIFIER_SERIALIZERS.register(bus);
+		AddLootTableModifier.LOOT_MODIFIERS.register(bus);
+		TriggerRegistery.register();
 		bus.addListener(this::registerTab);
         bus.addListener(this::addCreative);
 		//ModStructures.register(bus);
@@ -43,6 +45,7 @@ public class Zelda {
 	private void addCreative(CreativeModeTabEvent.BuildContents event) {
         if (event.getTab() == creativeTab) {
         	event.accept(ItemLoader.SHIKA_STONE.get());
+        	event.accept(ItemLoader.GUIDE_BOOK.get());
         	event.accept(ItemLoader.ANCIENT_GEAR.get());
         	event.accept(ItemLoader.ANCIENT_CORE.get());
         	event.accept(ItemLoader.BIG_ANCIENT_CORE.get());
@@ -59,6 +62,7 @@ public class Zelda {
         	event.accept(ItemLoader.HARD_FOOD.get());
         	event.accept(ItemLoader.HORN.get());
         	event.accept(ItemLoader.SPIRIT_ORB.get());
+        	event.accept(ItemLoader.HEART_CONTAINER.get());
         	event.accept(ItemLoader.ANCIENT_HORN.get());
         	event.accept(ItemLoader.CHOPPING_WIND_BLADE.get());
         	event.accept(ItemLoader.BEAST_GOD_SWORD.get());

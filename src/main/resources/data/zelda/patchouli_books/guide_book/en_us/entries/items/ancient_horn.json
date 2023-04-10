@@ -1,0 +1,16 @@
+{
+    "name": "Ancient Horn",
+    "icon": "zelda:ancient_horn",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:ancient_horn",
+            "text":"号角，在被注入了来自古代的强大能量后，其自身不再是一个普普通通的号角，当你使用它时，它将爆发出来自古代的强大能量。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:ancient_horn"
+        }
+    ]
+}

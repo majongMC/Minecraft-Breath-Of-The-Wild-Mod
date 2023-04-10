@@ -1,0 +1,29 @@
+{
+    "parent": "zelda:reflect_laser",
+    "criteria": {
+      "kill_guardian": {
+        "conditions": {},
+        "trigger": "zelda:kill_guardian"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.power_of_ancient.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:ancient_arrow"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.power_of_ancient.title"
+      }
+    },
+    "requirements": [
+      [
+        "kill_guardian"
+      ]
+    ]
+  }

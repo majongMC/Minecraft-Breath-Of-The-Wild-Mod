@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.majong.zelda.advancement.TriggerRegistery;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +20,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -104,6 +108,9 @@ public class AncientHorn extends Item{
 			while(it.hasNext()) {
     			LivingEntity target=it.next();
     			target.hurt(DamageSource.sonicBoom(player), 10);
+    			TriggerRegistery.SONIC_BOOM.trigger((ServerPlayer) player);
+    			if(target instanceof Warden)
+    				TriggerRegistery.SONIC_BOOM_WARDEN.trigger((ServerPlayer) player);
     			target.setDeltaMovement(x, y, z);
 			}
 			player.setDeltaMovement(-x, -y, -z);

@@ -43,6 +43,13 @@
 			}
 		}
 	],
+	"display": {
+		"gui": {
+			"rotation": [31, 135, 0],
+			"translation": [0, -1, 0],
+			"scale": [0.55, 0.55, 0.55]
+		}
+	},
 	"groups": [
 		{
 			"name": "group",

@@ -1,0 +1,16 @@
+{
+    "name": "波克布林",
+    "icon": "zelda:boko_brin_spawn_egg",
+    "category": "zelda:entity_category",
+    "pages": [
+        {
+            "type":"patchouli:entity",
+            "entity":"zelda:boko_brin",
+            "text":"波克布林是一种敌对生物，生命值20点，生成时会手持木剑和号角。"
+        },
+        {
+            "type": "patchouli:text",
+            "text":"当波克布林满血时，若发现玩家，会吹响它手中的号角，此时波克布林周围的敌对生物和中立性生物会主动攻击玩家。当波克布林靠近玩家时会发动近战攻击，攻击形式为连续挥砍两次目标。"
+        }
+    ]
+}

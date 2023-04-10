@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "zelda:spirit_orb"
+    },
+    {
+      "item": "zelda:spirit_orb"
+    },
+    {
+      "item": "zelda:spirit_orb"
+    },
+    {
+      "item": "zelda:spirit_orb"
+    }
+  ],
+  "result": {
+    "item": "zelda:heart_container"
+  }
+}

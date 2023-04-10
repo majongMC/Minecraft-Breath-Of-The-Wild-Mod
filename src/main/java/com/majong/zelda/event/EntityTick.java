@@ -10,6 +10,7 @@ import com.majong.zelda.data.DataManager;
 import com.majong.zelda.data.ZeldaPlayerData;
 import com.majong.zelda.entity.EntityLoader;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
+import com.majong.zelda.item.HeartContainer;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 import com.majong.zelda.tag.EntityTypeTag;
@@ -28,6 +29,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -66,7 +69,7 @@ public class EntityTick {
 						TempleDimensionData.ExitTemple(player.level, player);
 					}
 				}
-				if(player.isOnGround()&&!player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isAir())
+				if(player.isOnGround()&&player.level.getBlockState(player.blockPosition().offset(0,-1,0)).isCollisionShapeFullBlock(player.level, player.blockPosition().offset(0,-1,0)))
 					LAST_STAND_POS.put(player, player.blockPosition());
 				if(player.blockPosition().getY()<0&&LAST_STAND_POS.containsKey(player)) {
 					BlockPos pos=LAST_STAND_POS.get(player);
@@ -146,6 +149,8 @@ public class EntityTick {
 	}
 	@SubscribeEvent
 	public static void onPlayerClone(Clone event) {
+		AttributeModifier modifier=event.getOriginal().getAttribute(Attributes.MAX_HEALTH).getModifier(HeartContainer.modifierID);
+		event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(modifier);
 		//DataManager.preventnull(event.getOriginal());
 		DataManager.preventnull(event.getEntity());
 		DataManager.writefromnbt(DataManager.readtonbt(event.getOriginal()), event.getEntity());

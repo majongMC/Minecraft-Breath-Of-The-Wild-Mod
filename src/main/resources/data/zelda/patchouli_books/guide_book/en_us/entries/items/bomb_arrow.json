@@ -1,0 +1,16 @@
+{
+    "name": "Bomb Arrow",
+    "icon": "zelda:bomb_arrow",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:bomb_arrow",
+            "text":"击中后产生与一个TNT效果相同的爆炸，在下界使用会自爆"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:bomb_arrow"
+        }
+    ]
+}
