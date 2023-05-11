@@ -13,7 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
 
 public class GuardianAi extends Goal{
 	private final PathfinderMob attacker;
@@ -73,21 +72,13 @@ public class GuardianAi extends Goal{
 	    		Iterator<Player> it=playerlist.iterator();
 	    		while(it.hasNext()) {
 	    			Player player=(Player) it.next();
-	    			Networking.PARTICLE.send(
-		                    PacketDistributor.PLAYER.with(
-		                            () -> (ServerPlayer) player
-		                    ),
-		                    new ParticlePack(0,this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ(),this.targetlocation[0],this.targetlocation[1]+1,this.targetlocation[2]));
+	    			Networking.PARTICLE.send((ServerPlayer) player,new ParticlePack(0,this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ(),this.targetlocation[0],this.targetlocation[1]+1,this.targetlocation[2]));
 	    		}
 		 }
 		 else if(attackprocess>=95&&attackprocess<100) {
 			 attackprocess++;
 			 if(attackprocess==98&&targetentity instanceof Player)
-				 Networking.PARTICLE.send(
-		                    PacketDistributor.PLAYER.with(
-		                            () -> (ServerPlayer) targetentity
-		                    ),
-		                    new ParticlePack(6,this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ(),0,0,0));
+				 Networking.PARTICLE.send((ServerPlayer) targetentity,new ParticlePack(6,this.attacker.getX(),this.attacker.getY()+1.5,this.attacker.getZ(),0,0,0));
 		 }
 		 else {
 			 double rx,ry,rz,yaw,pitch;

@@ -1,12 +1,12 @@
 package com.majong.zelda.entity.animation;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-@OnlyIn(Dist.CLIENT)
+@Environment(value=EnvType.CLIENT)
 public class LynelAnimation {
 	public static final AnimationDefinition BURST=AnimationDefinition.Builder.withLength(5F)
 			.addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.POSITION, 

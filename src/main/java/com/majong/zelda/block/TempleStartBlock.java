@@ -1,6 +1,6 @@
 package com.majong.zelda.block;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.majong.zelda.tileentity.TempleStartTileEntity;
 import com.majong.zelda.tileentity.TileEntityLoader;

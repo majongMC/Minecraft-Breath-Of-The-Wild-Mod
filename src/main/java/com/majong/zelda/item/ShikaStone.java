@@ -2,14 +2,17 @@ package com.majong.zelda.item;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.majong.zelda.entity.MovingBlockCarrierEntity;
 import com.majong.zelda.gui.OpenShikaStoneGui;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.world.structure.ModStructures;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,9 +30,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShikaStone extends Item{
 	private int soundremaintime=0;
@@ -40,13 +40,13 @@ public class ShikaStone extends Item{
 		super(new Properties().stacksTo(1));
 		// TODO �Զ����ɵĹ��캯�����
 	}
-	@OnlyIn(Dist.CLIENT)
+	@Environment(value=EnvType.CLIENT)
 	@Override
     public void inventoryTick(ItemStack itemStack, Level world, Entity entity, int itemSlot, boolean isSelected) {
 		if(isSelected&&world.isClientSide&&entity instanceof Player) {
 			CompoundTag camera =itemStack.getOrCreateTagElement("camera");
 			if(camera.contains("target_block")) {
-				Block block=ForgeRegistries.BLOCKS.getValue(new ResourceLocation(camera.getString("target_block")));
+				Block block=BuiltInRegistries.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
 				name=block.getName();
 			}else {
 				name=Component.translatable("tooltip.zelda.temple");
@@ -126,7 +126,7 @@ public class ShikaStone extends Item{
 	        	  BlockPos blockpos = p_195939_1_.getClickedPos();
 	        	  Block block=world.getBlockState(blockpos).getBlock();
 	        	  if(block!=null) {
-	        		camera.putString("target_block", ForgeRegistries.BLOCKS.getKey(block).toString());
+	        		camera.putString("target_block", BuiltInRegistries.BLOCK.getKey(block).toString());
 	        		p_195939_1_.getPlayer().sendSystemMessage(Component.translatable("msg.zelda.blocksaved"));
 	        	  }else {
 	        		  p_195939_1_.getPlayer().sendSystemMessage(Component.translatable("msg.zelda.blocksavedfailed"));
@@ -156,7 +156,7 @@ public class ShikaStone extends Item{
             }
             camera.putBoolean("activated", false);
             if(camera.contains("target_block")) {
-            	Block block=ForgeRegistries.BLOCKS.getValue(new ResourceLocation(camera.getString("target_block")));
+            	Block block=BuiltInRegistries.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
             	BlockPos pos=LocateTargetBlock(worldIn,playerIn.blockPosition(),block);
             	if(pos!=null) {
             		playerIn.sendSystemMessage(Component.translatable("msg.zelda.blockfound"));
@@ -181,14 +181,14 @@ public class ShikaStone extends Item{
 			new OpenShikaStoneGui();
 		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 	}
-	@OnlyIn(Dist.CLIENT)
+	@Environment(value=EnvType.CLIENT)
 	@Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, worldIn, tooltip, flag);
 		CompoundTag camera =stack.getOrCreateTagElement("camera");
 		if(camera.contains("target_block")) {
 			tooltip.add(Component.translatable("tooltip.shikastone.researchtarget"));
-			Block block=ForgeRegistries.BLOCKS.getValue(new ResourceLocation(camera.getString("target_block")));
+			Block block=BuiltInRegistries.BLOCK.get(new ResourceLocation(camera.getString("target_block")));
 			tooltip.add(block.getName());
 			tooltip.add(Component.translatable("tooltip.shikastone.clear"));
 		}

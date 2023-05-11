@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.sound.SoundLoader;
 
+import majongmc.hllib.common.iforgeport.MiniIForgeItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
-public class HornItem extends BasicItem{
+public class HornItem extends BasicItem implements MiniIForgeItem{
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);

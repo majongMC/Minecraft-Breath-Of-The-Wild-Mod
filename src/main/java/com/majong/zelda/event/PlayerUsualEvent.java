@@ -8,6 +8,9 @@ import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.sound.SoundLoader;
 import com.majong.zelda.util.EntityFreezer;
 
+import majongmc.hllib.common.event.PlayerEvent.HarvestCheck;
+import majongmc.hllib.common.event.PlayerInteractEvent.EntityInteract;
+import majongmc.hllib.common.event.PlayerWakeUpEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
@@ -18,24 +21,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber()
 public class PlayerUsualEvent {
-	@OnlyIn(Dist.CLIENT)
-	@SubscribeEvent
+
 	public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
 		if(event.getEntity().level.isClientSide) {
 			ClientUtils.GetClientLevel().playSound(ClientUtils.GetClientPlayer(),ClientUtils.GetClientPlayer().blockPosition(), SoundLoader.WAKE_UP.get(), SoundSource.AMBIENT, 10f, 1f);
 		}
 	}
-	@SubscribeEvent
 	public static void onPlayerRightClickEntity(EntityInteract event) {
 		Player player=event.getEntity();
 		if(player!=null&&!player.level.isClientSide) {
@@ -50,7 +43,6 @@ public class PlayerUsualEvent {
 	    	}
 		}
 	}
-	@SubscribeEvent
 	public static void onPlayerDestroyBlock(HarvestCheck event) {
 		if(!event.getEntity().level.isClientSide&&event.canHarvest()) {
 			Player player=event.getEntity();

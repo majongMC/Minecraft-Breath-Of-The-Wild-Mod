@@ -10,23 +10,19 @@ import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ZeldaNBTPack;
 import com.majong.zelda.util.Festival;
 
+import majongmc.hllib.common.event.PlayerEvent.PlayerLoggedInEvent;
+import majongmc.hllib.common.event.PlayerEvent.PlayerLoggedOutEvent;
+import majongmc.hllib.common.iforgeport.MiniIForgeEntityApi;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 
-@Mod.EventBusSubscriber()
 public class PlayerLoggedEvent {
-	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		Player player=event.getEntity();
-		CompoundTag entityData = player.getPersistentData();
+		CompoundTag entityData = MiniIForgeEntityApi.getPersistentData(player);
 		DataManager.preventnull(player);
 		if(entityData.contains("zpd")) {
 			DataManager.writefromnbt(entityData.getCompound("zpd"), player);
@@ -46,11 +42,7 @@ public class PlayerLoggedEvent {
 		CompoundTag cdpack=new CompoundTag();
 		int[] cd= {ZeldaConfig.WATER.get(),ZeldaConfig.WIND.get(),ZeldaConfig.FIRE.get(),ZeldaConfig.THUNDER.get()};
 		cdpack.putIntArray("cd",cd);
-		Networking.ZELDANBT.send(
-                PacketDistributor.PLAYER.with(
-                        () -> (ServerPlayer) player
-                ),
-                new ZeldaNBTPack(2,cdpack));
+		Networking.ZELDANBT.send((ServerPlayer) player,new ZeldaNBTPack(2,cdpack));
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.put(player,0L);
 		PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.put(player,false);
 		if(Festival.isLunarSpringFestival(new Date())) {
@@ -59,13 +51,12 @@ public class PlayerLoggedEvent {
 				player.addItem(new ItemStack(ItemLoader.RED_ENVELOPE.get(),1));
 		}
 	}
-	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
 		Player player=event.getEntity();
 		EntityTick.THUNDER_COUNT_TIME.remove(player);
 		PlayerUseShield.PLAYER_LAST_USE_SHIELD.remove(player);
 		PlayerUseShield.SHIELD_REFLECT_ACCOMPLISH.remove(player);
-		CompoundTag entityData = player.getPersistentData();
+		CompoundTag entityData = MiniIForgeEntityApi.getPersistentData(player);
 		CompoundTag zeldaplayerdata=DataManager.readtonbt(player);
 		entityData.put("zpd", zeldaplayerdata);
 		DataManager.removedata(player);//++

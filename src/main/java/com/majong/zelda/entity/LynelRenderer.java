@@ -1,14 +1,13 @@
 package com.majong.zelda.entity;
 
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-
 import com.majong.zelda.Utils;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-@OnlyIn(Dist.CLIENT)
+@Environment(value=EnvType.CLIENT)
 public class LynelRenderer extends MobRenderer<Lynel,LynelModel>{
 
 	public LynelRenderer(Context renderManagerIn) {

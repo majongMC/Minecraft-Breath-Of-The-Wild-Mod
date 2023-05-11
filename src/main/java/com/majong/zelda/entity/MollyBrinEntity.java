@@ -16,6 +16,7 @@ public class MollyBrinEntity extends Skeleton{
 	private int type=0;
 	public MollyBrinEntity(EntityType<? extends Skeleton> p_i50194_1_, Level p_i50194_2_) {
 		super(p_i50194_1_, p_i50194_2_);
+		type=(int)(Math.random()*3);
 		// TODO �Զ����ɵĹ��캯�����
 	}
 	@Override
@@ -36,11 +37,6 @@ public class MollyBrinEntity extends Skeleton{
 			case 2:return super.getArrow(new ItemStack(ItemLoader.ICE_ARROW.get(),arrowStack.getCount()), distanceFactor);
 		}
 		return super.getArrow(new ItemStack(ItemLoader.ELECTRICITY_ARROW.get(),arrowStack.getCount()), distanceFactor);
-	}
-	@Override
-	public void onAddedToWorld() {
-		super.onAddedToWorld();
-		type=(int)(Math.random()*3);
 	}
 	@Override
 	public void die(DamageSource cause) {

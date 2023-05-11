@@ -9,7 +9,6 @@ import com.majong.zelda.network.ZeldaNBTPack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
 
 public class DataManager {
 	public static Map<Player,ZeldaPlayerData> data=new HashMap<>();
@@ -38,11 +37,7 @@ public class DataManager {
 		playerdata.intemple=nbt.getInt("intemple");
 	}
 	public static void sendzeldaplayerdatapack(Player player) {
-		Networking.ZELDANBT.send(
-                PacketDistributor.PLAYER.with(
-                        () -> (ServerPlayer) player
-                ),
-                new ZeldaNBTPack(1,readtonbt(player)));
+		Networking.ZELDANBT.send((ServerPlayer) player,new ZeldaNBTPack(1,readtonbt(player)));
 	}
 	public static void preventnull(Player player) {
 		if(data.get(player)==null)

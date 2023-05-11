@@ -7,13 +7,14 @@ import com.majong.zelda.config.ZeldaConfigClient;
 import com.majong.zelda.event.EntitySpottedEvent;
 import com.majong.zelda.sound.SoundLoader;
 
+import majongmc.hllib.common.network.INDP;
+import majongmc.hllib.common.network.NetworkEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraftforge.network.NetworkEvent;
 
-public class SoundPack {
+public class SoundPack implements INDP{
 	private final BlockPos pos;
 	private final int type;
     public SoundPack(FriendlyByteBuf buffer) {

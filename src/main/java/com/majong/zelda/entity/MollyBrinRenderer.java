@@ -2,13 +2,13 @@ package com.majong.zelda.entity;
 
 import com.majong.zelda.Utils;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-@OnlyIn(Dist.CLIENT)
+@Environment(value=EnvType.CLIENT)
 public class MollyBrinRenderer extends SkeletonRenderer{
 
 	public MollyBrinRenderer(EntityRendererProvider.Context renderManagerIn) {

@@ -13,8 +13,6 @@ import majongmc.hllib.common.tickutils.Schedule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,7 +28,6 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 
 public class LaserEntity extends ThrowableProjectile{
 	public static final EntityDataAccessor<Integer> YAW = SynchedEntityData.defineId(LaserEntity.class, EntityDataSerializers.INT);
@@ -93,11 +90,6 @@ public class LaserEntity extends ThrowableProjectile{
 		compound.putInt("pitch", this.entityData.get(PITCH));
 	}
 
-	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		// TODO �Զ����ɵķ������
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
 	public void setspeed(float yaw,float pitch) {
 		float f = 5F;
 		double mz = -Math.sin(yaw / 180.0F * (float) Math.PI) * Math.cos(pitch / 180.0F * (float) Math.PI) * f / 2D;

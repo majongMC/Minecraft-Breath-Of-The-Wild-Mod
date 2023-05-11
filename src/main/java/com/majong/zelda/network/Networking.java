@@ -2,85 +2,25 @@ package com.majong.zelda.network;
 
 import com.majong.zelda.Utils;
 
+import majongmc.hllib.common.network.SimpleChannel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Networking {
-	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKTOSERVER,GUIMESSAGEPACK,BAR;
-    public static final String VERSION = "194.1.7.1";
-    private static int ID = 0;
-
-    public static int nextID() {
-        return ID++;
-    }
-
-    public static void registerMessage() {
-        PARTICLE = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "particle_pack"),
-                () -> VERSION,
-                (version) -> version.equals(VERSION),
-                (version) -> version.equals(VERSION)
-        );
-        PARTICLE.messageBuilder(ParticlePack.class, nextID())
-                .encoder(ParticlePack::toBytes)
-                .decoder(ParticlePack::new)
-                .consumer(ParticlePack::handler)
-                .add();
-        SOUND = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "sound_pack"),
-                () -> VERSION,
-                (version) -> version.equals(VERSION),
-                (version) -> version.equals(VERSION)
-        );
-        SOUND.messageBuilder(SoundPack.class, nextID())
-                .encoder(SoundPack::toBytes)
-                .decoder(SoundPack::new)
-                .consumer(SoundPack::handler)
-                .add();
-        ZELDANBT = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "zeldanbt_pack"),
-                () -> VERSION,
-                (version) -> version.equals(VERSION),
-                (version) -> version.equals(VERSION)
-        );
-        ZELDANBT.messageBuilder(ZeldaNBTPack.class, nextID())
-                .encoder(ZeldaNBTPack::toBytes)
-                .decoder(ZeldaNBTPack::new)
-                .consumer(ZeldaNBTPack::handler)
-                .add();
-        PACKTOSERVER = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "pack_to_server"),
-                () -> VERSION,
-                (version) -> version.equals(VERSION),
-                (version) -> version.equals(VERSION)
-        );
-        PACKTOSERVER.messageBuilder(PackToServer.class, nextID())
-                .encoder(PackToServer::toBytes)
-                .decoder(PackToServer::new)
-                .consumer(PackToServer::handler)
-                .add();
-        GUIMESSAGEPACK = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "guimessage_pack"),
-                () -> VERSION,
-                (version) -> version.equals(VERSION),
-                (version) -> version.equals(VERSION)
-        );
-        GUIMESSAGEPACK.messageBuilder(GuiMessagePack.class, nextID())
-                .encoder(GuiMessagePack::toBytes)
-                .decoder(GuiMessagePack::new)
-                .consumer(GuiMessagePack::handler)
-                .add();
-        BAR = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "bar_pack"),
-                () -> VERSION,
-                (version) -> version.equals(VERSION),
-                (version) -> version.equals(VERSION)
-        );
-        BAR.messageBuilder(HealthBarPack.class, nextID())
-                .encoder(HealthBarPack::toBytes)
-                .decoder(HealthBarPack::new)
-                .consumer(HealthBarPack::handler)
-                .add();
-    }
+	public static SimpleChannel PARTICLE=new SimpleChannel(new ResourceLocation(Utils.MOD_ID, "particle_pack"),ParticlePack::new);
+	public static SimpleChannel SOUND=new SimpleChannel(new ResourceLocation(Utils.MOD_ID, "sound_pack"),SoundPack::new);
+	public static SimpleChannel ZELDANBT=new SimpleChannel(new ResourceLocation(Utils.MOD_ID, "zeldanbt_pack"),ZeldaNBTPack::new);
+	public static SimpleChannel PACKTOSERVER=new SimpleChannel(new ResourceLocation(Utils.MOD_ID, "pack_to_server"),PackToServer::new);
+	public static SimpleChannel GUIMESSAGEPACK=new SimpleChannel(new ResourceLocation(Utils.MOD_ID, "guimessage_pack"),GuiMessagePack::new);
+	public static SimpleChannel BAR=new SimpleChannel(new ResourceLocation(Utils.MOD_ID, "bar_pack"),HealthBarPack::new);
+	public static void registerClientHandler() {
+		PARTICLE.registerClientHandler();
+		SOUND.registerClientHandler();
+		ZELDANBT.registerClientHandler();
+		GUIMESSAGEPACK.registerClientHandler();
+		BAR.registerClientHandler();
+	}
+	public static void registerServerHandler() {
+		PACKTOSERVER.registerServerHandler();
+		
+	}
 }

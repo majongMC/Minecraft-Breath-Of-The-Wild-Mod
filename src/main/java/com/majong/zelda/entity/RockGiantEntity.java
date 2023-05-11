@@ -18,8 +18,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolActions;
 
 public class RockGiantEntity extends Monster{
 	public static final byte KNOCK_EVENT=101;
@@ -52,7 +52,7 @@ public class RockGiantEntity extends Monster{
 	public boolean skipAttackInteraction(Entity entityIn) {
 		if(entityIn instanceof Player&&!this.level.isClientSide) {
 			Player player=(Player) entityIn;
-			if(player.getMainHandItem().getItem().canPerformAction(player.getMainHandItem(), ToolActions.PICKAXE_DIG)) {
+			if(player.getMainHandItem().getItem() instanceof PickaxeItem) {
 				this.hurt(level.damageSources().mobAttack(player), 20);
 			}
 		}

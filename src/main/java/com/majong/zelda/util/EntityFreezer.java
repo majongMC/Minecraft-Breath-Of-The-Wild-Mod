@@ -81,6 +81,6 @@ public class EntityFreezer extends Schedule<Mob>{
 		}
 	}
 	private static boolean canFreeze(Mob mob) {
-		return !mob.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.FREEZE_INVULNERABLE));
+		return !mob.getType().builtInRegistryHolder().tags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.FREEZE_INVULNERABLE));
 	}
 }

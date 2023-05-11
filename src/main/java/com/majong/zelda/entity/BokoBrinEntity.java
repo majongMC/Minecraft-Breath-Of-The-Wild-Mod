@@ -1,6 +1,6 @@
 package com.majong.zelda.entity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.majong.zelda.entity.ai.BlewHornGoal;
 import com.majong.zelda.entity.ai.DelayMeleeAttackGoal;

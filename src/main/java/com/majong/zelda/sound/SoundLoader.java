@@ -2,14 +2,14 @@ package com.majong.zelda.sound;
 
 import com.majong.zelda.Utils;
 
+import majongmc.hllib.common.registry.DeferredRegister;
+import majongmc.hllib.common.registry.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class SoundLoader {
-	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Utils.MOD_ID);
+	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Utils.MOD_ID);
 	public static final RegistryObject<SoundEvent> GUARDIAN = SOUNDS.register("guardian", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "guardian")));
 	public static final RegistryObject<SoundEvent> WALKING_GUARDIAN = SOUNDS.register("walking_guardian", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "walking_guardian")));
 	public static final RegistryObject<SoundEvent> FIGHT = SOUNDS.register("fight", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Utils.MOD_ID, "fight")));

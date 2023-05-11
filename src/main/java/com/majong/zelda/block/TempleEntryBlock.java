@@ -1,6 +1,6 @@
 package com.majong.zelda.block;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.event.EntityTick;
@@ -8,9 +8,9 @@ import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.tileentity.HasTempleIDTileEntity;
 import com.majong.zelda.tileentity.HasTempleIDTileEntity.TempleEntryTileEntity;
+import com.majong.zelda.util.ChangeDimension;
 import com.majong.zelda.world.dimension.DimensionInit;
 import com.majong.zelda.world.dimension.TempleDimensionData;
-import com.majong.zelda.world.dimension.TempleTeleporter;
 import com.majong.zelda.world.structure.ModStructures;
 
 import net.minecraft.core.BlockPos;
@@ -40,7 +40,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.PacketDistributor;
 
 public class TempleEntryBlock extends BaseEntityBlock{
 	private static DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -106,7 +105,7 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				DataManager.AdjustAllSkills(player, false);
 				ServerLevel temple=worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION);
 				BlockPos searchpos=player.blockPosition();
-				player.changeDimension(temple,new TempleTeleporter());
+				ChangeDimension.toTemple(player);
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,100,8));
 				BlockPos templepos;
 				while(true) {
@@ -124,7 +123,7 @@ public class TempleEntryBlock extends BaseEntityBlock{
 				((ServerPlayer)player).setGameMode(GameType.ADVENTURE);
 				DataManager.AdjustAllSkills(player, false);
 				DataManager.data.get(player).intemple=tile.getID();
-				player.changeDimension(worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION),new TempleTeleporter());
+				ChangeDimension.toTemple(player);
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,60,8));
 				int[] templepos=data.getCompound(Integer.toString(tile.getID())).getIntArray("startpoint");
 				player.teleportTo(templepos[0]+0.5, templepos[1]+2, templepos[2]+0.5);
@@ -137,10 +136,6 @@ public class TempleEntryBlock extends BaseEntityBlock{
 		return InteractionResult.SUCCESS;
 	}
 	public static void PlayTempleSound(Player player) {
-		Networking.SOUND.send(
-                PacketDistributor.PLAYER.with(
-                        () -> (ServerPlayer) player
-                ),
-                new SoundPack(12,new BlockPos((int)player.getX(),(int)player.getY(),(int)player.getZ())));
+		Networking.SOUND.send((ServerPlayer) player,new SoundPack(12,new BlockPos((int)player.getX(),(int)player.getY(),(int)player.getZ())));
 	}
 }

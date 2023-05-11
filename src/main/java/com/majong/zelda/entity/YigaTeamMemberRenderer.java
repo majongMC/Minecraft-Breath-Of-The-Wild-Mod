@@ -3,6 +3,8 @@ package com.majong.zelda.entity;
 import com.majong.zelda.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.VillagerModel;
@@ -15,9 +17,7 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-@OnlyIn(Dist.CLIENT)
+@Environment(value=EnvType.CLIENT)
 public class YigaTeamMemberRenderer extends MobRenderer{
 	private EntityModel<YigaTeamMemberEntity> VillagerModel,YGTModel;
 	public YigaTeamMemberRenderer(EntityRendererProvider.Context renderManagerIn) {

@@ -4,20 +4,15 @@ import com.majong.zelda.entity.Lynel;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
 
+import majongmc.hllib.common.event.ProjectileImpactEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 
-@Mod.EventBusSubscriber()
 public class CriticalHit {
-	@SubscribeEvent
 	public static void onArrowHit(ProjectileImpactEvent event) {
 		if(!event.getEntity().level.isClientSide&&event.getProjectile().getOwner() instanceof Player) {
 			Projectile arrow=event.getProjectile();
@@ -40,11 +35,7 @@ public class CriticalHit {
 						double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 						target.setDeltaMovement(target.getDeltaMovement().add(mx,0.1, mz));
 						event.setCanceled(false);
-						Networking.PARTICLE.send(
-			                    PacketDistributor.PLAYER.with(
-			                            () -> (ServerPlayer) player
-			                    ),
-			                    new ParticlePack(6,arrow.getX(),arrow.getY(),arrow.getZ(),0,0,0));
+						Networking.PARTICLE.send((ServerPlayer) player,new ParticlePack(6,arrow.getX(),arrow.getY(),arrow.getZ(),0,0,0));
 					}
 				}
 			}

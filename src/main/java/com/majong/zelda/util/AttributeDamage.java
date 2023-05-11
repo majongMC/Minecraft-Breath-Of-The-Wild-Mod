@@ -2,7 +2,7 @@ package com.majong.zelda.util;
 
 import java.util.Collection;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
@@ -25,11 +25,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
 
 public class AttributeDamage {
 	public static void firedamage(LivingEntity living,Entity attacker) {
-    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.FIRE_RESTRAINTED))) {
+    	if(living.getType().builtInRegistryHolder().tags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.FIRE_RESTRAINTED))) {
     		if(!(attacker instanceof LivingEntity))
     			living.hurt(living.level.damageSources().generic(),32767);
     		else
@@ -43,7 +42,7 @@ public class AttributeDamage {
     		EntityFreezer.FreezeMob((Mob) living, 200);
     	else
     		living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,200,9));
-    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ICE_RESTRAINTED))) {
+    	if(living.getType().builtInRegistryHolder().tags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ICE_RESTRAINTED))) {
     		if(!(attacker instanceof LivingEntity))
     			living.hurt(living.level.damageSources().generic(),32767);
     		else
@@ -53,7 +52,7 @@ public class AttributeDamage {
     	}
 	}
     public static void electricitydamage(LivingEntity living,Entity attacker) {
-    	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()&&!living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ELECTRICITY_INVULNERABLE))) {
+    	if(!living.level.isClientSide&&Math.random()<ZeldaConfig.ELECTRICITY.get()&&!living.getType().builtInRegistryHolder().tags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ELECTRICITY_INVULNERABLE))) {
     		if(living instanceof Player) {
     			Player player=(Player) living;
     			player.drop(player.getMainHandItem(), true, true);
@@ -77,7 +76,7 @@ public class AttributeDamage {
 	}
     public static void ancientdamage(LivingEntity living,@Nullable Entity attacker) {
     	if(!living.level.isClientSide) {
-	    	if(living.getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ANCIENT_RESTRAINTED)))
+	    	if(living.getType().builtInRegistryHolder().tags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.ANCIENT_RESTRAINTED)))
 	    	{
 	    		if(attacker instanceof LivingEntity)
 	    			living.hurt(living.level.damageSources().mobAttack((LivingEntity) attacker),32767);
@@ -92,11 +91,7 @@ public class AttributeDamage {
 	    		if(attacker instanceof Player) {
 	    			if(living instanceof Warden)
 	    				TriggerRegistery.KILL_WARDEN.trigger((ServerPlayer) attacker);
-	    			Networking.SOUND.send(
-		                    PacketDistributor.PLAYER.with(
-		                            () -> (ServerPlayer) attacker
-		                    ),
-		                    new SoundPack());
+	    			Networking.SOUND.send((ServerPlayer) attacker,new SoundPack());
 	    		}
 	    		return;   
 	    	}

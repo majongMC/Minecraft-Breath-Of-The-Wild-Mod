@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.network.PacketDistributor;
 
 public class FireArrowEntity extends Arrow{
 
@@ -45,11 +44,7 @@ public class FireArrowEntity extends Arrow{
     		Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {
     			Player player=(Player) it.next();
-    			Networking.PARTICLE.send(
-	                    PacketDistributor.PLAYER.with(
-	                            () -> (ServerPlayer) player
-	                    ),
-	                    new ParticlePack(2,this.getX(),this.getY(),this.getZ(),0,0,0));
+    			Networking.PARTICLE.send((ServerPlayer) player,new ParticlePack(2,this.getX(),this.getY(),this.getZ(),0,0,0));
     		}
 		}
 		if(!this.level.isClientSide&&this.inGround&&ZeldaConfig.FIRE_ARROW.get()) {

@@ -1,31 +1,31 @@
 package com.majong.zelda.client;
 
 import com.majong.zelda.config.ZeldaConfigClient;
+import com.majong.zelda.entity.EntityRendererSubscriber;
 import com.majong.zelda.item.ItemLoader;
+import com.majong.zelda.network.Networking;
 import com.majong.zelda.tileentity.PotTER;
 import com.majong.zelda.tileentity.TileEntityLoader;
 
 import majongmc.hllib.client.effects.CameraShakeApi;
+import majongmc.hllib.common.event.EventBus;
+import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class ZeldaClient {
-	@SubscribeEvent
-	public static void forgeInitializeClient(FMLClientSetupEvent event) {
-		event.enqueueWork(() -> {
-			new ZeldaClient().onInitializeClient();
-		});
-	}
+public class ZeldaClient implements ClientModInitializer{
+	@Override
 	public void onInitializeClient() {
+		EventBus bus=EventBus.getModEventBus();
+		ClientEventRegistry.register(bus);
+		EntityRendererSubscriber.onRegisterLayers();
+		EntityRendererSubscriber.onRegisterRenderer();
 		CameraShakeApi.setExtent(ZeldaConfigClient.CAMERA_SHAKE.get().floatValue());
 		propertyOverrideRegistry();
 		BlockEntityRenderers.register(TileEntityLoader.POT_TILE_ENTITY.get(), PotTER::new);
+		Networking.registerClientHandler();
+		KeybindingRegistry.onClientSetup();
 	}
 	public void propertyOverrideRegistry() {
         	ItemProperties.register(ItemLoader.BEAST_GOD_BOW.get(), new ResourceLocation("pulling"), (p_174630_, p_174631_, p_174632_, p_174633_) -> {

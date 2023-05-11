@@ -17,6 +17,8 @@ import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.util.EntityFreezer;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
+import majongmc.hllib.common.network.INDP;
+import majongmc.hllib.common.network.NetworkEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,15 +33,14 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.network.NetworkEvent;
 
-public class PackToServer {
+public class PackToServer implements INDP{
 	private final int type;
     public PackToServer(FriendlyByteBuf buffer) {
     	type=buffer.readInt();
@@ -83,16 +84,16 @@ public class PackToServer {
     		Level Level=player.level;
     		List<Entity> partentitylist=new ArrayList<>();
     		List<Entity> targrtlist= Level.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,(Entity t)-> {
-					if(t instanceof PartEntity) {
-						Entity parent=((PartEntity)t).getParent();
-						if(parent instanceof LivingEntity&&(parent.getClassification(false)==MobCategory.MONSTER||(!(parent instanceof Player)&&((LivingEntity) parent).getMaxHealth()>101))) {
+					if(t instanceof EnderDragonPart) {
+						Entity parent=((EnderDragonPart)t).parentMob;
+						if(parent instanceof LivingEntity&&(parent.getType().getCategory()==MobCategory.MONSTER||(!(parent instanceof Player)&&((LivingEntity) parent).getMaxHealth()>101))) {
 							partentitylist.add(parent);
 							return false;
 						}
 					}
 					if(t instanceof LivingEntity) {
 						LivingEntity entity=(LivingEntity) t;
-						if(entity.getClassification(false)==MobCategory.MONSTER||(!(entity instanceof Player)&&entity.getMaxHealth()>101)) {
+						if(entity.getType().getCategory()==MobCategory.MONSTER||(!(entity instanceof Player)&&entity.getMaxHealth()>101)) {
 							return true;
 						}
 						else

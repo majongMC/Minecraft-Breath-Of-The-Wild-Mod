@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.FakePlayer;
 
 public class GuideBook extends Item{
 
@@ -21,7 +20,7 @@ public class GuideBook extends Item{
 	}
 	@Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		if(!worldIn.isClientSide&&!(playerIn instanceof FakePlayer)) {
+		if(!worldIn.isClientSide) {
 			if(!ModCheck.isModLoaded("patchouli"))
 				playerIn.sendSystemMessage(Component.translatable("msg.zelda.no_patchouli"));
 			else

@@ -4,10 +4,11 @@ import java.util.function.Supplier;
 
 import com.majong.zelda.gui.OpenZeldaMessageGui;
 
+import majongmc.hllib.common.network.INDP;
+import majongmc.hllib.common.network.NetworkEvent;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
 
-public class GuiMessagePack {
+public class GuiMessagePack implements INDP{
 	private final int heal,hunger,type;
     public GuiMessagePack(FriendlyByteBuf buffer) {
     	type=buffer.readInt();

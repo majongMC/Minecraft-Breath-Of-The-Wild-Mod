@@ -2,7 +2,7 @@ package com.majong.zelda.item;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;

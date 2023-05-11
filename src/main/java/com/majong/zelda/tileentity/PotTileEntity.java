@@ -6,10 +6,10 @@ import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.SoundPack;
 import com.majong.zelda.sound.SoundLoader;
 
+import majongmc.hllib.common.iforgeport.MiniIForgeItemStackApi;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.PacketDistributor;
 
 public class PotTileEntity extends BlockEntity{
 	private ItemStack slot[]=new ItemStack[5];
@@ -96,11 +95,7 @@ public class PotTileEntity extends BlockEntity{
 				ItemStack food=new ItemStack(ItemLoader.HARD_FOOD.get());
 				Entity itemdrops=new ItemEntity(this.level,this.user.getX(),this.user.getY(),this.user.getZ(),food);
 				this.level.addFreshEntity(itemdrops);
-				Networking.GUIMESSAGEPACK.send(
-		                PacketDistributor.PLAYER.with(
-		                        () -> (ServerPlayer) user
-		                ),
-		                new GuiMessagePack(1,0,0));
+				Networking.GUIMESSAGEPACK.send((ServerPlayer) user,new GuiMessagePack(1,0,0));
 				setChanged(this.level, this.worldPosition, this.getBlockState());
 				return;
 			}
@@ -121,16 +116,8 @@ public class PotTileEntity extends BlockEntity{
 		food.setTag(tag);
 		Entity itemdrops=new ItemEntity(this.level,this.user.getX(),this.user.getY(),this.user.getZ(),food);
 		this.level.addFreshEntity(itemdrops);
-		Networking.SOUND.send(
-                PacketDistributor.PLAYER.with(
-                        () -> (ServerPlayer) user
-                ),
-                new SoundPack(6,this.getBlockPos()));
-		Networking.GUIMESSAGEPACK.send(
-                PacketDistributor.PLAYER.with(
-                        () -> (ServerPlayer) user
-                ),
-                new GuiMessagePack(0,(int) heal,hunger));
+		Networking.SOUND.send((ServerPlayer) user,new SoundPack(6,this.getBlockPos()));
+		Networking.GUIMESSAGEPACK.send((ServerPlayer) user,new GuiMessagePack(0,(int) heal,hunger));
 		setChanged(this.level, this.worldPosition, this.getBlockState());
 	}
 	@Override
@@ -145,11 +132,11 @@ public class PotTileEntity extends BlockEntity{
 	}
 	@Override
     public void saveAdditional(CompoundTag tag) {
-		tag.put("slot0", slot[0].serializeNBT());
-		tag.put("slot1", slot[1].serializeNBT());
-		tag.put("slot2", slot[2].serializeNBT());
-		tag.put("slot3", slot[3].serializeNBT());
-		tag.put("slot4", slot[4].serializeNBT());
+		tag.put("slot0", MiniIForgeItemStackApi.serializeNBT(slot[0]));
+		tag.put("slot1", MiniIForgeItemStackApi.serializeNBT(slot[1]));
+		tag.put("slot2", MiniIForgeItemStackApi.serializeNBT(slot[2]));
+		tag.put("slot3", MiniIForgeItemStackApi.serializeNBT(slot[3]));
+		tag.put("slot4", MiniIForgeItemStackApi.serializeNBT(slot[4]));
 		tag.putBoolean("using", using);
 		super.saveAdditional(tag);
 	}
@@ -175,19 +162,10 @@ public class PotTileEntity extends BlockEntity{
         return ClientboundBlockEntityDataPacket.create(this);
     }
 	public CompoundTag getUpdateTag() {
-        CompoundTag tag=this.saveWithoutMetadata();
-        tag.putBoolean("us", using);
-        for(int i=0;i<5;i++)
-        	tag.put("s"+i, slot[i].serializeNBT());
+        CompoundTag tag=new CompoundTag();
+        this.saveAdditional(tag);
         return tag;
     }
-	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		CompoundTag tag = pkt.getTag();
-		this.using=tag.getBoolean("us");
-		for(int i=0;i<5;i++)
-			this.slot[i]=ItemStack.of(tag.getCompound("s"+i));
-	}
 	public ItemStack getStack(int index) {
 		return this.slot[index];
 	}

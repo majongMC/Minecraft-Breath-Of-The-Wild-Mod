@@ -19,6 +19,8 @@ import com.majong.zelda.util.ConductiveItem;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 import com.mojang.logging.LogUtils;
 
+import majongmc.hllib.common.event.LivingEvent.LivingTickEvent;
+import majongmc.hllib.common.event.PlayerEvent.Clone;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -33,18 +35,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 
-@Mod.EventBusSubscriber()
 public class EntityTick {
 	public static final Map<Player,Integer> THUNDER_COUNT_TIME=new HashMap<>();
 	public static final Map<Player,BlockPos> LAST_STAND_POS=new HashMap<>();
 	public static final Map<Player,Long> ENTER_TEMPLE_TIME=new HashMap<>();
-	@SubscribeEvent
 	public static void onEntityTick(LivingTickEvent event) {
 		if(event.getEntity() instanceof Player&&!event.getEntity().level.isClientSide) {
 			Player player=(Player) event.getEntity();
@@ -106,11 +101,7 @@ public class EntityTick {
 		    			THUNDER_COUNT_TIME.put(player,100);
 					}
 					else {
-						Networking.PARTICLE.send(
-			                    PacketDistributor.PLAYER.with(
-			                            () -> (ServerPlayer) player
-			                    ),
-			                    new ParticlePack(1,player.getX()-0.5+Math.random(),player.getY()+0.5+Math.random(),player.getZ()-0.5+Math.random(),0,0,0));
+						Networking.PARTICLE.send((ServerPlayer) player,new ParticlePack(1,player.getX()-0.5+Math.random(),player.getY()+0.5+Math.random(),player.getZ()-0.5+Math.random(),0,0,0));
 						THUNDER_COUNT_TIME.put(player,THUNDER_COUNT_TIME.get(player)-1);
 					}
 				}
@@ -128,10 +119,10 @@ public class EntityTick {
 			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
 			villager.level.addFreshEntity(entity);
 		}
-		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().getTags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.HAS_HEALTH_BAR))&&event.getEntity().level.isClientSide) {
+		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().builtInRegistryHolder().tags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.HAS_HEALTH_BAR))&&event.getEntity().level.isClientSide) {
 			LivingEntity entity=(LivingEntity) event.getEntity();
 			if(entity.blockPosition().getY()>=-64)
-				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()).get(),entity.level)+"的");
+				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()).value(),entity.level)+"的");
 		}
 		if(event.getEntity() instanceof Player&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)
@@ -146,7 +137,6 @@ public class EntityTick {
 		}
 		return true;
 	}
-	@SubscribeEvent
 	public static void onPlayerClone(Clone event) {
 		AttributeModifier modifier=event.getOriginal().getAttribute(Attributes.MAX_HEALTH).getModifier(HeartContainer.modifierID);
 		if(modifier!=null)

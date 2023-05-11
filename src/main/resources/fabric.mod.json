@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "zelda",
+  "version": "${version}",
+
+  "name": "Breath Of The Wild",
+  "description": "",
+  "authors": [
+    "MajongMC"
+  ],
+  "contact": {
+    "homepage": "https://github.com/majongMC/Minecraft-Breath-Of-The-Wild-Mod",
+    "sources": "https://github.com/majongMC/Minecraft-Breath-Of-The-Wild-Mod"
+  },
+
+  "license": "MIT",
+  "icon": "assets/zelda/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.majong.zelda.Zelda"
+    ],
+    "client":[
+      "com.majong.zelda.client.ZeldaClient"
+    ]
+  },
+  "mixins": [
+    "zelda.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric-api": "*",
+    "hllib": ">=194.0.1.0",
+    "forgeconfigapiport": ">=6.0.2",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

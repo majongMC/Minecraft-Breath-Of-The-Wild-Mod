@@ -13,7 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PacketDistributor;
 
 public class BombArrowEntity extends Arrow{
 
@@ -43,11 +42,7 @@ public class BombArrowEntity extends Arrow{
     		Iterator<Player> it=playerlist.iterator();
     		while(it.hasNext()) {
     			Player player=(Player) it.next();
-    			Networking.PARTICLE.send(
-	                    PacketDistributor.PLAYER.with(
-	                            () -> (ServerPlayer) player
-	                    ),
-	                    new ParticlePack(4,this.getX(),this.getY(),this.getZ(),0,0,0));
+    			Networking.PARTICLE.send((ServerPlayer) player,new ParticlePack(4,this.getX(),this.getY(),this.getZ(),0,0,0));
     		}
 			if(this.inGround) {
 				if(ZeldaConfig.BOMB_ARROW_DESTROY.get())

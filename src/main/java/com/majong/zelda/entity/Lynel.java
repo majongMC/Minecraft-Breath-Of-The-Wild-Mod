@@ -1,6 +1,5 @@
 package com.majong.zelda.entity;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.majong.zelda.client.ClientUtils;
@@ -104,12 +103,18 @@ public class Lynel extends Monster implements ISkillable{
 	public void tick() {
 		super.tick();
 		if(!this.level.isClientSide) {
+			if(isdizzy()&&dizzytime%15==0) {
+				List<Entity> passengers=this.getPassengers();
+				for(Entity passenger:passengers) {
+					if(passenger instanceof Player player)
+						player.attack(this);
+				}
+			}
 			dizzytime--;
 			if(dizzytime==0) {
 				List<Entity> passengers=this.getPassengers();
-				Iterator<Entity> it=passengers.iterator();
-				while(it.hasNext())
-					it.next().stopRiding();
+				for(Entity passenger:passengers)
+					passenger.stopRiding();
 			}
 		}
 	}
@@ -131,10 +136,10 @@ public class Lynel extends Monster implements ISkillable{
 	         entity.setPos(this.getX()+rou*Math.cos(sita), d0, this.getZ()+rou*Math.sin(sita));
 	      }
 	}
-	@Override
+	/*@Override
 	public boolean canRiderInteract() {
 		return true;
-	}
+	}*/
 	private void prepareburst() {
 		new Processable<Lynel>(this) {
 			@Override

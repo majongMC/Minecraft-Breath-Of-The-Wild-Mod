@@ -1,6 +1,7 @@
 package com.majong.zelda.world.dimension;
 
 import com.majong.zelda.data.DataManager;
+import com.majong.zelda.util.ChangeDimension;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -93,8 +94,7 @@ public class TempleDimensionData extends SavedData{
 		DataManager.AdjustAllSkills(player, true);
 		int templeID=DataManager.data.get(player).intemple;
 		DataManager.data.get(player).intemple=0;
-		ServerLevel overworld=worldIn.getServer().getLevel(Level.OVERWORLD);
-		player.changeDimension(overworld,new TempleTeleporter());
+		ChangeDimension.toOverworld(player);
 		CompoundTag data=getTempleData(worldIn,templeID);
 		int[] templepos=data.getIntArray("temple_location");
 		player.teleportTo(templepos[0]+0.5, templepos[1]+1, templepos[2]+0.5);

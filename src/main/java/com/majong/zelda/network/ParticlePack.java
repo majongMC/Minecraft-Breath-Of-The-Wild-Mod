@@ -6,12 +6,13 @@ import org.joml.Vector3f;
 
 import com.majong.zelda.client.ClientUtils;
 
+import majongmc.hllib.common.network.INDP;
+import majongmc.hllib.common.network.NetworkEvent;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
 
-public class ParticlePack {
+public class ParticlePack implements INDP{
 	private final double DATA[]=new double[6];
 	private final int type;
     public ParticlePack(FriendlyByteBuf buffer) {

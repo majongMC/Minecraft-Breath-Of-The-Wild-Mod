@@ -2,6 +2,7 @@ package com.majong.zelda.item;
 
 import java.util.function.Predicate;
 
+import majongmc.hllib.common.event.HllibEventFactory;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -34,7 +35,7 @@ public class BeastGodBow  extends ProjectileWeaponItem implements Vanishable {
 	         ItemStack itemstack = player.getProjectile(p_40667_);
 
 	         int i = this.getUseDuration(p_40667_) - p_40670_;
-	         i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(p_40667_, p_40668_, player, i, !itemstack.isEmpty() || flag);
+	         i = HllibEventFactory.onArrowLoose(p_40667_, p_40668_, player, i, !itemstack.isEmpty() || flag);
 	         if (i < 0) return;
 
 	         if (!itemstack.isEmpty() || flag) {
@@ -44,7 +45,7 @@ public class BeastGodBow  extends ProjectileWeaponItem implements Vanishable {
 
 	            float f = getPowerForTime(i);
 	            if (!((double)f < 0.1D)) {
-	               boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, p_40667_, player));
+	               boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem()==Items.ARROW);
 	               if (!p_40668_.isClientSide) {
 	                  ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
 	                  AbstractArrow abstractarrow = arrowitem.createArrow(p_40668_, itemstack, player);
@@ -143,7 +144,7 @@ public class BeastGodBow  extends ProjectileWeaponItem implements Vanishable {
 	   public InteractionResultHolder<ItemStack> use(Level p_40672_, Player p_40673_, InteractionHand p_40674_) {
 	      ItemStack itemstack = p_40673_.getItemInHand(p_40674_);
 	      boolean flag = !p_40673_.getProjectile(itemstack).isEmpty();
-	      InteractionResultHolder<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, p_40672_, p_40673_, p_40674_, flag);
+	      InteractionResultHolder<ItemStack> ret = HllibEventFactory.onArrowNock(itemstack, p_40672_, p_40673_, p_40674_, flag);
 	      if (ret != null) return ret;
 
 	      if (!p_40673_.getAbilities().instabuild && !flag) {

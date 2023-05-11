@@ -1,6 +1,6 @@
 package com.majong.zelda.block;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.item.ItemLoader;
@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.PacketDistributor;
 
 public class TempleFinishBlock extends TempleStartBlock{
 	@Nullable
@@ -44,11 +43,7 @@ public class TempleFinishBlock extends TempleStartBlock{
 				return InteractionResult.SUCCESS;
 			}
 			tile.addConqueredPlayer(player);
-			Networking.GUIMESSAGEPACK.send(
-	                PacketDistributor.PLAYER.with(
-	                        () -> (ServerPlayer) player
-	                ),
-	                new GuiMessagePack(2,0,0));
+			Networking.GUIMESSAGEPACK.send((ServerPlayer) player,new GuiMessagePack(2,0,0));
 		}
 		return InteractionResult.SUCCESS;
 	}

@@ -7,11 +7,12 @@ import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 
 import majongmc.hllib.client.effects.CameraShakeApi;
+import majongmc.hllib.common.network.INDP;
+import majongmc.hllib.common.network.NetworkEvent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
 
-public class ZeldaNBTPack {
+public class ZeldaNBTPack implements INDP{
 	private final int type;
 	private final CompoundTag nbt;
     public ZeldaNBTPack(FriendlyByteBuf buffer) {

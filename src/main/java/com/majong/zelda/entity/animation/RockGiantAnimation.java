@@ -1,13 +1,13 @@
 package com.majong.zelda.entity.animation;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(value=EnvType.CLIENT)
 public class RockGiantAnimation {
 	public static final AnimationDefinition ROCKGIANT_ATTACK_A=AnimationDefinition.Builder.withLength(2F)
 			.addAnimation("hand", new AnimationChannel(AnimationChannel.Targets.ROTATION, 

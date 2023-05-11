@@ -3,11 +3,11 @@ package com.majong.zelda.entity;
 import com.majong.zelda.entity.animation.YigaTeamMemberAnimation;
 
 import majongmc.hllib.client.animation.AnimatePlayer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-@OnlyIn(Dist.CLIENT)
+@Environment(value=EnvType.CLIENT)
 public class YigaTeamMemberModel extends PlayerModel<YigaTeamMemberEntity>{
 	private ModelPart root;
 	public YigaTeamMemberModel(ModelPart p_170821_, boolean p_170822_) {
