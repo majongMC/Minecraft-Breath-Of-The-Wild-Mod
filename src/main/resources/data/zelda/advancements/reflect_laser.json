@@ -1,0 +1,29 @@
+{
+    "parent": "zelda:shield_reflect",
+    "criteria": {
+      "reflect_laser": {
+        "conditions": {},
+        "trigger": "zelda:reflect_laser"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.reflect_laser.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:ancient_shield"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.reflect_laser.title"
+      }
+    },
+    "requirements": [
+      [
+        "reflect_laser"
+      ]
+    ]
+  }

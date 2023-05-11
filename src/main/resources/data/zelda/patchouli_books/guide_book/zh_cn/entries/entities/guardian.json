@@ -1,0 +1,16 @@
+{
+    "name": "守护者",
+    "icon": "zelda:guardian_spawn_egg",
+    "category": "zelda:entity_category",
+    "pages": [
+        {
+            "type":"patchouli:entity",
+            "entity":"zelda:guardian",
+            "text":"守护者是一种敌对生物，生命值40点，具有一种会行走的变种，行走的守护者生命值为120点"
+        },
+        {
+            "type": "patchouli:text",
+            "text":"守护者会发射激光攻击玩家，伤害极高，玩家可在被激光击中瞬间举盾反射激光（古代兵装·盾可以消耗耐久自动盾反），击杀后掉落古代零件，行走的守护者会掉落更多古代零件，且只有行走的守护者会掉落巨大的古代核心。"
+        }
+    ]
+}

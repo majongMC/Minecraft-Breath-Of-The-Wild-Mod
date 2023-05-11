@@ -3,7 +3,9 @@ package com.majong.zelda.gui;
 import com.majong.zelda.Utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class OpenDialogBox {
 	public OpenDialogBox() {
@@ -13,7 +15,7 @@ public class OpenDialogBox {
 				break;
 			maxmessage++;
 		}
-		select=(int) (Math.random()*maxmessage);
+		select=Mth.nextInt(RandomSource.create(), 0, maxmessage-1);
 		while(true) {
 			if(!hasvalue("yigateam.dialog."+select+"_"+length))
 				break;
@@ -23,11 +25,11 @@ public class OpenDialogBox {
 			length++;
 		String[] dialog=new String[length];
 		for(int i=0;i<length;i++) {
-			dialog[i]=new TranslationTextComponent("yigateam.dialog."+select+"_"+i).getString();
+			dialog[i]=Component.translatable("yigateam.dialog."+select+"_"+i).getString();
 		}
-		Minecraft.getInstance().setScreen(new DialogBox(new TranslationTextComponent(Utils.MOD_ID + ".dialog"),dialog));
+		Minecraft.getInstance().setScreen(new DialogBox(Component.translatable(Utils.MOD_ID + ".dialog"),dialog));
 	}
 	private boolean hasvalue(String string) {
-		return !string.equals(new TranslationTextComponent(string).getString());
+		return !string.equals(Component.translatable(string).getString());
 	}
 }

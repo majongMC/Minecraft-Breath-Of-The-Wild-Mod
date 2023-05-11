@@ -1,0 +1,16 @@
+{
+    "name": "冰箭",
+    "icon": "zelda:ice_arrow",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:ice_arrow",
+            "text":"击中生物后会将其定住，冰属性伤害，默认属性克制烈焰人。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "zelda:ice_arrow"
+        }
+    ]
+}

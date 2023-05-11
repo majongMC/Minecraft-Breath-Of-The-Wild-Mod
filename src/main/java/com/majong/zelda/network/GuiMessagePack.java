@@ -4,12 +4,12 @@ import java.util.function.Supplier;
 
 import com.majong.zelda.gui.OpenZeldaMessageGui;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class GuiMessagePack {
 	private final int heal,hunger,type;
-    public GuiMessagePack(PacketBuffer buffer) {
+    public GuiMessagePack(FriendlyByteBuf buffer) {
     	type=buffer.readInt();
     	heal=buffer.readInt();
     	hunger=buffer.readInt();
@@ -20,7 +20,7 @@ public class GuiMessagePack {
     	this.heal=heal;
     	this.hunger=hunger;
     }
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
     	buf.writeInt(type);
     	buf.writeInt(heal);
     	buf.writeInt(hunger);

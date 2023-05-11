@@ -1,17 +1,17 @@
 package com.majong.zelda.entity.ai;
 
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
 public class ChangeDistanceNearestAttackableTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 
-	public ChangeDistanceNearestAttackableTargetGoal(MobEntity goalOwnerIn, Class<T> targetClassIn, int targetChanceIn,
+	public ChangeDistanceNearestAttackableTargetGoal(Mob goalOwnerIn, Class<T> targetClassIn, int targetChanceIn,
 			boolean checkSight, boolean nearbyOnlyIn, double distance) {
 		super(goalOwnerIn, targetClassIn, targetChanceIn, checkSight, nearbyOnlyIn, null);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
-		this.targetConditions = (new EntityPredicate()).range(distance);
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
+		this.targetConditions = (TargetingConditions.forCombat().range(distance));
 	}
 	
 

@@ -2,13 +2,13 @@ package com.majong.zelda.network;
 
 import com.majong.zelda.Utils;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Networking {
-	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKTOSERVER,FOODMESSAGEPACK,BAR;
-    public static final String VERSION = "165.1.4.5";
+	public static SimpleChannel PARTICLE,SOUND,ZELDANBT,PACKTOSERVER,GUIMESSAGEPACK,BAR;
+    public static final String VERSION = "194.1.7.1";
     private static int ID = 0;
 
     public static int nextID() {
@@ -60,13 +60,13 @@ public class Networking {
                 .decoder(PackToServer::new)
                 .consumer(PackToServer::handler)
                 .add();
-        FOODMESSAGEPACK = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation(Utils.MOD_ID, "foodmessage_pack"),
+        GUIMESSAGEPACK = NetworkRegistry.newSimpleChannel(
+                new ResourceLocation(Utils.MOD_ID, "guimessage_pack"),
                 () -> VERSION,
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
         );
-        FOODMESSAGEPACK.messageBuilder(GuiMessagePack.class, nextID())
+        GUIMESSAGEPACK.messageBuilder(GuiMessagePack.class, nextID())
                 .encoder(GuiMessagePack::toBytes)
                 .decoder(GuiMessagePack::new)
                 .consumer(GuiMessagePack::handler)

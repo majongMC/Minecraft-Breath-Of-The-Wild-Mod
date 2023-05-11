@@ -1,0 +1,37 @@
+{
+    "parent": "zelda:pot",
+    "criteria": {
+      "food": {
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "zelda:food"
+              ]
+            }
+          ]
+        },
+        "trigger": "minecraft:inventory_changed"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.food.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:food"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.food.title"
+      }
+    },
+    "requirements": [
+      [
+        "food"
+      ]
+    ]
+  }

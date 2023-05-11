@@ -1,0 +1,29 @@
+{
+    "parent": "zelda:root",
+    "criteria": {
+      "horn": {
+        "conditions": {},
+        "trigger": "zelda:horn"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.horn.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:horn"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.horn.title"
+      }
+    },
+    "requirements": [
+      [
+        "horn"
+      ]
+    ]
+  }

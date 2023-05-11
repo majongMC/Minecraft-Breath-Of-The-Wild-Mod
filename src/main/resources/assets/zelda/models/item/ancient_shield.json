@@ -18,15 +18,23 @@
 			}
 		}
 	],
+	"overrides": [
+		{
+			"predicate": {
+				"blocking": 1
+			},
+			"model": "zelda:item/ancient_shield_blocking"
+		}
+	],
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [60, 0, 0],
-			"translation": [-0.25, 3.5, 4.75],
+			"rotation": [69.45, -84.76, 93.43],
+			"translation": [1.75, 2.5, 2.75],
 			"scale": [1.5, 1.5, 1]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [60, 0, 0],
-			"translation": [-0.25, 3.5, 4.75],
+			"rotation": [69.45, -84.76, 93.43],
+			"translation": [1.75, 2.5, 2.75],
 			"scale": [1.5, 1.5, 1]
 		},
 		"firstperson_righthand": {
@@ -50,7 +58,9 @@
 		{
 			"name": "group",
 			"origin": [8, 8, 8],
+			"color": 0,
 			"children": [0]
 		}
 	]
+	
 }

@@ -2,29 +2,29 @@ package com.majong.zelda.item;
 
 import com.majong.zelda.sound.SoundLoader;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+
 
 public class RedEnvelope extends Item{
 	public RedEnvelope() {
 		super(new Properties());
-		// TODO 自动生成的构造函数存根
+		// TODO Auto-generated constructor stub
 	}
-
 	@Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if(!worldIn.isClientSide) {
 			playerIn.addItem(new ItemStack(Items.GOLD_NUGGET,(int)(Math.random()*16)));
 		}
 		else {
-			worldIn.playSound(playerIn, playerIn.blockPosition(), SoundLoader.RED_ENVELOPE.get(), SoundCategory.AMBIENT, 10f, 1f);
+			worldIn.playSound(playerIn, playerIn.blockPosition(), SoundLoader.RED_ENVELOPE.get(), SoundSource.AMBIENT, 10f, 1f);
 		}
-		return ActionResult.pass(playerIn.getItemInHand(handIn).split(playerIn.getItemInHand(handIn).getCount()-1));
+		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn).split(playerIn.getItemInHand(handIn).getCount()-1));
 	}
 }

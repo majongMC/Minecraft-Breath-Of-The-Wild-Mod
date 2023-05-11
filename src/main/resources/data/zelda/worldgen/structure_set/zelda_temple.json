@@ -1,0 +1,14 @@
+{
+    "structures": [
+      {
+        "structure": "zelda:zelda_temple",
+        "weight": 1
+      }
+    ],
+    "placement": {
+      "salt": 866666601,
+      "spacing": 40,
+      "separation": 20,
+      "type": "minecraft:random_spread"
+    }
+  }

@@ -1,0 +1,11 @@
+{
+    "name": "物品导电",
+    "icon": "minecraft:lightning_rod",
+    "category": "zelda:game_setting_category",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text":"当玩家在雷雨天装备或手持金属物品时（默认为铁质，铜质，金质，下界合金装备）会引雷（玩家身边会出现黄色粒子效果）。"
+        }
+    ]
+}

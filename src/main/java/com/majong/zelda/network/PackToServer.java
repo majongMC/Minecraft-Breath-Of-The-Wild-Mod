@@ -3,12 +3,11 @@ package com.majong.zelda.network;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 
+import com.majong.zelda.advancement.TriggerRegistery;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.entity.BombEntity;
@@ -18,33 +17,31 @@ import com.majong.zelda.item.ItemLoader;
 import com.majong.zelda.util.EntityFreezer;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public class PackToServer {
 	private final int type;
-    public PackToServer(PacketBuffer buffer) {
+    public PackToServer(FriendlyByteBuf buffer) {
     	type=buffer.readInt();
     }
 
@@ -52,13 +49,13 @@ public class PackToServer {
     	this.type=type;
     }
 
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
     	buf.writeInt(type);
     }
 
     public void handler(Supplier<NetworkEvent.Context> ctx) {
-    	PlayerEntity player=ctx.get().getSender();
         ctx.get().enqueueWork(() -> {
+        	Player player=ctx.get().getSender();
         	switch(type) {
         	case 0:useskill(player);break;
         	case 1:placebomb(player,true);break;
@@ -73,33 +70,29 @@ public class PackToServer {
         });
         ctx.get().setPacketHandled(true);
     }
-    private void teleporttooverworld(PlayerEntity player) {
+    private void teleporttooverworld(Player player) {
     	TempleDimensionData.ExitTemple(player.level, player);
     }
-    private void useskill(PlayerEntity player) {
+    private void useskill(Player player) {
     	if(player.isShiftKeyDown()&&DataManager.data.get(player).unlocked[1]&&DataManager.data.get(player).skill[1]>0) {
-    		player.addEffect(new EffectInstance(Effects.LEVITATION,60,10));
+    		player.addEffect(new MobEffectInstance(MobEffects.LEVITATION,60,10));
     		DataManager.data.get(player).skill[1]--;
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     	else if(DataManager.data.get(player).unlocked[3]&&DataManager.data.get(player).skill[3]>0) {
-    		World world=player.level;
+    		Level Level=player.level;
     		List<Entity> partentitylist=new ArrayList<>();
-    		List<Entity> targrtlist= world.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,new Predicate<Object>() {
-
-				@Override
-				public boolean test(Object t) {
-					// TODO ◊‘∂Ø…˙≥…µƒ∑Ω∑®¥Ê∏˘
+    		List<Entity> targrtlist= Level.getEntitiesOfClass(Entity.class,player.getBoundingBox().inflate(20, 20, 20) ,(Entity t)-> {
 					if(t instanceof PartEntity) {
 						Entity parent=((PartEntity)t).getParent();
-						if(parent instanceof LivingEntity&&(parent.getClassification(false)==EntityClassification.MONSTER||(!(parent instanceof PlayerEntity)&&((LivingEntity) parent).getMaxHealth()>101))) {
+						if(parent instanceof LivingEntity&&(parent.getClassification(false)==MobCategory.MONSTER||(!(parent instanceof Player)&&((LivingEntity) parent).getMaxHealth()>101))) {
 							partentitylist.add(parent);
 							return false;
 						}
 					}
 					if(t instanceof LivingEntity) {
 						LivingEntity entity=(LivingEntity) t;
-						if(entity.getClassification(false)==EntityClassification.MONSTER||(!(entity instanceof PlayerEntity)&&entity.getMaxHealth()>101)) {
+						if(entity.getClassification(false)==MobCategory.MONSTER||(!(entity instanceof Player)&&entity.getMaxHealth()>101)) {
 							return true;
 						}
 						else
@@ -107,39 +100,39 @@ public class PackToServer {
 					}
 					else
 						return false;
-				}});
+					});
     		targrtlist.addAll(partentitylist);
     		Iterator<Entity> it=targrtlist.iterator();
     		while(it.hasNext()) {
     			LivingEntity target=(LivingEntity) it.next();
-    			LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,world);
+    			LightningBolt lightning=new LightningBolt(EntityType.LIGHTNING_BOLT,Level);
     			lightning.setPos(target.getX(), target.getY(), target.getZ());
     			lightning.setVisualOnly(true);
-    			world.addFreshEntity(lightning);
+    			Level.addFreshEntity(lightning);
     			if(target.getMaxHealth()<=100)
-    				target.hurt(new EntityDamageSource("hero",player).setThorns(), 15);
+    				target.hurt(player.level.damageSources().thorns(player), 15);
     			else
-    				target.hurt(new EntityDamageSource("hero",player).setThorns(), 0.15F*target.getMaxHealth());
+    				target.hurt(player.level.damageSources().thorns(player), 0.15F*target.getMaxHealth());
     			target.setSecondsOnFire(10);
     		}
     		for(int i=0;i<10;i++) {
-    			LightningBoltEntity lightning=new LightningBoltEntity(EntityType.LIGHTNING_BOLT,world);
+    			LightningBolt lightning=new LightningBolt(EntityType.LIGHTNING_BOLT,Level);
     			lightning.setPos(player.getX()+Math.random()*20-10, player.getY()-3, player.getZ()+Math.random()*20-10);
     			lightning.setVisualOnly(true);
-    			world.addFreshEntity(lightning);
+    			Level.addFreshEntity(lightning);
     		}
     		DataManager.data.get(player).skill[3]--;
     		DataManager.sendzeldaplayerdatapack(player);
     	}
     }
-    private void placebomb(PlayerEntity player,boolean round) {
+    private void placebomb(Player player,boolean round) {
     	if(!ZeldaConfig.BOMB.get()) {
-			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
+			player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
 			return;
 		}
     	if(!HasShikaStone(player)) {
-    		player.sendMessage(new TranslationTextComponent("msg.anticheat.warn"),UUID.randomUUID());
-    		LogManager.getLogger().warn("ºÏ≤‚µΩ“…À∆◊˜±◊––Œ™£¨ÕÊº“√˚£∫"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		player.sendSystemMessage(Component.translatable("msg.anticheat.warn"));
+    		LogManager.getLogger().warn("Ê£ÄÊµãÂà∞Áñë‰ºº‰ΩúÂºäË°å‰∏∫ÔºåÁé©ÂÆ∂ÂêçÔºö"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
     		return;
     	}
     	BombEntity bomb=new BombEntity(EntityLoader.BOMB.get(),player.level);
@@ -147,12 +140,12 @@ public class PackToServer {
     	bomb.setowner(player);
     	player.level.addFreshEntity(bomb);
     }
-    private void detonate(PlayerEntity player) {
-    	List<MobEntity> moblist= player.level.getEntitiesOfClass(MobEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,(MobEntity t)->true);
-    	Iterator<MobEntity> it1=moblist.iterator();
+    private void detonate(Player player) {
+    	List<Mob> moblist= player.level.getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(32, 32, 32) ,(Mob t)->true);
+    	Iterator<Mob> it1=moblist.iterator();
     	while(it1.hasNext()) {
-			MobEntity mob=it1.next();
-			EntityFreezer.unFreezeMobEntity(mob);
+			Mob mob=it1.next();
+			EntityFreezer.unFreezeMob(mob);
 		}
     	List<MovingBlockCarrierEntity> list=player.level.getEntitiesOfClass(MovingBlockCarrierEntity.class,player.getBoundingBox().inflate(16));
 		Iterator<MovingBlockCarrierEntity> it2=list.iterator();
@@ -161,23 +154,24 @@ public class PackToServer {
 			entity.loose(player);
 		}
     	if(!ZeldaConfig.BOMB.get()) {
-			player.sendMessage(new TranslationTextComponent("msg.bombprohibited"), UUID.randomUUID());
+			player.sendSystemMessage(Component.translatable("msg.bombprohibited"));
 			return;
 		}
     	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(32, 32, 32) ,(LivingEntity t)->t instanceof BombEntity&&((BombEntity)t).owner==player);
 		Iterator<LivingEntity> it=bomblist.iterator();
 		boolean iswindbomb=iswindbomb(player);
 		if(iswindbomb) {
-			player.removeEffect(Effects.SLOW_FALLING);
-			player.removeEffect(Effects.MOVEMENT_SLOWDOWN);
+			player.removeEffect(MobEffects.SLOW_FALLING);
+			player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			player.setNoGravity(false);
-			player.hurt(DamageSource.explosion((LivingEntity)null), 2);
-			player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,5,5));
+			player.hurt(player.level.damageSources().explosion(null, null), 2);
+			player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,5,5));
 			float yaw=player.yHeadRot;
 			float f = 30F;
-			double mz = MathHelper.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
-			double mx = -MathHelper.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 			player.setDeltaMovement(player.getDeltaMovement().add(mx,5, mz));
+			TriggerRegistery.WIND_BOMB.trigger((ServerPlayer) player);
 		}
 		while(it.hasNext()) {
 			BombEntity bomb=(BombEntity) it.next();
@@ -186,7 +180,7 @@ public class PackToServer {
 			}
 		}
     }
-    private boolean iswindbomb(PlayerEntity player) {
+    private boolean iswindbomb(Player player) {
     	if(!player.isNoGravity()||!ZeldaConfig.WINDBOMB.get())
     		return false;
     	List<LivingEntity> bomblist= player.level.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(5, 5, 5) ,(LivingEntity t)->t instanceof BombEntity&&((BombEntity)t).owner==player);
@@ -201,24 +195,24 @@ public class PackToServer {
 		}
 		return isoffground;
     }
-    private void usemagnet(PlayerEntity player) {
+    private void usemagnet(Player player) {
     	if(!HasShikaStone(player)) {
-    		player.sendMessage(new TranslationTextComponent("msg.anticheat.warn"),UUID.randomUUID());
-    		LogManager.getLogger().warn("ºÏ≤‚µΩ“…À∆◊˜±◊––Œ™£¨ÕÊº“√˚£∫"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		player.sendSystemMessage(Component.translatable("msg.anticheat.warn"));
+    		LogManager.getLogger().warn("Ê£ÄÊµãÂà∞Áñë‰ºº‰ΩúÂºäË°å‰∏∫ÔºåÁé©ÂÆ∂ÂêçÔºö"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
     		return;
     	}
     	if(!ZeldaConfig.USEFUL_MAGNET.get()) {
-        	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+        	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
         	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
         		return;
-        	CompoundNBT nbt = stack.getOrCreateTagElement("magnet");
+        	CompoundTag nbt = stack.getOrCreateTagElement("magnet");
         	nbt.putBoolean("activated", true);
-        	player.sendMessage(new TranslationTextComponent("msg.zelda.magnetactivated"),UUID.randomUUID());
+        	player.sendSystemMessage(Component.translatable("msg.zelda.magnetactivated"));
         	}else {
         	double x=player.getX();
         	double y=player.getY();
         	double z=player.getZ();
-        	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16) ,(ItemEntity t)->true);
+        	List<ItemEntity> itemlist= player.level.getEntitiesOfClass(ItemEntity.class,player.getBoundingBox().inflate(16, 16, 16));
         	Iterator<ItemEntity> it=itemlist.iterator();
     		while(it.hasNext()) {
     			ItemEntity item=it.next();
@@ -226,51 +220,51 @@ public class PackToServer {
     		}
         	}
     }
-    private void useStatic(PlayerEntity player) {
+    private void useStatic(Player player) {
     	if(!HasShikaStone(player)) {
-    		player.sendMessage(new TranslationTextComponent("msg.anticheat.warn"),UUID.randomUUID());
-    		LogManager.getLogger().warn("ºÏ≤‚µΩ“…À∆◊˜±◊––Œ™£¨ÕÊº“√˚£∫"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		player.sendSystemMessage(Component.translatable("msg.anticheat.warn"));
+    		LogManager.getLogger().warn("Ê£ÄÊµãÂà∞Áñë‰ºº‰ΩúÂºäË°å‰∏∫ÔºåÁé©ÂÆ∂ÂêçÔºö"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
     		return;
     	}
-    	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+    	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;
-    	CompoundNBT nbt = stack.getOrCreateTagElement("static");
+    	CompoundTag nbt = stack.getOrCreateTagElement("static");
     	nbt.putBoolean("activated", true);
-    	player.sendMessage(new TranslationTextComponent("msg.zelda.staticactivated"), UUID.randomUUID());
+    	player.sendSystemMessage(Component.translatable("msg.zelda.staticactivated"));
     }
-    private void useice(PlayerEntity player) {
+    private void useice(Player player) {
     	if(!HasShikaStone(player)) {
-    		player.sendMessage(new TranslationTextComponent("msg.anticheat.warn"),UUID.randomUUID());
-    		LogManager.getLogger().warn("ºÏ≤‚µΩ“…À∆◊˜±◊––Œ™£¨ÕÊº“√˚£∫"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		player.sendSystemMessage(Component.translatable("msg.anticheat.warn"));
+    		LogManager.getLogger().warn("Ê£ÄÊµãÂà∞Áñë‰ºº‰ΩúÂºäË°å‰∏∫ÔºåÁé©ÂÆ∂ÂêçÔºö"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
     		return;
     	}
     	if(player.isInWater())
     		return;
     	BlockPos playerpos=player.blockPosition();
-    	World world=player.level;
+    	Level Level=player.level;
     	for(int x=-8;x<9;x++)
     		for(int z=-8;z<9;z++) {
     			BlockPos pos=playerpos.offset(x,-1,z);
-    			if(world.getBlockState(pos).getBlock()==Blocks.WATER) {
-    				world.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+    			if(Level.getBlockState(pos).getBlock()==Blocks.WATER) {
+    				Level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
     			}
     		}
     }
-    private void usecamera(PlayerEntity player) {
+    private void usecamera(Player player) {
     	if(!HasShikaStone(player)) {
-    		player.sendMessage(new TranslationTextComponent("msg.anticheat.warn"),UUID.randomUUID());
-    		LogManager.getLogger().warn("ºÏ≤‚µΩ“…À∆◊˜±◊––Œ™£¨ÕÊº“√˚£∫"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
+    		player.sendSystemMessage(Component.translatable("msg.anticheat.warn"));
+    		LogManager.getLogger().warn("Ê£ÄÊµãÂà∞Áñë‰ºº‰ΩúÂºäË°å‰∏∫ÔºåÁé©ÂÆ∂ÂêçÔºö"+player.getScoreboardName()+" UUID:"+player.getUUID().toString());
     		return;
     	}
-    	ItemStack stack=player.getItemInHand(Hand.MAIN_HAND);
+    	ItemStack stack=player.getItemInHand(InteractionHand.MAIN_HAND);
     	if(stack.getItem()!=ItemLoader.SHIKA_STONE.get())
     		return;
-    	CompoundNBT nbt = stack.getOrCreateTagElement("camera");
+    	CompoundTag nbt = stack.getOrCreateTagElement("camera");
     	nbt.putBoolean("activated", true);
-    	player.sendMessage(new TranslationTextComponent("msg.zelda.cameraactivated"), UUID.randomUUID());
+    	player.sendSystemMessage(Component.translatable("msg.zelda.cameraactivated"));
     }
-    private boolean HasShikaStone(PlayerEntity player) {
+    private boolean HasShikaStone(Player player) {
     	return player.getMainHandItem().getItem()==ItemLoader.SHIKA_STONE.get()||player.getOffhandItem().getItem()==ItemLoader.SHIKA_STONE.get();
     }
 }

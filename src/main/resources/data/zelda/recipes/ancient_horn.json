@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "cac",
+      "bdb",
+      "cac"
+    ],
+    "key": {
+      "a": {
+        "item": "zelda:big_ancient_core"
+      },
+      "b": {
+        "item": "zelda:ancient_core"
+      },
+      "c": {
+        "item": "minecraft:echo_shard"
+      },
+      "d": {
+        "item": "zelda:horn"
+      }
+    },
+    "result": {
+      "item": "zelda:ancient_horn",
+      "count": 1
+    }
+  }

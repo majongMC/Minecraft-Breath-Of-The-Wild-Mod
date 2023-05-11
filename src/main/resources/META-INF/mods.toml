@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[34,)" 
+loaderVersion="[41,)" 
 license="MIT"
 [[mods]] 
 modId="zelda" 
@@ -9,3 +9,9 @@ authors="Majong"
 description='''
 
 '''
+[[dependencies.zelda]]
+    modId="hllib"
+    mandatory=true
+    versionRange="[194.0.1.0,)"
+    ordering="NONE"
+    side="BOTH"

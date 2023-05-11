@@ -1,0 +1,29 @@
+{
+    "parent": "zelda:root",
+    "criteria": {
+      "shield_reflect": {
+        "conditions": {},
+        "trigger": "zelda:shield_reflect"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.shield_reflect.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "minecraft:shield"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.shield_reflect.title"
+      }
+    },
+    "requirements": [
+      [
+        "shield_reflect"
+      ]
+    ]
+  }

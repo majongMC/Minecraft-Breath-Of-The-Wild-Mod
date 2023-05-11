@@ -1,0 +1,29 @@
+{
+    "parent": "zelda:root",
+    "criteria": {
+      "chicken_god": {
+        "conditions": {},
+        "trigger": "zelda:chicken_god"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.chicken_god.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "minecraft:egg"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.chicken_god.title"
+      }
+    },
+    "requirements": [
+      [
+        "chicken_god"
+      ]
+    ]
+  }

@@ -1,16 +1,16 @@
 package com.majong.zelda.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 
 public class MoveToTargetGoal extends Goal{
-	protected final CreatureEntity mob;
+	protected final PathfinderMob mob;
 	protected final int keepdistance;
 	private final double speedModifier;
 	private int delayer=0;
-	public MoveToTargetGoal(CreatureEntity mob,int keepdistance,double speedModifier) {
+	public MoveToTargetGoal(PathfinderMob mob,int keepdistance,double speedModifier) {
 		this.mob=mob;
 		this.keepdistance=keepdistance*keepdistance;
 		this.speedModifier=speedModifier;
@@ -19,7 +19,7 @@ public class MoveToTargetGoal extends Goal{
 	@Override
 	public boolean canUse() {
 		// TODO Auto-generated method stub
-		PathNavigator navigation=mob.getNavigation();
+		PathNavigation navigation=mob.getNavigation();
 		LivingEntity target=mob.getTarget();
 		if(target==null||target.isDeadOrDying()||mob.isDeadOrDying()) {
 			navigation.stop();
@@ -29,7 +29,7 @@ public class MoveToTargetGoal extends Goal{
 		double d0=mob.distanceToSqr(target);
 		if(d0>keepdistance) {
 			if(d0-keepdistance>25)
-				delayer=10;
+				delayer=5;
 			else
 				delayer=0;
 			navigation.moveTo(target, this.speedModifier);

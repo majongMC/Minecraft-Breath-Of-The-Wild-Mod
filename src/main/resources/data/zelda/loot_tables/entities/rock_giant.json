@@ -8,7 +8,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:cobblestone",
+            "name": "minecraft:cobbled_deepslate",
             "functions": [
               {
                 "function": "minecraft:set_count",
@@ -36,7 +36,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:diamond_ore",
+            "name": "minecraft:deepslate_diamond_ore",
             "functions": [
               {
                 "function": "minecraft:set_count",
@@ -50,7 +50,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:emerald_ore",
+            "name": "minecraft:deepslate_emerald_ore",
             "functions": [
               {
                 "function": "minecraft:set_count",
@@ -64,7 +64,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:redstone_ore",
+            "name": "minecraft:deepslate_redstone_ore",
             "functions": [
               {
                 "function": "minecraft:set_count",
@@ -78,7 +78,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:lapis_ore",
+            "name": "minecraft:deepslate_lapis_ore",
             "functions": [
               {
                 "function": "minecraft:set_count",
@@ -92,7 +92,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:iron_ore",
+            "name": "minecraft:deepslate_iron_ore",
             "functions": [
               {
                 "function": "minecraft:set_count",
@@ -106,7 +106,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:gold_ore",
+            "name": "minecraft:deepslate_gold_ore",
             "functions": [
               {
                 "function": "minecraft:set_count",
@@ -134,7 +134,7 @@
           {
             "type": "minecraft:item",
             "weight": 1,
-            "name": "minecraft:coal_ore",
+            "name": "minecraft:deepslate_coal_ore",
             "functions": [
               {
                 "function": "minecraft:set_count",

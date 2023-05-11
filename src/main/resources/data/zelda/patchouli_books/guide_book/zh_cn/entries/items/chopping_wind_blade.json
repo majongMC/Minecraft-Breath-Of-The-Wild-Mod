@@ -1,0 +1,12 @@
+{
+    "name": "斩风刀",
+    "icon": "zelda:chopping_wind_blade",
+    "category": "zelda:item_category",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "zelda:chopping_wind_blade",
+            "text":"依盖队最喜欢用的武器，击杀依盖队成员有概率掉落，1.6攻击速度，5攻击伤害。$(br)在安装了史诗战斗模组的情况下，该武器拥有武士刀的属性，且攻击速度大大提升。"
+        }
+    ]
+}

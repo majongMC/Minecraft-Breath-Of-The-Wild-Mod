@@ -6,16 +6,16 @@ import java.util.Map;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ZeldaNBTPack;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.PacketDistributor;
 
 public class DataManager {
-	public static Map<PlayerEntity,ZeldaPlayerData> data=new HashMap<>();
-	public static CompoundNBT readtonbt(PlayerEntity player) {
+	public static Map<Player,ZeldaPlayerData> data=new HashMap<>();
+	public static CompoundTag readtonbt(Player player) {
 		preventnull(player);
-		CompoundNBT nbt=new CompoundNBT();
+		CompoundTag nbt=new CompoundTag();
 		ZeldaPlayerData playerdata=data.get(player);
 		nbt.putBoolean("waterunlocked", playerdata.unlocked[0]);
 		nbt.putBoolean("windunlocked", playerdata.unlocked[1]);
@@ -26,7 +26,7 @@ public class DataManager {
 		nbt.putInt("intemple", playerdata.intemple);
 		return nbt;
 	}
-	public static void writefromnbt(CompoundNBT nbt,PlayerEntity player) {
+	public static void writefromnbt(CompoundTag nbt,Player player) {
 		preventnull(player);
 		ZeldaPlayerData playerdata=data.get(player);
 		playerdata.unlocked[0]=nbt.getBoolean("waterunlocked");
@@ -37,21 +37,21 @@ public class DataManager {
 		playerdata.cd=nbt.getIntArray("cd");
 		playerdata.intemple=nbt.getInt("intemple");
 	}
-	public static void sendzeldaplayerdatapack(PlayerEntity player) {
+	public static void sendzeldaplayerdatapack(Player player) {
 		Networking.ZELDANBT.send(
                 PacketDistributor.PLAYER.with(
-                        () -> (ServerPlayerEntity) player
+                        () -> (ServerPlayer) player
                 ),
                 new ZeldaNBTPack(1,readtonbt(player)));
 	}
-	public static void preventnull(PlayerEntity player) {
+	public static void preventnull(Player player) {
 		if(data.get(player)==null)
 			data.put(player, new ZeldaPlayerData(player));
 	}
-	public static void removedata(PlayerEntity player) {
+	public static void removedata(Player player) {
 		data.remove(player);
 	}
-	public static void AdjustAllSkills(PlayerEntity player,boolean unlocked) {
+	public static void AdjustAllSkills(Player player,boolean unlocked) {
 		ZeldaPlayerData playerdata=data.get(player);
 		for(int i=0;i<4;i++) {
 			playerdata.unlocked[i]=unlocked;

@@ -6,23 +6,24 @@ import com.majong.zelda.client.ClientUtils;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import majongmc.hllib.client.effects.CameraShakeApi;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 public class ZeldaNBTPack {
 	private final int type;
-	private final CompoundNBT nbt;
-    public ZeldaNBTPack(PacketBuffer buffer) {
+	private final CompoundTag nbt;
+    public ZeldaNBTPack(FriendlyByteBuf buffer) {
     	this.type=buffer.readInt();
     	this.nbt=buffer.readNbt();
     }
 
-    public ZeldaNBTPack(int type,CompoundNBT nbt) {
+    public ZeldaNBTPack(int type,CompoundTag nbt) {
     	this.type=type;
     	this.nbt=nbt;
     }
-    public void toBytes(PacketBuffer buf) {
+    public void toBytes(FriendlyByteBuf buf) {
     	buf.writeInt(type);
     	buf.writeNbt(nbt);
     }
@@ -31,7 +32,8 @@ public class ZeldaNBTPack {
         ctx.get().enqueueWork(() -> {
         	switch(type) {
         	case 1:DataManager.writefromnbt(nbt,ClientUtils.GetClientPlayer());break;
-        	case 2:setConfig();
+        	case 2:setConfig();break;
+        	case 3:CameraShakeApi.CameraShakeClient(nbt.getInt("frame"));break;
         	}
         });
         ctx.get().setPacketHandled(true);

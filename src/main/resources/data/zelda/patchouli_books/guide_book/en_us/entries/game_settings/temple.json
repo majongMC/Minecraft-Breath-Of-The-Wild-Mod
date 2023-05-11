@@ -1,0 +1,21 @@
+{
+    "name": "Temple System",
+    "icon": "zelda:temple_entry",
+    "category": "zelda:game_setting_category",
+    "pages": [
+        {
+            "type": "patchouli:image",
+            "border": true,
+            "images":["zelda:textures/gui/temple.png"],
+            "text":"神庙自然生成于主世界，其中会生成神庙入口方块，右键此方块即可传送至神庙关卡"
+        },
+        {
+            "type": "patchouli:text",
+            "text":"接下来，你会进入神庙关卡，这是一个新的维度，你需要通过神庙中的一系列试炼，到达神庙终点方块。右键神庙终点方块会给予玩家试炼通过证，并将玩家传送回主世界。"
+        },
+        {
+            "type": "patchouli:text",
+            "text":"注意：玩家在神庙中为冒险模式不可放置及破坏方块，且四神兽技能也被禁用，你需要利用你的聪明才智来通过神庙的试炼。$(br)神庙中除了挑战，也有丰厚的奖励，你需要仔细寻找。$(br)若玩家在神庙维度中不慎掉入虚空，不要紧，你只会受到一颗心的伤害并把你传送到之前掉下去的位置。如果玩家在神庙中死亡，玩家会被传送到神庙外面，而不是直接在神庙维度中死亡。"
+        }
+    ]
+}

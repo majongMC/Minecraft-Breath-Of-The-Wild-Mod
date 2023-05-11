@@ -1,102 +1,101 @@
 package com.majong.zelda.world.dimension;
 
-import org.apache.logging.log4j.LogManager;
-
 import com.majong.zelda.data.DataManager;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameType;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.DimensionSavedDataManager;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.storage.DimensionDataStorage;
 
-public class TempleDimensionData extends WorldSavedData{
+public class TempleDimensionData extends SavedData{
 	private static final String NAME = "ztd";
 	public static final int FIRST_ALLOCATE=1;
 	public static boolean occupied=false;
-	public CompoundNBT DATA=init();
-	private CompoundNBT init() {
-		CompoundNBT data=new CompoundNBT();
+	public CompoundTag DATA=init();
+	private CompoundTag init() {
+		CompoundTag data=new CompoundTag();
 		data.putInt("allocated", FIRST_ALLOCATE);
 		return data;
 	}
 	public TempleDimensionData() {
-		super(NAME);
+		super();
 		//DATA.putInt("allocated", FIRST_ALLOCATE);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
-	public TempleDimensionData(String name) {
+	/*public TempleDimensionData(String name) {
 		super(name);
 		//DATA.putInt("allocated", FIRST_ALLOCATE);
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
-	}
-	public static TempleDimensionData get(World worldIn) {
-        if (!(worldIn instanceof ServerWorld)) {
-            throw new RuntimeException("Attempted to get the data from a client world. This is wrong.");
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
+	}*/
+	public static TempleDimensionData get(Level worldIn) {
+        if (!(worldIn instanceof ServerLevel)) {
+            throw new RuntimeException("Attempted to get the data from a client Level. This is wrong.");
         }
-        ServerWorld world = worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION);
-        DimensionSavedDataManager storage = world.getDataStorage();
+        ServerLevel Level = worldIn.getServer().getLevel(DimensionInit.TEMPLE_DIMENSION);
+        DimensionDataStorage storage = Level.getDataStorage();
         //LogManager.getLogger().info("usesaveddata");
-        return storage.computeIfAbsent(TempleDimensionData::new, NAME);
+        return storage.computeIfAbsent(TempleDimensionData::load,TempleDimensionData::new, NAME);
     }
 
-	@Override
-	public void load(CompoundNBT nbt) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	public static TempleDimensionData load(CompoundTag nbt) {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		//LogManager.getLogger().info("loadsaveddata");
-		DATA=nbt.getCompound("ztd");
-		if(!DATA.contains("allocated")||DATA.getInt("allocated")==0) {
-			DATA.putInt("allocated", FIRST_ALLOCATE);
+		TempleDimensionData dat=new TempleDimensionData();
+		dat.DATA=nbt.getCompound("ztd");
+		if(!dat.DATA.contains("allocated")||dat.DATA.getInt("allocated")==0) {
+			dat.DATA.putInt("allocated", FIRST_ALLOCATE);
 		}
+		return dat;
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	public CompoundTag save(CompoundTag nbt) {
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		//LogManager.getLogger().info("savesaveddata");
 		nbt.put("ztd",DATA);
 		return nbt;
 	}
-	public static int AllocateNewTemple(World worldIn) {
-		CompoundNBT data=get(worldIn).DATA;
+	public static int AllocateNewTemple(Level worldIn) {
+		CompoundTag data=get(worldIn).DATA;
 		int templeID=data.getInt("allocated")+1;
 		data.putInt("allocated", templeID);
-		data.put(Integer.toString(templeID), new CompoundNBT());
+		data.put(Integer.toString(templeID), new CompoundTag());
 		get(worldIn).setDirty();
 		return templeID;
 	}
-	public static boolean isAllocated(World worldIn,BlockPos pos) {
-		CompoundNBT data=get(worldIn).DATA;
+	public static boolean isAllocated(Level worldIn,BlockPos pos) {
+		CompoundTag data=get(worldIn).DATA;
 		int allocated=data.getInt("allocated");
 		int posX=pos.getX();
 		int posZ=pos.getZ();
-		//LogManager.getLogger().info(posX+","+posZ);
 		for(int i=2;i<allocated;i++) {
 			if(data.getCompound(Integer.toString(i)).contains("startpoint")) {
 			int[] templepos=data.getCompound(Integer.toString(i)).getIntArray("startpoint");
-			if(Math.abs(templepos[0]-posX)<80&&Math.abs(templepos[2]-posZ)<80)
+			if(Math.abs(templepos[0]-posX)<64&&Math.abs(templepos[2]-posZ)<64)
 				return true;
 			}
 		}
 		return false;
 	}
-	public static CompoundNBT getTempleData(World worldIn,int templeID) {
-		CompoundNBT data=get(worldIn).DATA;
+	public static CompoundTag getTempleData(Level worldIn,int templeID) {
+		CompoundTag data=get(worldIn).DATA;
 		return data.getCompound(Integer.toString(templeID));
 	}
-	public static void ExitTemple(World worldIn,PlayerEntity player){
+	public static void ExitTemple(Level worldIn,Player player){
 		player.setHealth(player.getMaxHealth());
 		TempleDimensionData.occupied=false;
-		player.setGameMode(GameType.SURVIVAL);
+		((ServerPlayer)player).setGameMode(GameType.SURVIVAL);
 		DataManager.AdjustAllSkills(player, true);
 		int templeID=DataManager.data.get(player).intemple;
 		DataManager.data.get(player).intemple=0;
-		ServerWorld overworld=worldIn.getServer().getLevel(World.OVERWORLD);
+		ServerLevel overworld=worldIn.getServer().getLevel(Level.OVERWORLD);
 		player.changeDimension(overworld,new TempleTeleporter());
-		CompoundNBT data=getTempleData(worldIn,templeID);
+		CompoundTag data=getTempleData(worldIn,templeID);
 		int[] templepos=data.getIntArray("temple_location");
 		player.teleportTo(templepos[0]+0.5, templepos[1]+1, templepos[2]+0.5);
 	}

@@ -2,19 +2,26 @@ package com.majong.zelda.entity.ai;
 
 import java.util.EnumSet;
 
+import com.majong.zelda.entity.BokoBrinEntity;
 import com.majong.zelda.entity.RockGiantEntity;
 import com.majong.zelda.entity.YigaTeamMemberEntity;
+import com.majong.zelda.sound.SoundLoader;
+import com.majong.zelda.util.CustomDamageSources;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.pathfinder.Path;
 
 public class DelayMeleeAttackGoal extends Goal{
-	protected final CreatureEntity mob;
+	protected final PathfinderMob mob;
 	   private final double speedModifier;
 	   private final boolean followingTargetEvenIfNotSeen;
 	   private Path path;
@@ -28,9 +35,9 @@ public class DelayMeleeAttackGoal extends Goal{
 	   private int failedPathFindingPenalty = 0;
 	   private boolean canPenalize = false;
 	   private int delay=-1;
-	   private boolean reverse=true;
-	   private int delaytime=0;
-	   public DelayMeleeAttackGoal(CreatureEntity p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_,int delaytime) {
+	   //private boolean reverse=true;
+	   private int delaytime=0,yigadelay=-1;
+	   public DelayMeleeAttackGoal(PathfinderMob p_i1636_1_, double p_i1636_2_, boolean p_i1636_4_,int delaytime) {
 	      this.mob = p_i1636_1_;
 	      this.speedModifier = p_i1636_2_;
 	      this.followingTargetEvenIfNotSeen = p_i1636_4_;
@@ -80,10 +87,12 @@ public class DelayMeleeAttackGoal extends Goal{
 	      } else if (!this.mob.isWithinRestriction(livingentity.blockPosition())) {
 	         return false;
 	      } else {
-	         return !(livingentity instanceof PlayerEntity) || !livingentity.isSpectator() && !((PlayerEntity)livingentity).isCreative();
+	         return !(livingentity instanceof Player) || !livingentity.isSpectator() && !((Player)livingentity).isCreative();
 	      }
 	   }
-
+	   public boolean requiresUpdateEveryTick() {
+	        return true;
+	     }
 	   public void start() {
 	      this.mob.getNavigation().moveTo(this.path, this.speedModifier);
 	      this.mob.setAggressive(true);
@@ -93,7 +102,7 @@ public class DelayMeleeAttackGoal extends Goal{
 
 	   public void stop() {
 	      LivingEntity livingentity = this.mob.getTarget();
-	      if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
+	      if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingentity)) {
 	         this.mob.setTarget((LivingEntity)null);
 	      }
 
@@ -106,7 +115,7 @@ public class DelayMeleeAttackGoal extends Goal{
 	      this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
 	      double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
 	      this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
-	      if ((this.followingTargetEvenIfNotSeen || this.mob.getSensing().canSee(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.mob.getRandom().nextFloat() < 0.05F)) {
+	      if ((this.followingTargetEvenIfNotSeen || this.mob.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.mob.getRandom().nextFloat() < 0.05F)) {
 	         this.pathedTargetX = livingentity.getX();
 	         this.pathedTargetY = livingentity.getY();
 	         this.pathedTargetZ = livingentity.getZ();
@@ -114,7 +123,7 @@ public class DelayMeleeAttackGoal extends Goal{
 	         if (this.canPenalize) {
 	            this.ticksUntilNextPathRecalculation += failedPathFindingPenalty;
 	            if (this.mob.getNavigation().getPath() != null) {
-	               net.minecraft.pathfinding.PathPoint finalPathPoint = this.mob.getNavigation().getPath().getEndNode();
+	            	net.minecraft.world.level.pathfinder.Node finalPathPoint = this.mob.getNavigation().getPath().getEndNode();
 	               if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
 	                  failedPathFindingPenalty = 0;
 	               else
@@ -142,34 +151,68 @@ public class DelayMeleeAttackGoal extends Goal{
 	      double d0 = this.getAttackReachSqr(p_190102_1_);
 	      if (p_190102_2_ <= d0 && this.ticksUntilNextAttack <= 0) {
 	         this.resetAttackCooldown();
-	         this.mob.swing(Hand.MAIN_HAND);
 	         delay=delaytime;
-	         if(Math.random()>0.5)
-	        	reverse=true;
-	         else
-	        	reverse=false;
+	         if(this.mob instanceof RockGiantEntity) {
+		    	  this.mob.level.broadcastEntityEvent(this.mob, RockGiantEntity.ATTACK_EVENT);
+		    	  
+	         }else if(this.mob instanceof BokoBrinEntity) {
+	        	 this.mob.level.broadcastEntityEvent(mob,BokoBrinEntity.ATTACK_EVENT);
+	        	 this.mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,24,9,false,false));
+	         }else if(this.mob instanceof YigaTeamMemberEntity) {
+	        	 float yaw=mob.yHeadRot;
+			 		float f = -4F;
+			 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			 		double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
+			 		mob.setDeltaMovement(mob.getDeltaMovement().add(mx,0.4, mz));
+			 		mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,9,9,false,false));
+			 		this.mob.level.broadcastEntityEvent(mob,YigaTeamMemberEntity.ATTACK_EVENT);
+	         }else
+	        	 this.mob.swing(InteractionHand.MAIN_HAND);
 	      }
-	      if(delay>=0&&this.mob instanceof RockGiantEntity) {
-	    	  RockGiantEntity entity=(RockGiantEntity) this.mob;
-	    	  if(reverse)
-	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, 10-delay);
-	    	  else
-	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, delay-10);
+	      if(delay==8&&this.mob instanceof BokoBrinEntity) {
+	        	 if(p_190102_2_ <= d0) {
+	        		 this.mob.playSound(SoundLoader.BLADE_HIT.get());
+	        		 this.mob.doHurtTarget(p_190102_1_);
+	        		 p_190102_1_.invulnerableTime=0;
+	        	 }else
+	        		 this.mob.playSound(SoundLoader.WHOOSH.get());
+	        	 float yaw=mob.yHeadRot;
+		 		float f = 1F;
+		 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
+		 		double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
+		 		mob.setDeltaMovement(mob.getDeltaMovement().add(mx,0, mz));
 	      }
-	      if(delay==0&&p_190102_2_ <= d0) {
-	    	  if(this.mob instanceof YigaTeamMemberEntity)
-	    		  ((YigaTeamMemberEntity)this.mob).yigadamage(p_190102_1_);
-	    	  else
+	      if(delay==10&&this.mob instanceof YigaTeamMemberEntity) {
+	    	  float yaw=mob.yHeadRot;
+		 		float f = 12F;
+		 		double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
+		 		double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
+		 		mob.setDeltaMovement(mob.getDeltaMovement().add(mx,0, mz));
+		 		this.mob.playSound(SoundLoader.WHOOSH_SHARP.get());
+	      }
+	      if(delay>0&&delay<10&&yigadelay<0&&this.mob instanceof YigaTeamMemberEntity&&p_190102_2_ <= 3*d0) {
+	    	  yigadelay=4;
+	      }
+	      if(yigadelay==0&&this.mob instanceof YigaTeamMemberEntity) {
+	    	  ((YigaTeamMemberEntity)this.mob).yigadamage(p_190102_1_);
+	      }
+	      if(delay==0) {
+	    	  if(p_190102_2_ <= d0) {
+	    	  if(!(this.mob instanceof YigaTeamMemberEntity)&&!(this.mob instanceof Chicken))
 	    		  this.mob.doHurtTarget(p_190102_1_);
+	    	  if(this.mob instanceof BokoBrinEntity)
+	    		  this.mob.playSound(SoundLoader.BLADE_HIT.get());
+	    	  if(this.mob instanceof Chicken) {
+	    		  p_190102_1_.invulnerableTime=0;
+	    		  p_190102_1_.hurt(CustomDamageSources.chicken(mob.damageSources(), mob), 1);
+	    		  mob.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH);
+	    	  }
+	    	  }else {
+	    		  if(this.mob instanceof BokoBrinEntity)
+	    			  this.mob.playSound(SoundLoader.WHOOSH.get());
+	    	  }
 	      }
-	      if(this.mob instanceof RockGiantEntity&&delay>=-delaytime&&delay<0) {
-	    	  RockGiantEntity entity=(RockGiantEntity) this.mob;
-	    	  if(reverse)
-	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, 10+delay);
-	    	  else
-	    		  entity.getEntityData().set(RockGiantEntity.HANDSWING, -delay-10);
-	      }
-	      delay--;
+	      delay--;yigadelay--;
 	   }
 
 	   protected void resetAttackCooldown() {

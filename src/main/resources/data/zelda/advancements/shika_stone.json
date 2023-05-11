@@ -1,0 +1,37 @@
+{
+    "parent": "zelda:root",
+    "criteria": {
+      "shika_stone": {
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "zelda:shika_stone"
+              ]
+            }
+          ]
+        },
+        "trigger": "minecraft:inventory_changed"
+      }
+    },
+    "display": {
+      "announce_to_chat": true,
+      "description": {
+        "translate": "advancement.zelda.shika_stone.description"
+      },
+      "frame": "task",
+      "hidden": false,
+      "icon": {
+        "item": "zelda:shika_stone"
+      },
+      "show_toast": true,
+      "title": {
+        "translate": "advancement.zelda.shika_stone.title"
+      }
+    },
+    "requirements": [
+      [
+        "shika_stone"
+      ]
+    ]
+  }

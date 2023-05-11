@@ -1,62 +1,67 @@
 package com.majong.zelda.block;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.majong.zelda.tileentity.PotTileEntity;
+import com.majong.zelda.tileentity.TileEntityLoader;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.BlockHitResult;
 
-public class PotBlock extends Block{
+public class PotBlock extends BaseEntityBlock{
 
 	public PotBlock() {
-		super(Properties.of(Material.STONE).strength(2.5F).harvestLevel(0).harvestTool(ToolType.PICKAXE).noOcclusion());
-		// TODO ×Ô¶¯Éú³ÉµÄ¹¹Ôìº¯Êý´æ¸ù
+		super(BlockBehaviour.Properties.of(Material.METAL,MaterialColor.STONE).strength(2.5F).requiresCorrectToolForDrops().noOcclusion());
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
-	@Override
+	/*@Override
     public boolean hasTileEntity(BlockState state) {
         return true;
-    }
+    }*/
 	@Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new PotTileEntity();
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+		return new PotTileEntity(pPos,pState);
+		//return null;
 	}
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public RenderShape getRenderShape(BlockState p_60550_) {
+	      return RenderShape.MODEL;
+	   }
+	@Override
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if(!worldIn.isClientSide&&worldIn.getBlockEntity(pos) instanceof PotTileEntity) {
 			PotTileEntity tile=(PotTileEntity) worldIn.getBlockEntity(pos);
 			if(!player.getMainHandItem().isEmpty()) {
-				player.setItemInHand(Hand.MAIN_HAND, tile.tryacceptitem(player.getMainHandItem()));
+				player.setItemInHand(InteractionHand.MAIN_HAND, tile.tryacceptitem(player.getMainHandItem()));
 			}
 			else{
 				if(player.isShiftKeyDown()) {
-					player.setItemInHand(Hand.MAIN_HAND, tile.tryextractitem());
+					player.setItemInHand(InteractionHand.MAIN_HAND, tile.tryextractitem());
 				}
 				else
 					tile.start(player);
 			}
 		}
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 	@Override
-	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
 		if(!worldIn.isClientSide) {
 			PotTileEntity tile=(PotTileEntity) worldIn.getBlockEntity(pos);
 			for(int i=0;i<5;i++) {
@@ -68,10 +73,16 @@ public class PotBlock extends Block{
 		}
 		super.playerWillDestroy(worldIn, pos, state, player);
 	}
-	@Override
+	/*@Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> drops = super.getDrops(state, builder);
 		drops.add(new ItemStack(BlockLoader.ITEM_POT.get(),1));
 		return drops;
-	}
+	}*/
+	@Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return createTickerHelper(pBlockEntityType, TileEntityLoader.POT_TILE_ENTITY.get(),
+                PotTileEntity::tick);
+    }
 }

@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+      {
+        "rolls": 1,
+        "bonus_rolls": 0,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:beast_god_sword"
+          },
+          {
+            "type": "minecraft:item",
+            "weight": 1,
+            "name": "zelda:beast_god_bow"
+          }
+        ]
+      }
+    ]
+  }
+  
