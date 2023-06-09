@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '194.1.7.1'
+version = '194.1.7.2'
 group = 'com.majong.zelda' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'zelda-1.19.4-forge'
 

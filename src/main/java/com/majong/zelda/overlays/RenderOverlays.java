@@ -15,12 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class RenderOverlays {
-	private static long lastrecieve=0;
-	private static long lastattack=0;
-	private static double percentage=1,last=1,delay=1;
-	public static boolean rendering=false;
-	private static Component name=Component.translatable("");
-	private static String at="";
 	private static long lastframe=0;
 	@SubscribeEvent
 	public static void onOverlayRender(RenderGuiOverlayEvent.Post event) {
@@ -35,31 +29,6 @@ public class RenderOverlays {
 	       }
 		ZeldaOverlays zeldaoverlays=new ZeldaOverlays(event.getPoseStack());
 		zeldaoverlays.render(Minecraft.getInstance().player);
-		if(Minecraft.getInstance().level.getGameTime()-lastrecieve<20L) {
-			rendering=true;
-			if(last<percentage||delay<percentage) {
-				last=percentage;
-				delay=percentage;
-			}
-			if(last>percentage) {
-				lastattack=Minecraft.getInstance().level.getGameTime();
-				last=percentage;
-			}
-			if(Minecraft.getInstance().level.getGameTime()-lastattack>10&&percentage<delay) {
-				delay=delay-0.004/ClientUtils.fpsratio();
-			}
-			HealthBar bar=new HealthBar(event.getPoseStack());
-			bar.render(percentage, delay,name,at);
-		}
-		else
-			rendering=false;
-	}
-	@Deprecated//��ʹ��api�еķ���
-	public static void DisplayHealthBar(double percentage,Component name,String at) {
-		lastrecieve=Minecraft.getInstance().level.getGameTime();
-		RenderOverlays.percentage=percentage;
-		RenderOverlays.name=name;
-		RenderOverlays.at=at;
 	}
 	@SubscribeEvent
 	public static void onTooltipRender(ItemTooltipEvent event) {

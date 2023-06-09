@@ -12,6 +12,6 @@ description='''
 [[dependencies.zelda]]
     modId="hllib"
     mandatory=true
-    versionRange="[194.0.1.0,)"
+    versionRange="[194.0.2.0,)"
     ordering="NONE"
     side="BOTH"

@@ -8,7 +8,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 
 public class EntityTypeTag {
-	public static final TagKey<EntityType<?>> HAS_HEALTH_BAR =create("has_healthbar");
     public static final TagKey<EntityType<?>> ANCIENT_RESTRAINTED =create("ancient_restrainted");
     public static final TagKey<EntityType<?>> FIRE_RESTRAINTED =create("fire_restrainted");
     public static final TagKey<EntityType<?>> ELECTRICITY_INVULNERABLE =create("electricity_invulnerable");

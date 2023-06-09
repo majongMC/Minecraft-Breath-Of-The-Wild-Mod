@@ -122,7 +122,7 @@ public class YigaTeamMemberEntity extends Monster{
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		if(!isactivated()) {
 			if(this.level.isClientSide) {
-				new OpenDialogBox();
+				new OpenDialogBox(this);
 			}else {
 				if(!ZeldaConfig.NPCONLY.get())
 					activate();
