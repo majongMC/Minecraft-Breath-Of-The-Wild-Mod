@@ -3,9 +3,9 @@ package com.majong.zelda.network;
 import java.util.function.Supplier;
 
 import com.majong.zelda.client.ClientUtils;
-import com.majong.zelda.overlays.RenderOverlays;
 import com.majong.zelda.util.BiomeUtil;
 
+import majongmc.hllib.client.overlays.HealthBarAPI;
 import majongmc.hllib.common.network.INDP;
 import majongmc.hllib.common.network.NetworkEvent;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,7 +31,7 @@ public class HealthBarPack implements INDP{
     @SuppressWarnings("deprecation")
 	public void handler(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-        	RenderOverlays.DisplayHealthBar(DATA, NAME,BiomeUtil.getBiomeName(ClientUtils.GetClientLevel().getBiome(ClientUtils.GetClientPlayer().blockPosition()).value(), ClientUtils.GetClientLevel())+"的");
+        	HealthBarAPI.DisplayHealthBar((float) DATA, NAME,Component.translatable("hllib.healthbar.dafaultsubtitle",BiomeUtil.getBiomeName(ClientUtils.GetClientLevel().getBiome(ClientUtils.GetClientPlayer().blockPosition()).value(), ClientUtils.GetClientLevel())));
         });
         ctx.get().setPacketHandled(true);
     }

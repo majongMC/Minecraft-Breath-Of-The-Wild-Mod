@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.majong.zelda.api.overlays.ZeldaHealthBarApi;
 import com.majong.zelda.config.ZeldaConfig;
 import com.majong.zelda.data.DataManager;
 import com.majong.zelda.data.ZeldaPlayerData;
@@ -13,8 +12,6 @@ import com.majong.zelda.entity.YigaTeamMemberEntity;
 import com.majong.zelda.item.HeartContainer;
 import com.majong.zelda.network.Networking;
 import com.majong.zelda.network.ParticlePack;
-import com.majong.zelda.tag.EntityTypeTag;
-import com.majong.zelda.util.BiomeUtil;
 import com.majong.zelda.util.ConductiveItem;
 import com.majong.zelda.world.dimension.TempleDimensionData;
 import com.mojang.logging.LogUtils;
@@ -23,13 +20,11 @@ import majongmc.hllib.common.event.LivingEvent.LivingTickEvent;
 import majongmc.hllib.common.event.PlayerEvent.Clone;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.Villager;
@@ -118,11 +113,6 @@ public class EntityTick {
 			YigaTeamMemberEntity entity=new YigaTeamMemberEntity(EntityLoader.YIGA_TEAM_MEMBER.get(),event.getEntity().level);
 			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
 			villager.level.addFreshEntity(entity);
-		}
-		if(event.getEntity() instanceof LivingEntity&&event.getEntity().getType().builtInRegistryHolder().tags().anyMatch((TagKey<EntityType<?>> t)->t.equals(EntityTypeTag.HAS_HEALTH_BAR))&&event.getEntity().level.isClientSide) {
-			LivingEntity entity=(LivingEntity) event.getEntity();
-			if(entity.blockPosition().getY()>=-64)
-				ZeldaHealthBarApi.DisplayHealthBarClient(entity.getHealth()/entity.getMaxHealth(), entity.getName(),BiomeUtil.getBiomeName(entity.level.getBiome(entity.blockPosition()).value(),entity.level)+"的");
 		}
 		if(event.getEntity() instanceof Player&&event.getEntity().level.isClientSide) {
 			if(EntitySpottedEvent.SoundRemainTime>0)

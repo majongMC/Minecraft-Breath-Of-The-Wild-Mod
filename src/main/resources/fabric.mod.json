@@ -31,7 +31,7 @@
   "depends": {
     "fabricloader": ">=0.14.10",
     "fabric-api": "*",
-    "hllib": ">=194.0.1.0",
+    "hllib": ">=194.0.2.0",
     "forgeconfigapiport": ">=6.0.2",
     "minecraft": "~1.19",
     "java": ">=17"

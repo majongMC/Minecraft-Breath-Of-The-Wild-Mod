@@ -7,17 +7,18 @@ import com.majong.zelda.network.ParticlePack;
 import majongmc.hllib.common.event.ProjectileImpactEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class CriticalHit {
 	public static void onArrowHit(ProjectileImpactEvent event) {
 		if(!event.getEntity().level.isClientSide&&event.getProjectile().getOwner() instanceof Player) {
 			Projectile arrow=event.getProjectile();
 			Player player=(Player) arrow.getOwner();
-			LivingEntity target=arrow.level.getNearestEntity(LivingEntity.class,TargetingConditions.forCombat().range(10), null, arrow.getX(), arrow.getY(), arrow.getZ(),arrow.getBoundingBox().inflate(10, 10, 10));
+			//LivingEntity target=arrow.level.getNearestEntity(LivingEntity.class,TargetingConditions.forCombat().range(10), null, arrow.getX(), arrow.getY(), arrow.getZ(),arrow.getBoundingBox().inflate(10, 10, 10));
+			if(event.getRayTraceResult() instanceof EntityHitResult result&&result.getEntity() instanceof LivingEntity target) {
 			if(target!=null&&target!=arrow.getOwner()) {
 				AABB box=target.getBoundingBox();
 				double proportion=box.getYsize()/box.getXsize();
@@ -34,10 +35,11 @@ public class CriticalHit {
 						double mz = Math.cos(yaw / 180.0F * (float) Math.PI) * f / 2D;
 						double mx = -Math.sin(yaw / 180.0F * (float) Math.PI) * f / 2D;
 						target.setDeltaMovement(target.getDeltaMovement().add(mx,0.1, mz));
-						event.setCanceled(false);
+						arrow.discard();
 						Networking.PARTICLE.send((ServerPlayer) player,new ParticlePack(6,arrow.getX(),arrow.getY(),arrow.getZ(),0,0,0));
 					}
 				}
+			}
 			}
 		}
 	}
